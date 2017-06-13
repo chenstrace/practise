@@ -12,8 +12,9 @@ int main(int argc, char *argv[]) {
    struct sockaddr_in serv_addr;
    struct hostent *server;
    float res; 
-   char buffer[256] = "hello";
    struct timeval tv1,tv2,tv_res;
+   float total =0; 
+   char buffer[256] = "hello";
    if (argc < 3) {
       fprintf(stderr,"usage %s hostname port\n", argv[0]);
       exit(0);
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
       * will be read by server
    */
 	
-   
+   total+=res; 
    /* Send message to the server */
    n = write(sockfd, buffer, strlen(buffer));
    
@@ -72,12 +73,14 @@ int main(int argc, char *argv[]) {
    timersub(&tv2,&tv1,&tv_res);  
    res = tv_res.tv_sec*1000000+ tv_res.tv_usec;
    printf("recv spends %fms\n", res/1000);
+   total+=res; 
    
    if (n < 0) {
       perror("ERROR reading from socket");
       exit(1);
    }
 	
+   printf("connect + send + recv spends %fms\n", total/1000);
    printf("recv content is %s\n",buffer);
    return 0;
 }
