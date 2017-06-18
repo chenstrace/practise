@@ -1,0 +1,3 @@
+通过搜索标准的简单服务，找到inetd,但是inetd是一个比较老的东西了，一般用xinetd来替代他。
+http://homepage.smc.edu/morgan_david/cs75/labs/enable-xinetd-protocols.htm
+安装后，可以通过编辑/etc/xinetd.d/echo-stream来打开echo服务
