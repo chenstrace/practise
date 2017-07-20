@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include <pthread.h>
 
+#define MAX_THREADS 10 
+
 typedef struct t_thread_arg {
     int sockfd;
     int num;
@@ -19,7 +21,6 @@ typedef struct t_thread_arg {
 
 } thread_arg;
 
-#define MAX_THREADS 10 
 
 void* start_routine(void *argument) {
     thread_arg* arg = (thread_arg*) argument;
@@ -28,10 +29,8 @@ void* start_routine(void *argument) {
     struct timeval tv1, tv2, tv_res;
     int n;
     if (arg == NULL) {
-        printf("thread arg is NULL\n");
         return NULL;
     }
-//    printf("thread arg[%d].num is %d\n", arg->index, arg->num);
 
     gettimeofday(&tv1, NULL);
     if (connect(arg->sockfd, (struct sockaddr*) &arg->serv_addr, sizeof (arg->serv_addr)) < 0) {
@@ -67,6 +66,7 @@ void* start_routine(void *argument) {
 
     printf("thread %d connect + send + recv spends %fms\n", arg->index, total / 1000);
     //printf("thread %d recv content is %s\n", arg->index, arg->recv_buffer);
+    return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -140,6 +140,6 @@ int main(int argc, char** argv) {
    
     printf("the program total spend %fms\n", res/1000);
 
-
     return 0;
 }
+

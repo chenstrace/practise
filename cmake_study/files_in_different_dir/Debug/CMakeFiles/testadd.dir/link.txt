@@ -1,0 +1,1 @@
+/bin/c++   -g    CMakeFiles/testadd.dir/main.cc.o  -o testadd -rdynamic add/libadd.a 

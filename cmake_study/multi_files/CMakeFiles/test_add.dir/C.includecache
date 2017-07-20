@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/root/misc/cmake_study/multi_files/add.c
+add.h
+/root/misc/cmake_study/multi_files/add.h
+
+/root/misc/cmake_study/multi_files/add.h
+
+/root/misc/cmake_study/multi_files/main.c
+stdio.h
+-
+add.h
+/root/misc/cmake_study/multi_files/add.h
+

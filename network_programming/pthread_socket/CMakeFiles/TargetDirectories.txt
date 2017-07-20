@@ -1,0 +1,1 @@
+/root/misc/network_programming/pthread_socket/CMakeFiles/pthread_socket.dir
