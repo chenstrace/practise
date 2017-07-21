@@ -30,6 +30,6 @@ add_subdirectory(add)
 
 
 # 指定生成目标 
-add_executable(testadd main.cc)
+add_executable(testadd ${DIR_SRCS})
 # 添加链接库
 target_link_libraries(testadd add)
