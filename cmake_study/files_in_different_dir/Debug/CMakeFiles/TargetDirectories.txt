@@ -1,2 +1,0 @@
-/root/misc/cmake_study/files_in_different_dir/Debug/add/CMakeFiles/add.dir
-/root/misc/cmake_study/files_in_different_dir/Debug/CMakeFiles/testadd.dir
