@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <netdb.h>
 #include <netinet/in.h>
-
 #include <string.h>
 #include <sys/time.h>
 
@@ -52,10 +50,7 @@ int main(int argc, char *argv[]) {
    timersub(&tv2,&tv1,&tv_res);  
    res = tv_res.tv_sec*1000000+ tv_res.tv_usec;
    printf("connect spends %fms\n", res/1000);
-   /* Now ask for a message from the user, this message
-      * will be read by server
-   */
-	
+
    total+=res; 
    /* Send message to the server */
    n = write(sockfd, buffer, strlen(buffer));
