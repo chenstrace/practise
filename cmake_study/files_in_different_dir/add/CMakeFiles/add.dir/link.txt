@@ -1,2 +1,0 @@
-/bin/ar cr libadd.a  CMakeFiles/add.dir/add.c.o
-/bin/ranlib libadd.a
