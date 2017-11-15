@@ -2,7 +2,6 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 function get_array_keys($arr, $prefix = '')
 {
     $result = [];
@@ -101,42 +100,48 @@ function get_rule_str($slice2, $var_str)
     return $ret;
 }
 
-function generate_judge_statements($var_str, $type, $is_optional, $rule_str)
+function generate_judge_statements($var_str, $type, $is_optional, $rule_str, $var_index,$rule_str_for_print)
 {
     if (empty($rule_str)) {
-        return generate_judge_statements_2($var_str, $type, $is_optional);
+        return generate_judge_statements_2($var_str, $type, $is_optional, $var_index,$rule_str_for_print);
     } else {
-        return generate_judge_statements_3($var_str, $type, $is_optional, $rule_str);
+        return generate_judge_statements_3($var_str, $type, $is_optional, $rule_str, $var_index,$rule_str_for_print);
     }
 }
 
-function generate_judge_statements_3($var_str, $type, $is_optional, $rule_str)
+function generate_judge_statements_3($var_str, $type, $is_optional, $rule_str, $var_index,$rule_str_for_print)
 {
+    $field_missing_return_statement = 'return \'' . $var_index . ' field missing' . '\';';
+    $type_wrong_return_statement = 'return \'' . $var_index . ' type wrong' . '\';';
+    $rule_not_satisfy_return_statement = "return \"" . $var_index . ' rule ' . $rule_str_for_print . ' wrong' . "\";";
     if ($is_optional) {
         $str = "    if(isset($var_str)) {
-        if(!is_$type($var_str)) return false;
-        if(!($rule_str)) return false;
+        if(!is_$type($var_str)) $type_wrong_return_statement
+        if(!($rule_str)) $rule_not_satisfy_return_statement
     };\n\n";
     } else {
-        $str = "    if(!isset($var_str)) return false;
-    if(!is_$type($var_str)) return false;
-    if(!($rule_str)) return false;\n\n";
+        $str = "    if(!isset($var_str)) $field_missing_return_statement
+    if(!is_$type($var_str)) $type_wrong_return_statement
+    if(!($rule_str)) $rule_not_satisfy_return_statement\n\n";
     }
     return $str;
 }
 
-function generate_judge_statements_2($var_str, $type, $is_optional)
+
+function generate_judge_statements_2($var_str, $type, $is_optional, $var_index,$rule_str_for_print)
 {
+    $field_missing_return_statement = 'return \'' . $var_index . ' field missing' . '\';';
+    $type_wrong_return_statement = 'return \'' . $var_index . ' type wrong' . '\';';
+
     if ($is_optional) {
         $str = "    if(isset($var_str)) {
-        if(!is_$type($var_str)) return false;
+        if(!is_$type($var_str)) $type_wrong_return_statement
     }\n\n";
     } else {
-        $str = "    if(!isset($var_str)) return false;
-    if(!is_$type($var_str)) return false;\n\n";
+        $str = "    if(!isset($var_str)) $field_missing_return_statement
+    if(!is_$type($var_str)) $type_wrong_return_statement\n\n";
     }
     return $str;
-
 }
 
 
@@ -147,29 +152,53 @@ function generate_statements($slices)
     $is_optional = is_optional($slices[1]);
     if (count($slices) == 3) {
         $rule_str = get_rule_str($slices[2], $var_str);
+        $rule_str_for_print =  str_replace('$x', 'x', $slices[2]);
     } else {
         $rule_str = '';
+        $rule_str_for_print='';
     }
 
-    return generate_judge_statements($var_str, $type, $is_optional, $rule_str);
+    return generate_judge_statements($var_str, $type, $is_optional, $rule_str, $slices[0],$rule_str_for_print);
 }
 
 function process_lines($lines)
 {
-
     $uniqid = uniqid();
-    $str = "\nfunction validate_" . $uniqid . "(\$data){\n";
+    $str = "\nfunction is_validate_" . $uniqid . "(\$data){\n";
     foreach ($lines as $line) {
         $str .= process_line($line);
     }
-    $str .= "\r\n    return true;\r\n}\r\n";
+    $str .= "\r\n    return 'ok';\r\n}\r\n";
     return $str;
+}
+
+function is_validate_5a0c1b072c1d1($data){
+    if(!isset($data['code'])) return '.code field missing';
+    if(!is_int($data['code'])) return '.code type wrong';
+    if(!($data['code']==0)) return ".code rule x==0 wrong";
+
+    if(!isset($data['data'])) return '.data field missing';
+    if(!is_array($data['data'])) return '.data type wrong';
+    if(!(count($data['data'])>=4&&count($data['data'])<=7)) return ".data rule count(x)>=4&&count(x)<=7 wrong";
+
+    if(!isset($data['data']['uin'])) return '.data.uin field missing';
+    if(!is_int($data['data']['uin'])) return '.data.uin type wrong';
+
+    if(isset($data['data']['salt'])) {
+        if(!is_string($data['data']['salt'])) return '.data.salt type wrong';
+    }
+
+    if(isset($data['data']['id_type'])) {
+        if(!is_int($data['data']['id_type'])) return '.data.id_type type wrong';
+    }
+
+
+    return 'ok';
 }
 
 
 class Code extends CI_Controller
 {
-
     public function index()
     {
         try {
@@ -201,7 +230,6 @@ class Code extends CI_Controller
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-
     }
 }
 
