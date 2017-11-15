@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<form method="post" enctype="multipart/form-data">
+    <!-- <div style="display: flex; align-items: center;"> -->
+    <textarea id="json_input"
+              name="json_input"
+              class="json_input"
+              rows="50"
+              cols="100"
+              spellcheck="false"
+              placeholder="输入JSON后，点击生成索引"
+              style="resize: both; width: 1078px; max-width: 520px;"><?php if(!empty($json_input)) echo $json_input;?></textarea>
+    <button type="submit" align="absmiddle" formaction="/app/v1/system/user/generate/code?op=generate_index">生成索引</button>
+
+    <textarea id="rule_input" name="rule_input" class="rule_input" rows="50" cols="100" spellcheck="false"
+              placeholder="编辑规则后，点击生成代码"
+              style="resize: both; width: 1078px; max-width: 520px;"
+    ><?php if(!empty($rule_input)) echo $rule_input;?></textarea>
+    <button type="submit" align="absmiddle" formaction="/app/v1/system/user/generate/code?op=generate_code">生成代码</button>
+
+    <textarea id="code_generation" name="code_generation" class="code_generation" rows="50" cols="100"
+              spellcheck="false" placeholder="最终生成的代码在这里"
+              style="resize: both; width: 1078px; max-width: 600px;"><?php if(!empty($code_generate)) echo $code_generate;?></textarea>
+</form>
+
+</html>
