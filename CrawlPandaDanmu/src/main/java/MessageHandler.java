@@ -6,9 +6,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by geekgao on 16-1-27.
- */
 public class MessageHandler {
     private Socket socket;
     private InputStream inputStream;
@@ -17,11 +14,7 @@ public class MessageHandler {
         this.socket = socket;
     }
 
-    /**
-     *
-     * @return 返回有意义的json串
-     * @throws IOException
-     */
+
     public List<String> read() throws IOException {
         if (inputStream == null) {
             inputStream = socket.getInputStream();

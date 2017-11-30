@@ -1,9 +1,7 @@
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Created by geekgao on 16-1-29.
- */
+
 public class Utils {
     private static Properties config = new Properties();
 

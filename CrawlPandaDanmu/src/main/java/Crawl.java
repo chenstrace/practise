@@ -9,9 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
 
-/**
- * Created by geekgao on 16-1-29.
- */
+
 public class Crawl extends Thread {
 
     //获取弹幕需要发送的内容
@@ -75,7 +73,7 @@ public class Crawl extends Thread {
     /**
      * 与弹幕服务器取得联系,相当于登录弹幕服务器
      */
-    public void login() throws IOException {
+    public void login() throws IOException, InterruptedException {
         socket = new Socket(serverIp,port);
         System.out.println("登录弹幕服务器:" + serverIp + ":" + port);
         String msg = "u:" + rid + "@" + appid + "\n" +
@@ -92,8 +90,8 @@ public class Crawl extends Thread {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(byteArray.toByteArray());
 
-        b = new byte[]{0x00, 0x06, 0x00, 0x00};
-        outputStream.write(b);
+        //b = new byte[]{0x00, 0x06, 0x00, 0x00};
+        //outputStream.write(b);
     }
 
     @Override
