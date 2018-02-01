@@ -20,11 +20,12 @@ def insert(url, title, content, publish_time, channel=''):
     title = MySQLdb.escape_string(title.encode("utf8"))
     content = MySQLdb.escape_string(content.encode("utf8"))
     md5_str = md5(MySQLdb.escape_string(url.encode("utf8")))
+    title_md5 = md5(title)
     publish_time = MySQLdb.escape_string(publish_time.encode("utf8"))
 
-    sql = "INSERT INTO t_rss_news(url,title,content,md5,channel,publish_time) \
-       VALUES ('%s','%s','%s', '%s', '%s', '%s')" % \
-          (url, title, content, md5_str, channel, publish_time)
+    sql = "INSERT INTO t_rss_news(url,title,content,md5,channel,publish_time,title_md5) \
+       VALUES ('%s','%s','%s', '%s', '%s', '%s','%s')" % \
+          (url, title, content, md5_str, channel, publish_time,title_md5)
 
     try:
         conn = MySQLdb.connect("127.0.0.1", "root", "", "rss", connect_timeout=1, charset="utf8")
