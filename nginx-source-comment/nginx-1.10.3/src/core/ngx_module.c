@@ -26,9 +26,13 @@ ngx_int_t
 ngx_preinit_modules(void)
 {
     ngx_uint_t  i;
-
+    //初始化全局变量ngx_modules的index和name字段
+    //初始化全局变量ngx_modules_n
+    //初始化全局变量ngx_max_module
+    
+    //ngx_modules来自ngx_modules.c，是编译的时候确定的，是一个ngx模块的指针的数组
     for (i = 0; ngx_modules[i]; i++) {
-        ngx_modules[i]->index = i;
+        ngx_modules[i]->index = i; //这里可以看出index的意义，就是当前模块在数组中的一个索引，编译时确定
         ngx_modules[i]->name = ngx_module_names[i];
     }
 

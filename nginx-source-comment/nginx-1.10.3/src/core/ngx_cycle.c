@@ -169,7 +169,8 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     }
 
     n = old_cycle->listening.nelts ? old_cycle->listening.nelts : 10;
-
+    
+    //初始化ngx_array_t类型的listening 开始
     cycle->listening.elts = ngx_pcalloc(pool, n * sizeof(ngx_listening_t));
     if (cycle->listening.elts == NULL) {
         ngx_destroy_pool(pool);
@@ -180,10 +181,10 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     cycle->listening.size = sizeof(ngx_listening_t);
     cycle->listening.nalloc = n;
     cycle->listening.pool = pool;
+    //初始化ngx_array_t类型的listening 结束
 
 
     ngx_queue_init(&cycle->reusable_connections_queue);
-
 
     cycle->conf_ctx = ngx_pcalloc(pool, ngx_max_module * sizeof(void *));
     if (cycle->conf_ctx == NULL) {
@@ -191,14 +192,12 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
         return NULL;
     }
 
-
+    //初始化hostname 开始
     if (gethostname(hostname, NGX_MAXHOSTNAMELEN) == -1) {
         ngx_log_error(NGX_LOG_EMERG, log, ngx_errno, "gethostname() failed");
         ngx_destroy_pool(pool);
         return NULL;
     }
-
-    /* on Linux gethostname() silently truncates name that does not fit */
 
     hostname[NGX_MAXHOSTNAMELEN - 1] = '\0';
     cycle->hostname.len = ngx_strlen(hostname);
@@ -210,14 +209,17 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     }
 
     ngx_strlow(cycle->hostname.data, (u_char *) hostname, cycle->hostname.len);
+    //初始化hostname 结束
 
 
+    //将全局的ngx_modules信息拷贝到cycle中
     if (ngx_cycle_modules(cycle) != NGX_OK) {
         ngx_destroy_pool(pool);
         return NULL;
     }
 
-
+    //NGX_CORE_MODULE类型的模块创建 开始
+    //NGX_CORE_MODULE 不只一个，还有其他的。 比如ngx_regex_module,ngx_errlog_module
     for (i = 0; cycle->modules[i]; i++) {
         if (cycle->modules[i]->type != NGX_CORE_MODULE) {
             continue;
@@ -226,14 +228,18 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
         module = cycle->modules[i]->ctx;
 
         if (module->create_conf) {
+            //举个例子，对于ngx_core_module，rv是 ngx_core_conf_t*
             rv = module->create_conf(cycle);
             if (rv == NULL) {
                 ngx_destroy_pool(pool);
                 return NULL;
             }
+            //由上面初始话的方式可知，conf_ctx现在是一个一级指针的数组，存放rv指针
+            //这里使用cycle->modules[i]->index， 说明要存放的索引还是按照ngx_modules.c里面的顺序
             cycle->conf_ctx[cycle->modules[i]->index] = rv;
         }
     }
+    //NGX_CORE_MODULE的创建 结束
 
 
     senv = environ;
@@ -253,7 +259,7 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
         return NULL;
     }
 
-
+    // 用conf.ctx接住cycle->conf_ctx，cycle中所有CORE模块配置项的指针都可以用conf.ctx和conf.cycle找到
     conf.ctx = cycle->conf_ctx;
     conf.cycle = cycle;
     conf.pool = pool;
@@ -261,16 +267,15 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     conf.module_type = NGX_CORE_MODULE;
     conf.cmd_type = NGX_MAIN_CONF;
 
-#if 0
-    log->log_level = NGX_LOG_DEBUG_ALL;
-#endif
 
+    /*如果启动时指定的不是全局变量，ngx_conf_param会直接返回NGX_CONF_OK，往下走*/
     if (ngx_conf_param(&conf) != NGX_CONF_OK) {
         environ = senv;
         ngx_destroy_cycle_pools(&conf);
         return NULL;
     }
 
+    /*上面已经分配了CORE模块配置项的内存结构，这里通过解析配置文件，回填cycle->conf_ctx*/
     if (ngx_conf_parse(&conf, &cycle->conf_file) != NGX_CONF_OK) {
         environ = senv;
         ngx_destroy_cycle_pools(&conf);
@@ -287,7 +292,7 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
             continue;
         }
 
-        module = cycle->modules[i]->ctx;
+        module = cycle->modules[i]->ctx; 
 
         if (module->init_conf) {
             if (module->init_conf(cycle,
