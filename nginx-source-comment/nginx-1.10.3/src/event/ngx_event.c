@@ -904,7 +904,8 @@ ngx_events_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     if (*ctx == NULL) {
         return NGX_CONF_ERROR;
     }
-
+    //这里的conf其实是&(cycle->conf_ctx[4])
+    //所以下面一句相当于修改了cycle->conf_ctx[4]的值,原来cycle->conf_ctx[4]是空值
     *(void **) conf = ctx;
 
     for (i = 0; cf->cycle->modules[i]; i++) {
@@ -915,6 +916,12 @@ ngx_events_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
         m = cf->cycle->modules[i]->ctx;
 
         if (m->create_conf) {
+            /*因为同时存在两个events模块,ngx_event_core_module和ngx_epoll_module
+             所以对(*ctx)[0]和(*ctx)[1]分别调用创建函数
+             * 再次提醒一下ctx关联的是ngx_events_module,索引是4
+             * 而ngx_event_core_module的索引是5,ngx_epoll_module的索引是6
+             */
+
             (*ctx)[cf->cycle->modules[i]->ctx_index] =
                                                      m->create_conf(cf->cycle);
             if ((*ctx)[cf->cycle->modules[i]->ctx_index] == NULL) {

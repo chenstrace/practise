@@ -415,6 +415,14 @@ ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
 
             } else if (cmd->type & NGX_MAIN_CONF) {
                 //最里面是二级指针,[]解了一次,变成一级指针,外面又取地址,所以conf最终是二级指针
+                /*举个具体的例子
+                  如果cf->cycle->modules[i]->index的值为4,对应的是 ngx_events_module
+                  则这里相当于conf = &(((void **) cf->ctx)[4]);
+                  由于ngx_events_module没有创建回调函数,所以(cf->ctx)[4]为零值,
+                  对(cf->ctx)[4]取地址,后面要修改(cf->ctx)[4]的值
+                 
+
+                 */
                 conf = &(((void **) cf->ctx)[cf->cycle->modules[i]->index]);
 
             } else if (cf->ctx) {

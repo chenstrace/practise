@@ -268,7 +268,7 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     conf.cmd_type = NGX_MAIN_CONF;
 
 
-    /*如果启动时指定的不是全局变量，ngx_conf_param会直接返回NGX_CONF_OK，往下走*/
+    /*如果启动时指定的不是全局配置，ngx_conf_param会直接返回NGX_CONF_OK，往下走*/
     if (ngx_conf_param(&conf) != NGX_CONF_OK) {
         environ = senv;
         ngx_destroy_cycle_pools(&conf);
