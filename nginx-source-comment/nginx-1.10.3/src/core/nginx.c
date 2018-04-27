@@ -182,6 +182,37 @@ static char        *ngx_signal;
 
 static char **ngx_os_environ;
 
+static char* ngx_get_module_type_string(ngx_uint_t module_type)
+{
+    if(module_type == 0x50545448)
+    {
+        return "HTTP";
+    }
+    else if(module_type == NGX_CORE_MODULE)
+    {
+       return "CORE";
+    }
+    else if(module_type == 0x544E5645)
+    {
+        return "EVENT";
+    }
+    else if(module_type == NGX_CONF_MODULE)
+    {
+        return "CONFIG";
+    }
+    return "UNKNOWN";
+}
+
+static void ngx_print_module_info(ngx_log_t* log)
+{
+    ngx_uint_t i;
+    for (i = 0; ngx_modules[i]; i++) {
+        ngx_log_error(NGX_LOG_NOTICE,log, 0,"module[%ui] name is %s, type is %s",
+                   ngx_modules[i]->index,
+                ngx_modules[i]->name,
+                ngx_get_module_type_string(ngx_modules[i]->type));
+    }
+}
 
 int ngx_cdecl
 main(int argc, char *const *argv)
@@ -225,7 +256,35 @@ main(int argc, char *const *argv)
     if (log == NULL) {
         return 1;
     }
-
+    
+//#define NGX_LOG_STDERR            0
+//#define NGX_LOG_EMERG             1
+//#define NGX_LOG_ALERT             2
+//#define NGX_LOG_CRIT              3
+//#define NGX_LOG_ERR               4
+//#define NGX_LOG_WARN              5
+//#define NGX_LOG_NOTICE            6
+//#define NGX_LOG_INFO              7
+//#define NGX_LOG_DEBUG             8
+   
+    //演示log的级别
+    //因为上面ngx_log_init返回的log的级别是NGX_LOG_NOTICE
+    //也因为ngx_log_error的逻辑是 if(log->level > level) do_log();
+    //所以有下面的结论
+    
+    /*
+   ngx_log_error(NGX_LOG_EMERG,log, 0,"log NGX_LOG_EMERG 1"); //将会同时输出日志文件和stderr
+   ngx_log_error(NGX_LOG_ALERT,log, 0,"log NGX_LOG_ALERT 2");//将会同时输出日志文件和stderr
+   ngx_log_error(NGX_LOG_CRIT,log, 0,"log NGX_LOG_CRIT 3");//将会同时输出日志文件和stderr
+   ngx_log_error(NGX_LOG_ERR,log, 0,"log NGX_LOG_ERR 4");//将会同时输出日志文件和stderr
+   ngx_log_error(NGX_LOG_WARN,log, 0,"log NGX_LOG_WARN 5");//将会同时输出日志文件和stderr
+   
+   ngx_log_error(NGX_LOG_NOTICE,log, 0,"log NGX_LOG_NOTICE 6");//只会输出日志文件
+   
+   ngx_log_error(NGX_LOG_INFO,log, 0,"log NGX_LOG_INFO 7");//完全不会输出
+   ngx_log_error(NGX_LOG_DEBUG,log, 0,"log NGX_LOG_DEBUG 8");//完全不会输出
+     */
+  
     /* STUB */
 #if (NGX_OPENSSL)
     ngx_ssl_init(log);
@@ -272,6 +331,8 @@ main(int argc, char *const *argv)
     if (ngx_preinit_modules() != NGX_OK) {
         return 1;
     }
+    
+    ngx_print_module_info(log);
 
     cycle = ngx_init_cycle(&init_cycle);
     if (cycle == NULL) {

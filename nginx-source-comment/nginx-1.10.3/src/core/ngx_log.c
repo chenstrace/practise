@@ -195,12 +195,25 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
         log = log->next;
     }
 
+//#define NGX_LOG_STDERR            0
+//#define NGX_LOG_EMERG             1
+//#define NGX_LOG_ALERT             2
+//#define NGX_LOG_CRIT              3
+//#define NGX_LOG_ERR               4
+//#define NGX_LOG_WARN              5
+//#define NGX_LOG_NOTICE            6
+//#define NGX_LOG_INFO              7
+//#define NGX_LOG_DEBUG             8
+    
+//所以NGX_LOG_NOTICE,NGX_LOG_INFO,NGX_LOG_DEBUG这三个级别的日志, 不在打印到标准错误输出
+    
     if (!ngx_use_stderr
         || level > NGX_LOG_WARN
         || wrote_stderr)
     {
         return;
     }
+    
 
     msg -= (7 + err_levels[level].len + 3);
 
