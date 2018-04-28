@@ -237,6 +237,10 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
             //由上面初始话的方式可知，conf_ctx现在是一个一级指针的数组，存放rv指针
             //这里使用cycle->modules[i]->index， 说明要存放的索引还是按照ngx_modules.c里面的顺序
             cycle->conf_ctx[cycle->modules[i]->index] = rv;
+            
+            ngx_log_error(NGX_LOG_NOTICE,log, 0,"cycle->conf_ctx[%ui] is %p, related module is %s",
+                    cycle->modules[i]->index, rv,cycle->modules[i]->name);
+            
         }
     }
     //NGX_CORE_MODULE的创建 结束
