@@ -19,6 +19,11 @@ make clean
 --without-http_auth_basic_module \
 --without-http_limit_conn_module \
 --without-http_limit_req_module \
+--without-http_autoindex_module \
+--without-http_geo_module \
+--without-http_map_module \
+--without-http_memcached_module \
+--without-http_referer_module
 
 line_number=`sed -n '/CFLAGS/=' objs/Makefile |head -n1`
 sed -i "${line_number}d" objs/Makefile
