@@ -328,7 +328,7 @@ ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
     name = cf->args->elts;
 
     found = 0;
-    /*对各个模块的各个指令进行相应的设置操作*/
+    /*对各个模块的各个指令进行相应的设置操作,从这里可以看出，不同的模块， 可以存在名称一样的指令*/
     for (i = 0; cf->cycle->modules[i]; i++) {
 
         cmd = cf->cycle->modules[i]->commands;
