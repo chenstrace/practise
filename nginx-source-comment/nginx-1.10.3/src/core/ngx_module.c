@@ -362,3 +362,19 @@ again:
 
     return index;
 }
+
+void ngx_print_module_ctx_index(ngx_cycle_t *cycle, ngx_uint_t type)
+{
+    ngx_uint_t     i;
+    ngx_module_t  *module;
+    
+    for (i = 0; cycle->modules[i]; i++) {
+        module = cycle->modules[i];
+
+        if (module->type != type) {
+            continue;
+        }
+        ngx_log_error(NGX_LOG_NOTICE,cycle->log, 0,"module %s ctx_index is %ui",
+                module->name,module->ctx_index);
+    }
+}

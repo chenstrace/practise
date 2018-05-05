@@ -297,6 +297,7 @@ ngx_int_t ngx_count_modules(ngx_cycle_t *cycle, ngx_uint_t type);
 ngx_int_t ngx_add_module(ngx_conf_t *cf, ngx_str_t *file,
     ngx_module_t *module, char **order);
 
+void ngx_print_module_ctx_index(ngx_cycle_t *cycle, ngx_uint_t type);
 
 extern ngx_module_t  *ngx_modules[];
 extern ngx_uint_t     ngx_max_module;

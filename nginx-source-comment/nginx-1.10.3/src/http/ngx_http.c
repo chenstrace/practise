@@ -138,14 +138,16 @@ ngx_http_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     if (ctx == NULL) {
         return NGX_CONF_ERROR;
     }
-
+    //conf_ctx
     *(ngx_http_conf_ctx_t **) conf = ctx;
 
 
     /* count the number of the http modules and set up their indices */
-
+    
+    //ngx_http_max_module为http模块的数量
     ngx_http_max_module = ngx_count_modules(cf->cycle, NGX_HTTP_MODULE);
 
+    ngx_print_module_ctx_index(cf->cycle, NGX_HTTP_MODULE);
 
     /* the http main_conf context, it is the same in the all http contexts */
 
