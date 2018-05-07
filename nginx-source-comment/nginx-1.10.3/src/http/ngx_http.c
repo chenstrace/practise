@@ -144,7 +144,7 @@ ngx_http_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     /* count the number of the http modules and set up their indices */
     
-    //ngx_http_max_module为http模块的数量
+    //ngx_http_max_module为http模块的数量,同时指定ctx_index
     ngx_http_max_module = ngx_count_modules(cf->cycle, NGX_HTTP_MODULE);
 
     ngx_print_module_ctx_index(cf->cycle, NGX_HTTP_MODULE);
