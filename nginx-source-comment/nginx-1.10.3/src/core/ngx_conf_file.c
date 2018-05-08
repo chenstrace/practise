@@ -409,9 +409,48 @@ ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
             /* set up the directive's configuration context */
 
             conf = NULL;
-
+            
+            //此处加一些if日志, 为的是方便gdb, 没有真实的作用
+            if (ngx_strcmp("user", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive user");
+            }
+            
+            if (ngx_strcmp("events", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive events");
+            }
+            
+            if (ngx_strcmp("worker_connections", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive worker_connections");
+            }
+            
+            if (ngx_strcmp("http", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive http");
+            }
+            if (ngx_strcmp("default_type", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive default_type");
+            }
+            if (ngx_strcmp("server", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive server");
+            }
+            if (ngx_strcmp("listen", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive listen");
+            }     
+            
+            if (ngx_strcmp("location", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive location");
+            }     
+            if (ngx_strcmp("root", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive root");
+            }  
+            if (ngx_strcmp("index", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive index");
+            } 
+            if (ngx_strcmp("error_page", cmd->name.data) == 0) {
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"before directive error_page");
+            }               
             if (cmd->type & NGX_DIRECT_CONF) {
                 conf = ((void **) cf->ctx)[cf->cycle->modules[i]->index];
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"directive %V hits NGX_DIRECT_CONF",&cmd->name);
 
             } else if (cmd->type & NGX_MAIN_CONF) {
                 //最里面是二级指针,[]解了一次,变成一级指针,外面又取地址,所以conf最终是二级指针
@@ -420,10 +459,9 @@ ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
                   则这里相当于conf = &(((void **) cf->ctx)[4]);
                   由于ngx_events_module没有创建回调函数,所以(cf->ctx)[4]为零值,
                   对(cf->ctx)[4]取地址,后面要修改(cf->ctx)[4]的值
-                 
-
                  */
                 conf = &(((void **) cf->ctx)[cf->cycle->modules[i]->index]);
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"directive %V hits NGX_MAIN_CONF",&cmd->name);
 
             } else if (cf->ctx) {
                 confp = *(void **) ((char *) cf->ctx + cmd->conf);
@@ -431,6 +469,7 @@ ngx_conf_handler(ngx_conf_t *cf, ngx_int_t last)
                 if (confp) {
                     conf = confp[cf->cycle->modules[i]->ctx_index];
                 }
+                ngx_log_error(NGX_LOG_NOTICE,cf->log, 0,"directive %V hits ctx_index",&cmd->name);
             }
 
             rv = cmd->set(cf, cmd, conf);
