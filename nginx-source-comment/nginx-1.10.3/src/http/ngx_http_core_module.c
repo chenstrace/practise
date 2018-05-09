@@ -2961,7 +2961,11 @@ ngx_http_core_server(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
 
     http_ctx = cf->ctx;
     ctx->main_conf = http_ctx->main_conf;
-    /*有一些指令,比如keepalive_timeout,可以既出现在配置文件的http块内,也出现在server块内
+    /*有一些指令,比如root,可以既出现在配置文件的http块内,也出现在server块内,还可以出现在location块内
+     一般来说, 配置文件中只有1个http块,
+     1个http块可以有多个server块
+     1个server块可以有多个location块
+     
      main_conf只有一个, 是所有模块共用的, 所以不会再一次分配内存
      
      */
