@@ -2961,7 +2961,12 @@ ngx_http_core_server(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
 
     http_ctx = cf->ctx;
     ctx->main_conf = http_ctx->main_conf;
-
+    /*有一些指令,比如keepalive_timeout,可以既出现在配置文件的http块内,也出现在server块内
+     main_conf只有一个, 是所有模块共用的, 所以不会再一次分配内存
+     
+     */
+     
+    
     /* the server{}'s srv_conf */
 
     ctx->srv_conf = ngx_pcalloc(cf->pool, sizeof(void *) * ngx_http_max_module);
