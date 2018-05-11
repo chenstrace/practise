@@ -2958,9 +2958,7 @@ ngx_http_core_server(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
     if (ctx == NULL) {
         return NGX_CONF_ERROR;
     }
-
-    http_ctx = cf->ctx;
-    ctx->main_conf = http_ctx->main_conf;
+    
     /*有一些指令,比如root,可以既出现在配置文件的http块内,也出现在server块内,还可以出现在location块内
      一般来说, 配置文件中只有1个http块,
      1个http块可以有多个server块
@@ -2969,6 +2967,10 @@ ngx_http_core_server(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
      main_conf只有一个, 是所有模块共用的, 所以不会再一次分配内存
      
      */
+
+    http_ctx = cf->ctx;
+    ctx->main_conf = http_ctx->main_conf;
+
      
     
     /* the server{}'s srv_conf */
@@ -3013,25 +3015,29 @@ ngx_http_core_server(ngx_conf_t *cf, ngx_command_t *cmd, void *dummy)
 
 
     /* the server configuration context */
-
+/*开始,为main_conf里面的servers赋值*/
+/* server指令的context只能是http, 所以在ngx_http_core_main_conf_t里面*/
     cscf = ctx->srv_conf[ngx_http_core_module.ctx_index];
     cscf->ctx = ctx;
 
-
+    //找到main_conf
     cmcf = ctx->main_conf[ngx_http_core_module.ctx_index];
+    //加入一个srv_conf
+    //由于数组中存的是ngx_http_core_srv_conf_t的指针,所以ngx_array_push返回的是二级指针
 
     cscfp = ngx_array_push(&cmcf->servers);
     if (cscfp == NULL) {
         return NGX_CONF_ERROR;
     }
-
+    //nginx array的使用方法,ngx_array_push只是返回一个地址,赋值的操作交给调用者
     *cscfp = cscf;
+/*结束,为main_conf里面的servers赋值*/
 
 
     /* parse inside server{} */
 
     pcf = *cf;
-    cf->ctx = ctx;
+    cf->ctx = ctx;  //这个是server block里申请的ctx
     cf->cmd_type = NGX_HTTP_SRV_CONF;
 
     rv = ngx_conf_parse(cf, NULL);

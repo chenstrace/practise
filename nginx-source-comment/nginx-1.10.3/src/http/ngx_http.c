@@ -185,6 +185,12 @@ ngx_http_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
      * of the all http modules
      */
 
+    /*为各个模块的指令的配置分配空间,这里解释一个疑问.
+      Q:为什么需要调用create_srv_conf和create_loc_conf,只调用create_main_conf不行吗?
+      A:因为指令对应数据结构的定义下沉, 比如keepalive_timeout这个指令是定义在location对应的数据结构中,
+        所以必须调用create_loc_conf来创建keepalive_timeout的内存,否则在http块内无法使用keepalive_timeout
+     
+     */
     for (m = 0; cf->cycle->modules[m]; m++) {
         if (cf->cycle->modules[m]->type != NGX_HTTP_MODULE) {
             continue;
