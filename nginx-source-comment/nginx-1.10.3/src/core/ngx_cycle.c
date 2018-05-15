@@ -311,6 +311,7 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
     }
 
     if (ngx_process == NGX_PROCESS_SIGNALLER) {
+        //-s信号 stop quit等
         return cycle;
     }
 

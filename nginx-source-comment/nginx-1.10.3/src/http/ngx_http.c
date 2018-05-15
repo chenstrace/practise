@@ -304,7 +304,7 @@ ngx_http_block(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
         return NGX_CONF_ERROR;
     }
 
-
+    //postconfiguration会插入content阶段的handler
     for (m = 0; cf->cycle->modules[m]; m++) {
         if (cf->cycle->modules[m]->type != NGX_HTTP_MODULE) {
             continue;
@@ -355,6 +355,7 @@ failed:
 static ngx_int_t
 ngx_http_init_phases(ngx_conf_t *cf, ngx_http_core_main_conf_t *cmcf)
 {
+    //每个phase的handler是一个数组,如果做模块开发,可以加入handler, 从而做自定义的动作
     if (ngx_array_init(&cmcf->phases[NGX_HTTP_POST_READ_PHASE].handlers,
                        cf->pool, 1, sizeof(ngx_http_handler_pt))
         != NGX_OK)
@@ -466,18 +467,20 @@ ngx_http_init_phase_handlers(ngx_conf_t *cf, ngx_http_core_main_conf_t *cmcf)
     use_access = cmcf->phases[NGX_HTTP_ACCESS_PHASE].handlers.nelts ? 1 : 0;
 
     n = use_rewrite + use_access + cmcf->try_files + 1 /* find config phase */;
-
+    
+    //累加各个phase的handler数量
     for (i = 0; i < NGX_HTTP_LOG_PHASE; i++) {
         n += cmcf->phases[i].handlers.nelts;
     }
 
-    ph = ngx_pcalloc(cf->pool,
-                     n * sizeof(ngx_http_phase_handler_t) + sizeof(void *));
+   
+    // sizeof(ngx_http_phase_handler_t) is 24
+    ph = ngx_pcalloc(cf->pool,n * sizeof(ngx_http_phase_handler_t) + sizeof(void *));
     if (ph == NULL) {
         return NGX_ERROR;
     }
 
-    cmcf->phase_engine.handlers = ph;
+    cmcf->phase_engine.handlers = ph;//至此, phase_engine的三个成员都已经初始化了
     n = 0;
 
     for (i = 0; i < NGX_HTTP_LOG_PHASE; i++) {

@@ -118,6 +118,7 @@ typedef struct {
 
 
 typedef enum {
+    //11个阶段
     NGX_HTTP_POST_READ_PHASE = 0,
 
     NGX_HTTP_SERVER_REWRITE_PHASE,
@@ -157,7 +158,7 @@ typedef struct {
 
 
 typedef struct {
-    ngx_array_t                handlers;
+    ngx_array_t                handlers; //ngx_http_handler_pt
 } ngx_http_phase_t;
 
 
