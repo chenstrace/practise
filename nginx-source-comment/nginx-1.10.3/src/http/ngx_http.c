@@ -480,7 +480,7 @@ ngx_http_init_phase_handlers(ngx_conf_t *cf, ngx_http_core_main_conf_t *cmcf)
         return NGX_ERROR;
     }
 
-    cmcf->phase_engine.handlers = ph;//至此, phase_engine的三个成员都已经初始化了
+    cmcf->phase_engine.handlers = ph;
     n = 0;
 
     for (i = 0; i < NGX_HTTP_LOG_PHASE; i++) {
