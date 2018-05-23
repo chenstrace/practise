@@ -479,7 +479,7 @@ ngx_http_init_phase_handlers(ngx_conf_t *cf, ngx_http_core_main_conf_t *cmcf)
     if (ph == NULL) {
         return NGX_ERROR;
     }
-
+    //以下初始化phase_engine
     cmcf->phase_engine.handlers = ph;
     n = 0;
 
