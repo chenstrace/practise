@@ -126,9 +126,12 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
 
 
     ccf = (ngx_core_conf_t *) ngx_get_conf(cycle->conf_ctx, ngx_core_module);
+    ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "before ngx_start_worker_processes");
 
-    ngx_start_worker_processes(cycle, ccf->worker_processes,
-                               NGX_PROCESS_RESPAWN);
+    ngx_start_worker_processes(cycle, ccf->worker_processes,NGX_PROCESS_RESPAWN);
+    
+    ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "after ngx_start_worker_processes");
+
     ngx_start_cache_manager_processes(cycle, 0);
 
     ngx_new_binary = 0;
@@ -347,21 +350,37 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
     ngx_int_t      i;
     ngx_channel_t  ch;
 
-    ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "start worker processes");
 
     ngx_memzero(&ch, sizeof(ngx_channel_t));
 
     ch.command = NGX_CMD_OPEN_CHANNEL;
+    // ngx_last_process 为当前已经创建的进程数量
 
     for (i = 0; i < n; i++) {
-
+        ngx_log_error(NGX_LOG_NOTICE, 
+                cycle->log, 0, 
+                "before ngx_spawn_process, i=%i, ngx_last_process=%i, ngx_process_slot=%i",
+                i,
+                ngx_last_process,
+                ngx_process_slot);
+        
         ngx_spawn_process(cycle, ngx_worker_process_cycle,
                           (void *) (intptr_t) i, "worker process", type);
+       
 
-        ch.pid = ngx_processes[ngx_process_slot].pid;
-        ch.slot = ngx_process_slot;
+        ch.pid = ngx_processes[ngx_process_slot].pid; //fork出来进程的pid
+        ch.slot = ngx_process_slot;//worker进程的索引
         ch.fd = ngx_processes[ngx_process_slot].channel[0];
-
+        
+        ngx_log_error(NGX_LOG_NOTICE, 
+                cycle->log, 0, 
+                "after ngx_spawn_process, i=%i, ngx_last_process=%i, ngx_process_slot=%i, ch.pid=%d, ch.fd=%d",
+                i,
+                ngx_last_process,
+                ngx_process_slot,
+                ch.pid,
+                ch.fd);
+        
         ngx_pass_open_channel(cycle, &ch);
     }
 }
@@ -427,7 +446,7 @@ static void
 ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
 {
     ngx_int_t  i;
-
+    //ngx_last_process为当前已经创建的进程数量
     for (i = 0; i < ngx_last_process; i++) {
 
         if (i == ngx_process_slot
@@ -929,9 +948,7 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
                       "close() channel failed");
     }
 
-#if 0
-    ngx_last_process = 0;
-#endif
+
 
     if (ngx_add_channel_event(cycle, ngx_channel, NGX_READ_EVENT,
                               ngx_channel_handler)
