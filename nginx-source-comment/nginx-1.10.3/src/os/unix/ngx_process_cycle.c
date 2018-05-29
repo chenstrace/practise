@@ -367,10 +367,10 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
         ngx_spawn_process(cycle, ngx_worker_process_cycle,
                           (void *) (intptr_t) i, "worker process", type);
        
-
+        //以下为master进程的代码
         ch.pid = ngx_processes[ngx_process_slot].pid; //fork出来进程的pid
         ch.slot = ngx_process_slot;//worker进程的索引
-        ch.fd = ngx_processes[ngx_process_slot].channel[0];
+        ch.fd = ngx_processes[ngx_process_slot].channel[0]; //read(pipefd[0], &buf, 1) 
         
         ngx_log_error(NGX_LOG_NOTICE, 
                 cycle->log, 0, 
