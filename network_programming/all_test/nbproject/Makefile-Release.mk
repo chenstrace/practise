@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/pipe_test.o \
+	${OBJECTDIR}/socketpair_nonblock_in_one_process.o \
 	${OBJECTDIR}/socketpair_test.o
 
 
@@ -73,6 +74,11 @@ ${OBJECTDIR}/pipe_test.o: pipe_test.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/pipe_test.o pipe_test.cpp
+
+${OBJECTDIR}/socketpair_nonblock_in_one_process.o: socketpair_nonblock_in_one_process.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/socketpair_nonblock_in_one_process.o socketpair_nonblock_in_one_process.cpp
 
 ${OBJECTDIR}/socketpair_test.o: socketpair_test.cpp
 	${MKDIR} -p ${OBJECTDIR}
