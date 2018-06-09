@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/ABC.o \
+	${OBJECTDIR}/for_fork_puzzle.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/pipe_test.o \
 	${OBJECTDIR}/socketpair_nonblock_in_one_process.o \
@@ -63,6 +65,16 @@ LDLIBSOPTIONS=
 
 all_test: ${OBJECTFILES}
 	${LINK.cc} -o all_test ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/ABC.o: ABC.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ABC.o ABC.cpp
+
+${OBJECTDIR}/for_fork_puzzle.o: for_fork_puzzle.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/for_fork_puzzle.o for_fork_puzzle.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
