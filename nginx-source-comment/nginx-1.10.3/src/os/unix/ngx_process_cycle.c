@@ -1027,6 +1027,8 @@ ngx_channel_handler(ngx_event_t *ev)
     ngx_int_t          n;
     ngx_channel_t      ch;
     ngx_connection_t  *c;
+    ngx_channel_t tmp_channel;
+
 
     if (ev->timedout) {
         ev->timedout = 0;
@@ -1081,6 +1083,11 @@ ngx_channel_handler(ngx_event_t *ev)
             break;
 
         case NGX_CMD_OPEN_CHANNEL:
+            tmp_channel.command = NGX_CMD_CUSTOM;
+            tmp_channel.fd = -1;
+            tmp_channel.pid = ngx_pid; //from pid
+            tmp_channel.slot = ch.pid;     //to pid
+            
 
             ngx_log_debug3(NGX_LOG_DEBUG_CORE, ev->log, 0,
                            "get channel s:%i pid:%P fd:%d",
@@ -1088,6 +1095,9 @@ ngx_channel_handler(ngx_event_t *ev)
 
             ngx_processes[ch.slot].pid = ch.pid;
             ngx_processes[ch.slot].channel[0] = ch.fd;
+            
+            ngx_write_channel_without_ancillary( ch.fd, &tmp_channel, sizeof(ngx_channel_t),ev->log);
+
             break;
 
         case NGX_CMD_CLOSE_CHANNEL:

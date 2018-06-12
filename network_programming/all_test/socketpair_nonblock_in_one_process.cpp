@@ -31,11 +31,11 @@ int socketpair_nonblock_in_one_process(int argc, char *argv[]) {
         if (ret == -1) {
             perror("send");
         } else {
-            printf("send %d bytes\n", ret);
+            printf("send %ld bytes\n", ret);
             sent_len += ret;
         }
     }
-    printf("total sent len %d\n", sent_len);
+    printf("total sent len %zu\n", sent_len);
 
     size_t recv_len = 0;
     while (recv_len < total_len) {
@@ -43,11 +43,11 @@ int socketpair_nonblock_in_one_process(int argc, char *argv[]) {
         if (ret == -1) {
             perror("recv");
         } else {
-            printf("recv %d bytes\n", ret);
+            printf("recv %ld bytes\n", ret);
             recv_len += ret;
         }
     }
-    printf("total recv len %d\n", recv_len);
+    printf("total recv len %zu\n", recv_len);
 
     printf("recv str %s\n", recv_buf);
 }

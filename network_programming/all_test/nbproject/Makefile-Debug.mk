@@ -39,6 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/for_fork_puzzle.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/pipe_test.o \
+	${OBJECTDIR}/recvmsg.o \
+	${OBJECTDIR}/sendmsg.o \
 	${OBJECTDIR}/socketpair_nonblock_in_one_process.o \
 	${OBJECTDIR}/socketpair_test.o
 
@@ -85,6 +87,16 @@ ${OBJECTDIR}/pipe_test.o: pipe_test.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/pipe_test.o pipe_test.cpp
+
+${OBJECTDIR}/recvmsg.o: recvmsg.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/recvmsg.o recvmsg.cpp
+
+${OBJECTDIR}/sendmsg.o: sendmsg.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sendmsg.o sendmsg.cpp
 
 ${OBJECTDIR}/socketpair_nonblock_in_one_process.o: socketpair_nonblock_in_one_process.cpp
 	${MKDIR} -p ${OBJECTDIR}

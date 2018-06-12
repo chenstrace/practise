@@ -9,6 +9,44 @@
 #include <ngx_core.h>
 #include <ngx_channel.h>
 
+ngx_int_t
+ngx_write_channel_without_ancillary(ngx_socket_t s, ngx_channel_t *ch, size_t size,ngx_log_t *log)
+{
+    ssize_t             n;
+    ngx_err_t           err;
+    struct iovec        iov[1];
+    struct msghdr       msg;
+
+
+    msg.msg_control = NULL;
+    msg.msg_controllen = 0;
+    msg.msg_flags = 0;   
+    msg.msg_name = NULL;
+    msg.msg_namelen = 0;
+    
+
+
+    iov[0].iov_base = (char *) ch;
+    iov[0].iov_len = size;
+
+    msg.msg_iov = iov;
+    msg.msg_iovlen = 1;
+
+    n = sendmsg(s, &msg, 0);
+
+    if (n == -1) {
+        err = ngx_errno;
+        if (err == NGX_EAGAIN) {
+            return NGX_AGAIN;
+        }
+
+        ngx_log_error(NGX_LOG_ALERT, log, err, "sendmsg() failed");
+        return NGX_ERROR;
+    }
+
+    return NGX_OK;
+}
+
 
 ngx_int_t
 ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,
@@ -170,6 +208,9 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
         /* ch->fd = *(int *) CMSG_DATA(&cmsg.cm); */
 
         ngx_memcpy(&ch->fd, CMSG_DATA(&cmsg.cm), sizeof(int));
+    }
+    else if(ch->command == NGX_CMD_CUSTOM) {
+        ngx_log_debug2(NGX_LOG_DEBUG_CORE, log, 0, "the msg was from pid(%d), to pid(%i)",ch->pid,ch->slot);
     }
 
     if (msg.msg_flags & (MSG_TRUNC|MSG_CTRUNC)) {
