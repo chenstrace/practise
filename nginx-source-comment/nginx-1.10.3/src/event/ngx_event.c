@@ -752,43 +752,6 @@ ngx_event_process_init(ngx_cycle_t *cycle)
             }
         }
 
-#if (NGX_WIN32)
-
-        if (ngx_event_flags & NGX_USE_IOCP_EVENT) {
-            ngx_iocp_conf_t  *iocpcf;
-
-            rev->handler = ngx_event_acceptex;
-
-            if (ngx_use_accept_mutex) {
-                continue;
-            }
-
-            if (ngx_add_event(rev, 0, NGX_IOCP_ACCEPT) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-
-            ls[i].log.handler = ngx_acceptex_log_error;
-
-            iocpcf = ngx_event_get_conf(cycle->conf_ctx, ngx_iocp_module);
-            if (ngx_event_post_acceptex(&ls[i], iocpcf->post_acceptex)
-                == NGX_ERROR)
-            {
-                return NGX_ERROR;
-            }
-
-        } else {
-            rev->handler = ngx_event_accept;
-
-            if (ngx_use_accept_mutex) {
-                continue;
-            }
-
-            if (ngx_add_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-        }
-
-#else
 
         rev->handler = (c->type == SOCK_STREAM) ? ngx_event_accept
                                                 : ngx_event_recvmsg;
@@ -805,9 +768,6 @@ ngx_event_process_init(ngx_cycle_t *cycle)
         if (ngx_add_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
             return NGX_ERROR;
         }
-
-#endif
-
     }
 
     return NGX_OK;

@@ -1,0 +1,860 @@
+2018/06/13 18:17:26 [notice] 27522#0: module[0] name is ngx_core_module, type is CORE
+2018/06/13 18:17:26 [notice] 27522#0: module[1] name is ngx_errlog_module, type is CORE
+2018/06/13 18:17:26 [notice] 27522#0: module[2] name is ngx_conf_module, type is CONFIG
+2018/06/13 18:17:26 [notice] 27522#0: module[3] name is ngx_regex_module, type is CORE
+2018/06/13 18:17:26 [notice] 27522#0: module[4] name is ngx_events_module, type is CORE
+2018/06/13 18:17:26 [notice] 27522#0: module[5] name is ngx_event_core_module, type is EVENT
+2018/06/13 18:17:26 [notice] 27522#0: module[6] name is ngx_epoll_module, type is EVENT
+2018/06/13 18:17:26 [notice] 27522#0: module[7] name is ngx_http_module, type is CORE
+2018/06/13 18:17:26 [notice] 27522#0: module[8] name is ngx_http_core_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[9] name is ngx_http_log_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[10] name is ngx_http_upstream_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[11] name is ngx_http_static_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[12] name is ngx_http_index_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[13] name is ngx_http_access_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[14] name is ngx_http_rewrite_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[15] name is ngx_http_proxy_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[16] name is ngx_http_fastcgi_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[17] name is ngx_http_write_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[18] name is ngx_http_header_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[19] name is ngx_http_chunked_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[20] name is ngx_http_range_header_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[21] name is ngx_http_gzip_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[22] name is ngx_http_charset_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[23] name is ngx_http_headers_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[24] name is ngx_http_copy_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[25] name is ngx_http_range_body_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: module[26] name is ngx_http_not_modified_filter_module, type is HTTP
+2018/06/13 18:17:26 [notice] 27522#0: cycle->conf_ctx[0] is 000056417F787DC0, related module is ngx_core_module
+2018/06/13 18:17:26 [notice] 27522#0: cycle->conf_ctx[3] is 000056417F787EA8, related module is ngx_regex_module
+2018/06/13 18:17:26 [notice] 27522#0: directive daemon hits NGX_DIRECT_CONF
+2018/06/13 18:17:26 [notice] 27522#0: before directive user
+2018/06/13 18:17:26 [notice] 27522#0: directive user hits NGX_DIRECT_CONF
+2018/06/13 18:17:26 [notice] 27522#0: directive worker_processes hits NGX_DIRECT_CONF
+2018/06/13 18:17:26 [notice] 27522#0: directive error_log hits NGX_MAIN_CONF
+2018/06/13 18:17:26 [notice] 27522#0: before directive events
+2018/06/13 18:17:26 [notice] 27522#0: directive events hits NGX_MAIN_CONF
+2018/06/13 18:17:26 [notice] 27522#0: before directive worker_connections
+2018/06/13 18:17:26 [notice] 27522#0: directive worker_connections hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: directive use hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: directive worker_aio_requests hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive http
+2018/06/13 18:17:26 [notice] 27522#0: directive http hits NGX_MAIN_CONF
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_core_module ctx_index is 0
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_log_module ctx_index is 1
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_upstream_module ctx_index is 2
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_static_module ctx_index is 3
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_index_module ctx_index is 4
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_access_module ctx_index is 5
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_rewrite_module ctx_index is 6
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_proxy_module ctx_index is 7
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_fastcgi_module ctx_index is 8
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_write_filter_module ctx_index is 9
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_header_filter_module ctx_index is 10
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_chunked_filter_module ctx_index is 11
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_range_header_filter_module ctx_index is 12
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_gzip_filter_module ctx_index is 13
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_charset_filter_module ctx_index is 14
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_headers_filter_module ctx_index is 15
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_copy_filter_module ctx_index is 16
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_range_body_filter_module ctx_index is 17
+2018/06/13 18:17:26 [notice] 27522#0: module ngx_http_not_modified_filter_module ctx_index is 18
+2018/06/13 18:17:26 [notice] 27522#0: before directive default_type
+2018/06/13 18:17:26 [notice] 27522#0: directive default_type hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: directive sendfile hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: directive keepalive_timeout hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive server
+2018/06/13 18:17:26 [notice] 27522#0: directive server hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive listen
+2018/06/13 18:17:26 [notice] 27522#0: directive listen hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive index
+2018/06/13 18:17:26 [notice] 27522#0: directive index hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive error_page
+2018/06/13 18:17:26 [notice] 27522#0: directive error_page hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive server
+2018/06/13 18:17:26 [notice] 27522#0: directive server hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive listen
+2018/06/13 18:17:26 [notice] 27522#0: directive listen hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive index
+2018/06/13 18:17:26 [notice] 27522#0: directive index hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive error_page
+2018/06/13 18:17:26 [notice] 27522#0: directive error_page hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive server
+2018/06/13 18:17:26 [notice] 27522#0: directive server hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive listen
+2018/06/13 18:17:26 [notice] 27522#0: directive listen hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive index
+2018/06/13 18:17:26 [notice] 27522#0: directive index hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive error_page
+2018/06/13 18:17:26 [notice] 27522#0: directive error_page hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive server
+2018/06/13 18:17:26 [notice] 27522#0: directive server hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive listen
+2018/06/13 18:17:26 [notice] 27522#0: directive listen hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive index
+2018/06/13 18:17:26 [notice] 27522#0: directive index hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive error_page
+2018/06/13 18:17:26 [notice] 27522#0: directive error_page hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive location
+2018/06/13 18:17:26 [notice] 27522#0: directive location hits ctx_index
+2018/06/13 18:17:26 [notice] 27522#0: before directive root
+2018/06/13 18:17:26 [notice] 27522#0: directive root hits ctx_index
+2018/06/13 18:17:26 [debug] 27522#0: bind() 0.0.0.0:80 #6 
+2018/06/13 18:17:26 [debug] 27522#0: bind() 0.0.0.0:81 #7 
+2018/06/13 18:17:26 [debug] 27522#0: bind() 0.0.0.0:82 #8 
+2018/06/13 18:17:26 [debug] 27522#0: bind() 0.0.0.0:83 #9 
+2018/06/13 18:17:26 [notice] 27522#0: using the "epoll" event method
+2018/06/13 18:17:26 [debug] 27522#0: counter: 00007F5104255080, 1
+2018/06/13 18:17:26 [notice] 27522#0: nginx/1.10.3
+2018/06/13 18:17:26 [notice] 27522#0: built by gcc 6.4.0 20170724 (Debian 6.4.0-2) 
+2018/06/13 18:17:26 [notice] 27522#0: OS: Linux 4.14.0-deepin2-amd64
+2018/06/13 18:17:26 [notice] 27522#0: getrlimit(RLIMIT_NOFILE): 1024:1048576
+2018/06/13 18:17:26 [debug] 27522#0: write: 10, 00007FFEF25FA070, 6, 0
+2018/06/13 18:17:26 [debug] 27522#0: setproctitle: "nginx: master process objs/nginx -p ./"
+2018/06/13 18:17:26 [notice] 27522#0: before ngx_start_worker_processes
+2018/06/13 18:17:26 [notice] 27522#0: before ngx_spawn_process, i=0, ngx_last_process=0, ngx_process_slot=0
+2018/06/13 18:17:26 [debug] 27522#0: channel 3:10
+2018/06/13 18:17:26 [notice] 27522#0: start worker process 27523
+2018/06/13 18:17:26 [notice] 27522#0: after ngx_spawn_process, i=0, ngx_last_process=1, ngx_process_slot=0, ch.pid=27523, ch.fd=3
+2018/06/13 18:17:26 [notice] 27522#0: before ngx_spawn_process, i=1, ngx_last_process=1, ngx_process_slot=0
+2018/06/13 18:17:26 [debug] 27522#0: channel 11:12
+2018/06/13 18:17:26 [debug] 27523#0: notify eventfd: 12
+2018/06/13 18:17:26 [debug] 27523#0: malloc: 000056417F78A440:6144
+2018/06/13 18:17:26 [debug] 27523#0: malloc: 00007F51040F8010:221184
+2018/06/13 18:17:26 [debug] 27523#0: malloc: 000056417F7AA930:98304
+2018/06/13 18:17:26 [debug] 27523#0: malloc: 000056417F7C2940:98304
+2018/06/13 18:17:26 [debug] 27523#0: epoll add event: fd:10 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27523#0: setproctitle: "nginx: worker process"
+2018/06/13 18:17:26 [debug] 27523#0: worker cycle
+2018/06/13 18:17:26 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:26 [debug] 27523#0: epoll add event: fd:6 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27523#0: epoll add event: fd:7 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27523#0: epoll add event: fd:8 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27523#0: epoll add event: fd:9 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:26 [debug] 27524#0: notify eventfd: 14
+2018/06/13 18:17:26 [debug] 27524#0: malloc: 000056417F78A440:6144
+2018/06/13 18:17:26 [debug] 27524#0: malloc: 00007F51040F8010:221184
+2018/06/13 18:17:26 [debug] 27524#0: malloc: 000056417F7AA930:98304
+2018/06/13 18:17:26 [debug] 27524#0: malloc: 000056417F7C2940:98304
+2018/06/13 18:17:26 [debug] 27524#0: epoll add event: fd:12 op:1 ev:00002001
+2018/06/13 18:17:26 [debug] 27524#0: setproctitle: "nginx: worker process"
+2018/06/13 18:17:26 [debug] 27524#0: worker cycle
+2018/06/13 18:17:26 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:26 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:26 [notice] 27522#0: start worker process 27524
+2018/06/13 18:17:26 [notice] 27522#0: after ngx_spawn_process, i=1, ngx_last_process=2, ngx_process_slot=1, ch.pid=27524, ch.fd=11
+2018/06/13 18:17:26 [debug] 27522#0: pass channel s:1 pid:27524 fd:11 to s:0 pid:27523 fd:3
+2018/06/13 18:17:26 [notice] 27522#0: after ngx_start_worker_processes
+2018/06/13 18:17:26 [debug] 27522#0: sigsuspend
+2018/06/13 18:17:26 [debug] 27523#0: epoll: fd:10 ev:0001 d:00007F51040F8370
+2018/06/13 18:17:26 [debug] 27523#0: post event 000056417F7AAAB0
+2018/06/13 18:17:26 [debug] 27523#0: timer delta: 10
+2018/06/13 18:17:26 [debug] 27523#0: posted event 000056417F7AAAB0
+2018/06/13 18:17:26 [debug] 27523#0: delete posted event 000056417F7AAAB0
+2018/06/13 18:17:26 [debug] 27523#0: channel handler
+2018/06/13 18:17:26 [debug] 27523#0: channel: 32
+2018/06/13 18:17:26 [debug] 27523#0: channel command: 1
+2018/06/13 18:17:26 [debug] 27523#0: get channel s:1 pid:27524 fd:3
+2018/06/13 18:17:26 [debug] 27523#0: channel: -2
+2018/06/13 18:17:26 [debug] 27523#0: worker cycle
+2018/06/13 18:17:26 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:26 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:26 [debug] 27524#0: epoll: fd:12 ev:0001 d:00007F51040F8370
+2018/06/13 18:17:26 [debug] 27524#0: channel handler
+2018/06/13 18:17:26 [debug] 27524#0: the msg was from pid(27523), to pid(27524)
+2018/06/13 18:17:26 [debug] 27524#0: channel: 32
+2018/06/13 18:17:26 [debug] 27524#0: channel command: 6
+2018/06/13 18:17:26 [debug] 27524#0: channel: -2
+2018/06/13 18:17:26 [debug] 27524#0: timer delta: 10
+2018/06/13 18:17:26 [debug] 27524#0: worker cycle
+2018/06/13 18:17:26 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:26 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:26 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:26 [debug] 27524#0: worker cycle
+2018/06/13 18:17:26 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:26 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:27 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:27 [debug] 27524#0: worker cycle
+2018/06/13 18:17:27 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:27 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:27 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:27 [debug] 27524#0: worker cycle
+2018/06/13 18:17:27 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:27 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:28 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:28 [debug] 27524#0: worker cycle
+2018/06/13 18:17:28 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:28 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:28 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:28 [debug] 27524#0: worker cycle
+2018/06/13 18:17:28 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:28 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:29 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:29 [debug] 27524#0: worker cycle
+2018/06/13 18:17:29 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:29 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:29 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:29 [debug] 27524#0: worker cycle
+2018/06/13 18:17:29 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:29 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:30 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:30 [debug] 27524#0: worker cycle
+2018/06/13 18:17:30 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:30 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:30 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:30 [debug] 27524#0: worker cycle
+2018/06/13 18:17:30 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:30 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:31 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:31 [debug] 27524#0: worker cycle
+2018/06/13 18:17:31 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:31 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:31 [debug] 27523#0: epoll: fd:9 ev:0001 d:00007F51040F8298
+2018/06/13 18:17:31 [debug] 27523#0: post event 000056417F7AAA50
+2018/06/13 18:17:31 [debug] 27523#0: timer delta: 5016
+2018/06/13 18:17:31 [debug] 27523#0: posted event 000056417F7AAA50
+2018/06/13 18:17:31 [debug] 27523#0: delete posted event 000056417F7AAA50
+2018/06/13 18:17:31 [debug] 27523#0: accept on 0.0.0.0:83, ready: 0
+2018/06/13 18:17:31 [debug] 27523#0: posix_memalign: 000056417F7A6110:512 @16
+2018/06/13 18:17:31 [debug] 27523#0: *1 accept: 127.0.0.1:52434 fd:13
+2018/06/13 18:17:31 [debug] 27523#0: *1 event timer add: 13: 60000:1528885111471
+2018/06/13 18:17:31 [debug] 27523#0: *1 reusable connection: 1
+2018/06/13 18:17:31 [debug] 27523#0: *1 epoll add event: fd:13 op:1 ev:80002001
+2018/06/13 18:17:31 [debug] 27523#0: worker cycle
+2018/06/13 18:17:31 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:31 [debug] 27523#0: epoll timer: 60000
+2018/06/13 18:17:31 [debug] 27523#0: epoll: fd:13 ev:0001 d:00007F51040F8448
+2018/06/13 18:17:31 [debug] 27523#0: *1 post event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: timer delta: 1
+2018/06/13 18:17:31 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: *1 delete posted event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: *1 http wait request handler
+2018/06/13 18:17:31 [debug] 27523#0: *1 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:31 [debug] 27523#0: *1 recv: fd:13 76 of 1024
+2018/06/13 18:17:31 [debug] 27523#0: *1 reusable connection: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 posix_memalign: 000056417F78BC50:4096 @16
+2018/06/13 18:17:31 [debug] 27523#0: *1 http process request line
+2018/06/13 18:17:31 [debug] 27523#0: *1 http request line: "GET / HTTP/1.1"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http uri: "/"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http args: ""
+2018/06/13 18:17:31 [debug] 27523#0: *1 http exten: ""
+2018/06/13 18:17:31 [debug] 27523#0: *1 http process request header line
+2018/06/13 18:17:31 [debug] 27523#0: *1 http header: "Host: 127.0.0.1:83"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http header: "User-Agent: curl/7.52.1"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http header: "Accept: */*"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http header done
+2018/06/13 18:17:31 [debug] 27523#0: *1 event timer del: 13: 1528885111471
+2018/06/13 18:17:31 [debug] 27523#0: *1 rewrite phase: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 test location: "/"
+2018/06/13 18:17:31 [debug] 27523#0: *1 using configuration "/"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http cl:-1 max:1048576
+2018/06/13 18:17:31 [debug] 27523#0: *1 rewrite phase: 2
+2018/06/13 18:17:31 [debug] 27523#0: *1 post rewrite phase: 3
+2018/06/13 18:17:31 [debug] 27523#0: *1 access phase: 4
+2018/06/13 18:17:31 [debug] 27523#0: *1 post access phase: 5
+2018/06/13 18:17:31 [debug] 27523#0: *1 content phase: 6
+2018/06/13 18:17:31 [debug] 27523#0: *1 open index "./html_83_out/index.html"
+2018/06/13 18:17:31 [debug] 27523#0: *1 internal redirect: "/index.html?"
+2018/06/13 18:17:31 [debug] 27523#0: *1 rewrite phase: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 test location: "/"
+2018/06/13 18:17:31 [debug] 27523#0: *1 test location: "404.html"
+2018/06/13 18:17:31 [debug] 27523#0: *1 using configuration "/"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http cl:-1 max:1048576
+2018/06/13 18:17:31 [debug] 27523#0: *1 rewrite phase: 2
+2018/06/13 18:17:31 [debug] 27523#0: *1 post rewrite phase: 3
+2018/06/13 18:17:31 [debug] 27523#0: *1 access phase: 4
+2018/06/13 18:17:31 [debug] 27523#0: *1 post access phase: 5
+2018/06/13 18:17:31 [debug] 27523#0: *1 content phase: 6
+2018/06/13 18:17:31 [debug] 27523#0: *1 content phase: 7
+2018/06/13 18:17:31 [debug] 27523#0: *1 http filename: "./html_83_out/index.html"
+2018/06/13 18:17:31 [debug] 27523#0: *1 add cleanup: 000056417F78CAA8
+2018/06/13 18:17:31 [debug] 27523#0: *1 http static fd: 14
+2018/06/13 18:17:31 [debug] 27523#0: *1 http set discard body
+2018/06/13 18:17:31 [debug] 27523#0: *1 posix_memalign: 000056417F78CC60:4096 @16
+2018/06/13 18:17:31 [debug] 27523#0: *1 HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Wed, 13 Jun 2018 10:17:31 GMT
+Content-Type: text/html
+Content-Length: 277
+Last-Modified: Wed, 13 Jun 2018 02:55:08 GMT
+Connection: keep-alive
+ETag: "5b20878c-115"
+Accept-Ranges: bytes
+
+2018/06/13 18:17:31 [debug] 27523#0: *1 write new buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 http write filter: l:0 f:0 s:238
+2018/06/13 18:17:31 [debug] 27523#0: *1 http output filter "/index.html?"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http copy filter: "/index.html?"
+2018/06/13 18:17:31 [debug] 27523#0: *1 write old buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 write new buf t:0 f:1 0000000000000000, pos 0000000000000000, size: 0 file: 0, size: 277
+2018/06/13 18:17:31 [debug] 27523#0: *1 http write filter: l:1 f:0 s:515
+2018/06/13 18:17:31 [debug] 27523#0: *1 http write filter limit 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 writev: 238 of 238
+2018/06/13 18:17:31 [debug] 27523#0: *1 sendfile: @0 277
+2018/06/13 18:17:31 [debug] 27523#0: *1 sendfile: 277 of 277 @0
+2018/06/13 18:17:31 [debug] 27523#0: *1 http write filter 0000000000000000
+2018/06/13 18:17:31 [debug] 27523#0: *1 http copy filter: 0 "/index.html?"
+2018/06/13 18:17:31 [debug] 27523#0: *1 http finalize request: 0, "/index.html?" a:1, c:2
+2018/06/13 18:17:31 [debug] 27523#0: *1 http request count:2 blk:0
+2018/06/13 18:17:31 [debug] 27523#0: *1 http finalize request: -4, "/index.html?" a:1, c:1
+2018/06/13 18:17:31 [debug] 27523#0: *1 set http keepalive handler
+2018/06/13 18:17:31 [debug] 27523#0: *1 http close request
+2018/06/13 18:17:31 [debug] 27523#0: *1 http log handler
+2018/06/13 18:17:31 [debug] 27523#0: *1 run cleanup: 000056417F78CAA8
+2018/06/13 18:17:31 [debug] 27523#0: *1 file cleanup: fd:14
+2018/06/13 18:17:31 [debug] 27523#0: *1 free: 000056417F78BC50, unused: 16
+2018/06/13 18:17:31 [debug] 27523#0: *1 free: 000056417F78CC60, unused: 3504
+2018/06/13 18:17:31 [debug] 27523#0: *1 free: 000056417F7A6320
+2018/06/13 18:17:31 [debug] 27523#0: *1 hc free: 0000000000000000 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 hc busy: 0000000000000000 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 tcp_nodelay
+2018/06/13 18:17:31 [debug] 27523#0: *1 reusable connection: 1
+2018/06/13 18:17:31 [debug] 27523#0: *1 event timer add: 13: 65000:1528885116472
+2018/06/13 18:17:31 [debug] 27523#0: *1 post event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: *1 delete posted event 000056417F7AAB10
+2018/06/13 18:17:31 [debug] 27523#0: *1 http keepalive handler
+2018/06/13 18:17:31 [debug] 27523#0: *1 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:31 [debug] 27523#0: *1 recv: fd:13 0 of 1024
+2018/06/13 18:17:31 [info] 27523#0: *1 client 127.0.0.1 closed keepalive connection
+2018/06/13 18:17:31 [debug] 27523#0: *1 close http connection: 13
+2018/06/13 18:17:31 [debug] 27523#0: *1 event timer del: 13: 1528885116472
+2018/06/13 18:17:31 [debug] 27523#0: *1 reusable connection: 0
+2018/06/13 18:17:31 [debug] 27523#0: *1 free: 000056417F7A6320
+2018/06/13 18:17:31 [debug] 27523#0: *1 free: 000056417F7A6110, unused: 144
+2018/06/13 18:17:31 [debug] 27523#0: worker cycle
+2018/06/13 18:17:31 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:31 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:31 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:31 [debug] 27524#0: worker cycle
+2018/06/13 18:17:31 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:31 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:32 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:32 [debug] 27524#0: worker cycle
+2018/06/13 18:17:32 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:32 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:32 [debug] 27524#0: timer delta: 502
+2018/06/13 18:17:32 [debug] 27524#0: worker cycle
+2018/06/13 18:17:32 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:32 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:33 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:33 [debug] 27524#0: worker cycle
+2018/06/13 18:17:33 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:33 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:33 [debug] 27523#0: epoll: fd:6 ev:0001 d:00007F51040F8010
+2018/06/13 18:17:33 [debug] 27523#0: post event 000056417F7AA930
+2018/06/13 18:17:33 [debug] 27523#0: timer delta: 2307
+2018/06/13 18:17:33 [debug] 27523#0: posted event 000056417F7AA930
+2018/06/13 18:17:33 [debug] 27523#0: delete posted event 000056417F7AA930
+2018/06/13 18:17:33 [debug] 27523#0: accept on 0.0.0.0:80, ready: 0
+2018/06/13 18:17:33 [debug] 27523#0: posix_memalign: 000056417F7A6110:512 @16
+2018/06/13 18:17:33 [debug] 27523#0: *2 accept: 127.0.0.1:37408 fd:13
+2018/06/13 18:17:33 [debug] 27523#0: *2 event timer add: 13: 60000:1528885113779
+2018/06/13 18:17:33 [debug] 27523#0: *2 reusable connection: 1
+2018/06/13 18:17:33 [debug] 27523#0: *2 epoll add event: fd:13 op:1 ev:80002001
+2018/06/13 18:17:33 [debug] 27523#0: worker cycle
+2018/06/13 18:17:33 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:33 [debug] 27523#0: epoll timer: 60000
+2018/06/13 18:17:33 [debug] 27523#0: epoll: fd:13 ev:0001 d:00007F51040F8449
+2018/06/13 18:17:33 [debug] 27523#0: *2 post event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: timer delta: 0
+2018/06/13 18:17:33 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: *2 delete posted event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: *2 http wait request handler
+2018/06/13 18:17:33 [debug] 27523#0: *2 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:33 [debug] 27523#0: *2 recv: fd:13 73 of 1024
+2018/06/13 18:17:33 [debug] 27523#0: *2 reusable connection: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 posix_memalign: 000056417F78BC50:4096 @16
+2018/06/13 18:17:33 [debug] 27523#0: *2 http process request line
+2018/06/13 18:17:33 [debug] 27523#0: *2 http request line: "GET / HTTP/1.1"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http uri: "/"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http args: ""
+2018/06/13 18:17:33 [debug] 27523#0: *2 http exten: ""
+2018/06/13 18:17:33 [debug] 27523#0: *2 http process request header line
+2018/06/13 18:17:33 [debug] 27523#0: *2 http header: "Host: 127.0.0.1"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http header: "User-Agent: curl/7.52.1"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http header: "Accept: */*"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http header done
+2018/06/13 18:17:33 [debug] 27523#0: *2 event timer del: 13: 1528885113779
+2018/06/13 18:17:33 [debug] 27523#0: *2 rewrite phase: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 test location: "/"
+2018/06/13 18:17:33 [debug] 27523#0: *2 using configuration "/"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http cl:-1 max:1048576
+2018/06/13 18:17:33 [debug] 27523#0: *2 rewrite phase: 2
+2018/06/13 18:17:33 [debug] 27523#0: *2 post rewrite phase: 3
+2018/06/13 18:17:33 [debug] 27523#0: *2 access phase: 4
+2018/06/13 18:17:33 [debug] 27523#0: *2 post access phase: 5
+2018/06/13 18:17:33 [debug] 27523#0: *2 content phase: 6
+2018/06/13 18:17:33 [debug] 27523#0: *2 open index "./html_80/index.html"
+2018/06/13 18:17:33 [debug] 27523#0: *2 internal redirect: "/index.html?"
+2018/06/13 18:17:33 [debug] 27523#0: *2 rewrite phase: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 test location: "/"
+2018/06/13 18:17:33 [debug] 27523#0: *2 test location: "404.html"
+2018/06/13 18:17:33 [debug] 27523#0: *2 using configuration "/"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http cl:-1 max:1048576
+2018/06/13 18:17:33 [debug] 27523#0: *2 rewrite phase: 2
+2018/06/13 18:17:33 [debug] 27523#0: *2 post rewrite phase: 3
+2018/06/13 18:17:33 [debug] 27523#0: *2 access phase: 4
+2018/06/13 18:17:33 [debug] 27523#0: *2 post access phase: 5
+2018/06/13 18:17:33 [debug] 27523#0: *2 content phase: 6
+2018/06/13 18:17:33 [debug] 27523#0: *2 content phase: 7
+2018/06/13 18:17:33 [debug] 27523#0: *2 http filename: "./html_80/index.html"
+2018/06/13 18:17:33 [debug] 27523#0: *2 add cleanup: 000056417F78CAA0
+2018/06/13 18:17:33 [debug] 27523#0: *2 http static fd: 14
+2018/06/13 18:17:33 [debug] 27523#0: *2 http set discard body
+2018/06/13 18:17:33 [debug] 27523#0: *2 posix_memalign: 000056417F78CC60:4096 @16
+2018/06/13 18:17:33 [debug] 27523#0: *2 HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Wed, 13 Jun 2018 10:17:33 GMT
+Content-Type: text/html
+Content-Length: 269
+Last-Modified: Wed, 13 Jun 2018 02:55:08 GMT
+Connection: keep-alive
+ETag: "5b20878c-10d"
+Accept-Ranges: bytes
+
+2018/06/13 18:17:33 [debug] 27523#0: *2 write new buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 http write filter: l:0 f:0 s:238
+2018/06/13 18:17:33 [debug] 27523#0: *2 http output filter "/index.html?"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http copy filter: "/index.html?"
+2018/06/13 18:17:33 [debug] 27523#0: *2 write old buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 write new buf t:0 f:1 0000000000000000, pos 0000000000000000, size: 0 file: 0, size: 269
+2018/06/13 18:17:33 [debug] 27523#0: *2 http write filter: l:1 f:0 s:507
+2018/06/13 18:17:33 [debug] 27523#0: *2 http write filter limit 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 writev: 238 of 238
+2018/06/13 18:17:33 [debug] 27523#0: *2 sendfile: @0 269
+2018/06/13 18:17:33 [debug] 27523#0: *2 sendfile: 269 of 269 @0
+2018/06/13 18:17:33 [debug] 27523#0: *2 http write filter 0000000000000000
+2018/06/13 18:17:33 [debug] 27523#0: *2 http copy filter: 0 "/index.html?"
+2018/06/13 18:17:33 [debug] 27523#0: *2 http finalize request: 0, "/index.html?" a:1, c:2
+2018/06/13 18:17:33 [debug] 27523#0: *2 http request count:2 blk:0
+2018/06/13 18:17:33 [debug] 27523#0: *2 http finalize request: -4, "/index.html?" a:1, c:1
+2018/06/13 18:17:33 [debug] 27523#0: *2 set http keepalive handler
+2018/06/13 18:17:33 [debug] 27523#0: *2 http close request
+2018/06/13 18:17:33 [debug] 27523#0: *2 http log handler
+2018/06/13 18:17:33 [debug] 27523#0: *2 run cleanup: 000056417F78CAA0
+2018/06/13 18:17:33 [debug] 27523#0: *2 file cleanup: fd:14
+2018/06/13 18:17:33 [debug] 27523#0: *2 free: 000056417F78BC50, unused: 24
+2018/06/13 18:17:33 [debug] 27523#0: *2 free: 000056417F78CC60, unused: 3504
+2018/06/13 18:17:33 [debug] 27523#0: *2 free: 000056417F7A6320
+2018/06/13 18:17:33 [debug] 27523#0: *2 hc free: 0000000000000000 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 hc busy: 0000000000000000 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 tcp_nodelay
+2018/06/13 18:17:33 [debug] 27523#0: *2 reusable connection: 1
+2018/06/13 18:17:33 [debug] 27523#0: *2 event timer add: 13: 65000:1528885118779
+2018/06/13 18:17:33 [debug] 27523#0: *2 post event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: *2 delete posted event 000056417F7AAB10
+2018/06/13 18:17:33 [debug] 27523#0: *2 http keepalive handler
+2018/06/13 18:17:33 [debug] 27523#0: *2 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:33 [debug] 27523#0: *2 recv: fd:13 0 of 1024
+2018/06/13 18:17:33 [info] 27523#0: *2 client 127.0.0.1 closed keepalive connection
+2018/06/13 18:17:33 [debug] 27523#0: *2 close http connection: 13
+2018/06/13 18:17:33 [debug] 27523#0: *2 event timer del: 13: 1528885118779
+2018/06/13 18:17:33 [debug] 27523#0: *2 reusable connection: 0
+2018/06/13 18:17:33 [debug] 27523#0: *2 free: 000056417F7A6320
+2018/06/13 18:17:33 [debug] 27523#0: *2 free: 000056417F7A6110, unused: 144
+2018/06/13 18:17:33 [debug] 27523#0: worker cycle
+2018/06/13 18:17:33 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:33 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:33 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:33 [debug] 27524#0: worker cycle
+2018/06/13 18:17:33 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:33 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:34 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:34 [debug] 27524#0: worker cycle
+2018/06/13 18:17:34 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:34 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:34 [debug] 27523#0: epoll: fd:7 ev:0001 d:00007F51040F80E8
+2018/06/13 18:17:34 [debug] 27523#0: post event 000056417F7AA990
+2018/06/13 18:17:34 [debug] 27523#0: timer delta: 936
+2018/06/13 18:17:34 [debug] 27523#0: posted event 000056417F7AA990
+2018/06/13 18:17:34 [debug] 27523#0: delete posted event 000056417F7AA990
+2018/06/13 18:17:34 [debug] 27523#0: accept on 0.0.0.0:81, ready: 0
+2018/06/13 18:17:34 [debug] 27523#0: posix_memalign: 000056417F7A6110:512 @16
+2018/06/13 18:17:34 [debug] 27523#0: *3 accept: 127.0.0.1:39300 fd:13
+2018/06/13 18:17:34 [debug] 27523#0: *3 event timer add: 13: 60000:1528885114715
+2018/06/13 18:17:34 [debug] 27523#0: *3 reusable connection: 1
+2018/06/13 18:17:34 [debug] 27523#0: *3 epoll add event: fd:13 op:1 ev:80002001
+2018/06/13 18:17:34 [debug] 27523#0: worker cycle
+2018/06/13 18:17:34 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:34 [debug] 27523#0: epoll timer: 60000
+2018/06/13 18:17:34 [debug] 27523#0: epoll: fd:13 ev:0001 d:00007F51040F8448
+2018/06/13 18:17:34 [debug] 27523#0: *3 post event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: timer delta: 0
+2018/06/13 18:17:34 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: *3 delete posted event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: *3 http wait request handler
+2018/06/13 18:17:34 [debug] 27523#0: *3 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:34 [debug] 27523#0: *3 recv: fd:13 76 of 1024
+2018/06/13 18:17:34 [debug] 27523#0: *3 reusable connection: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 posix_memalign: 000056417F78BC50:4096 @16
+2018/06/13 18:17:34 [debug] 27523#0: *3 http process request line
+2018/06/13 18:17:34 [debug] 27523#0: *3 http request line: "GET / HTTP/1.1"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http uri: "/"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http args: ""
+2018/06/13 18:17:34 [debug] 27523#0: *3 http exten: ""
+2018/06/13 18:17:34 [debug] 27523#0: *3 http process request header line
+2018/06/13 18:17:34 [debug] 27523#0: *3 http header: "Host: 127.0.0.1:81"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http header: "User-Agent: curl/7.52.1"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http header: "Accept: */*"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http header done
+2018/06/13 18:17:34 [debug] 27523#0: *3 event timer del: 13: 1528885114715
+2018/06/13 18:17:34 [debug] 27523#0: *3 rewrite phase: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 test location: "/"
+2018/06/13 18:17:34 [debug] 27523#0: *3 using configuration "/"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http cl:-1 max:1048576
+2018/06/13 18:17:34 [debug] 27523#0: *3 rewrite phase: 2
+2018/06/13 18:17:34 [debug] 27523#0: *3 post rewrite phase: 3
+2018/06/13 18:17:34 [debug] 27523#0: *3 access phase: 4
+2018/06/13 18:17:34 [debug] 27523#0: *3 post access phase: 5
+2018/06/13 18:17:34 [debug] 27523#0: *3 content phase: 6
+2018/06/13 18:17:34 [debug] 27523#0: *3 open index "./html_81/index.html"
+2018/06/13 18:17:34 [debug] 27523#0: *3 internal redirect: "/index.html?"
+2018/06/13 18:17:34 [debug] 27523#0: *3 rewrite phase: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 test location: "/"
+2018/06/13 18:17:34 [debug] 27523#0: *3 test location: "404.html"
+2018/06/13 18:17:34 [debug] 27523#0: *3 using configuration "/"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http cl:-1 max:1048576
+2018/06/13 18:17:34 [debug] 27523#0: *3 rewrite phase: 2
+2018/06/13 18:17:34 [debug] 27523#0: *3 post rewrite phase: 3
+2018/06/13 18:17:34 [debug] 27523#0: *3 access phase: 4
+2018/06/13 18:17:34 [debug] 27523#0: *3 post access phase: 5
+2018/06/13 18:17:34 [debug] 27523#0: *3 content phase: 6
+2018/06/13 18:17:34 [debug] 27523#0: *3 content phase: 7
+2018/06/13 18:17:34 [debug] 27523#0: *3 http filename: "./html_81/index.html"
+2018/06/13 18:17:34 [debug] 27523#0: *3 add cleanup: 000056417F78CAA0
+2018/06/13 18:17:34 [debug] 27523#0: *3 http static fd: 14
+2018/06/13 18:17:34 [debug] 27523#0: *3 http set discard body
+2018/06/13 18:17:34 [debug] 27523#0: *3 posix_memalign: 000056417F78CC60:4096 @16
+2018/06/13 18:17:34 [debug] 27523#0: *3 HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Wed, 13 Jun 2018 10:17:34 GMT
+Content-Type: text/html
+Content-Length: 269
+Last-Modified: Wed, 13 Jun 2018 02:55:08 GMT
+Connection: keep-alive
+ETag: "5b20878c-10d"
+Accept-Ranges: bytes
+
+2018/06/13 18:17:34 [debug] 27523#0: *3 write new buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 http write filter: l:0 f:0 s:238
+2018/06/13 18:17:34 [debug] 27523#0: *3 http output filter "/index.html?"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http copy filter: "/index.html?"
+2018/06/13 18:17:34 [debug] 27523#0: *3 write old buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 write new buf t:0 f:1 0000000000000000, pos 0000000000000000, size: 0 file: 0, size: 269
+2018/06/13 18:17:34 [debug] 27523#0: *3 http write filter: l:1 f:0 s:507
+2018/06/13 18:17:34 [debug] 27523#0: *3 http write filter limit 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 writev: 238 of 238
+2018/06/13 18:17:34 [debug] 27523#0: *3 sendfile: @0 269
+2018/06/13 18:17:34 [debug] 27523#0: *3 sendfile: 269 of 269 @0
+2018/06/13 18:17:34 [debug] 27523#0: *3 http write filter 0000000000000000
+2018/06/13 18:17:34 [debug] 27523#0: *3 http copy filter: 0 "/index.html?"
+2018/06/13 18:17:34 [debug] 27523#0: *3 http finalize request: 0, "/index.html?" a:1, c:2
+2018/06/13 18:17:34 [debug] 27523#0: *3 http request count:2 blk:0
+2018/06/13 18:17:34 [debug] 27523#0: *3 http finalize request: -4, "/index.html?" a:1, c:1
+2018/06/13 18:17:34 [debug] 27523#0: *3 set http keepalive handler
+2018/06/13 18:17:34 [debug] 27523#0: *3 http close request
+2018/06/13 18:17:34 [debug] 27523#0: *3 http log handler
+2018/06/13 18:17:34 [debug] 27523#0: *3 run cleanup: 000056417F78CAA0
+2018/06/13 18:17:34 [debug] 27523#0: *3 file cleanup: fd:14
+2018/06/13 18:17:34 [debug] 27523#0: *3 free: 000056417F78BC50, unused: 24
+2018/06/13 18:17:34 [debug] 27523#0: *3 free: 000056417F78CC60, unused: 3504
+2018/06/13 18:17:34 [debug] 27523#0: *3 free: 000056417F7A6320
+2018/06/13 18:17:34 [debug] 27523#0: *3 hc free: 0000000000000000 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 hc busy: 0000000000000000 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 tcp_nodelay
+2018/06/13 18:17:34 [debug] 27523#0: *3 reusable connection: 1
+2018/06/13 18:17:34 [debug] 27523#0: *3 event timer add: 13: 65000:1528885119715
+2018/06/13 18:17:34 [debug] 27523#0: *3 post event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: *3 delete posted event 000056417F7AAB10
+2018/06/13 18:17:34 [debug] 27523#0: *3 http keepalive handler
+2018/06/13 18:17:34 [debug] 27523#0: *3 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:34 [debug] 27523#0: *3 recv: fd:13 0 of 1024
+2018/06/13 18:17:34 [info] 27523#0: *3 client 127.0.0.1 closed keepalive connection
+2018/06/13 18:17:34 [debug] 27523#0: *3 close http connection: 13
+2018/06/13 18:17:34 [debug] 27523#0: *3 event timer del: 13: 1528885119715
+2018/06/13 18:17:34 [debug] 27523#0: *3 reusable connection: 0
+2018/06/13 18:17:34 [debug] 27523#0: *3 free: 000056417F7A6320
+2018/06/13 18:17:34 [debug] 27523#0: *3 free: 000056417F7A6110, unused: 144
+2018/06/13 18:17:34 [debug] 27523#0: worker cycle
+2018/06/13 18:17:34 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:34 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:34 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:34 [debug] 27524#0: worker cycle
+2018/06/13 18:17:34 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:34 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:35 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:35 [debug] 27524#0: worker cycle
+2018/06/13 18:17:35 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:35 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:35 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:35 [debug] 27524#0: worker cycle
+2018/06/13 18:17:35 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:35 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:36 [debug] 27523#0: epoll: fd:8 ev:0001 d:00007F51040F81C0
+2018/06/13 18:17:36 [debug] 27523#0: post event 000056417F7AA9F0
+2018/06/13 18:17:36 [debug] 27523#0: timer delta: 1456
+2018/06/13 18:17:36 [debug] 27523#0: posted event 000056417F7AA9F0
+2018/06/13 18:17:36 [debug] 27523#0: delete posted event 000056417F7AA9F0
+2018/06/13 18:17:36 [debug] 27523#0: accept on 0.0.0.0:82, ready: 0
+2018/06/13 18:17:36 [debug] 27523#0: posix_memalign: 000056417F7A6110:512 @16
+2018/06/13 18:17:36 [debug] 27523#0: *4 accept: 127.0.0.1:55300 fd:13
+2018/06/13 18:17:36 [debug] 27523#0: *4 event timer add: 13: 60000:1528885116171
+2018/06/13 18:17:36 [debug] 27523#0: *4 reusable connection: 1
+2018/06/13 18:17:36 [debug] 27523#0: *4 epoll add event: fd:13 op:1 ev:80002001
+2018/06/13 18:17:36 [debug] 27523#0: worker cycle
+2018/06/13 18:17:36 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:36 [debug] 27523#0: epoll timer: 60000
+2018/06/13 18:17:36 [debug] 27523#0: epoll: fd:13 ev:0001 d:00007F51040F8449
+2018/06/13 18:17:36 [debug] 27523#0: *4 post event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: timer delta: 0
+2018/06/13 18:17:36 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: *4 delete posted event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: *4 http wait request handler
+2018/06/13 18:17:36 [debug] 27523#0: *4 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:36 [debug] 27523#0: *4 recv: fd:13 76 of 1024
+2018/06/13 18:17:36 [debug] 27523#0: *4 reusable connection: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 posix_memalign: 000056417F78BC50:4096 @16
+2018/06/13 18:17:36 [debug] 27523#0: *4 http process request line
+2018/06/13 18:17:36 [debug] 27523#0: *4 http request line: "GET / HTTP/1.1"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http uri: "/"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http args: ""
+2018/06/13 18:17:36 [debug] 27523#0: *4 http exten: ""
+2018/06/13 18:17:36 [debug] 27523#0: *4 http process request header line
+2018/06/13 18:17:36 [debug] 27523#0: *4 http header: "Host: 127.0.0.1:82"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http header: "User-Agent: curl/7.52.1"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http header: "Accept: */*"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http header done
+2018/06/13 18:17:36 [debug] 27523#0: *4 event timer del: 13: 1528885116171
+2018/06/13 18:17:36 [debug] 27523#0: *4 rewrite phase: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 test location: "/"
+2018/06/13 18:17:36 [debug] 27523#0: *4 using configuration "/"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http cl:-1 max:1048576
+2018/06/13 18:17:36 [debug] 27523#0: *4 rewrite phase: 2
+2018/06/13 18:17:36 [debug] 27523#0: *4 post rewrite phase: 3
+2018/06/13 18:17:36 [debug] 27523#0: *4 access phase: 4
+2018/06/13 18:17:36 [debug] 27523#0: *4 post access phase: 5
+2018/06/13 18:17:36 [debug] 27523#0: *4 content phase: 6
+2018/06/13 18:17:36 [debug] 27523#0: *4 open index "./html_global/index.html"
+2018/06/13 18:17:36 [debug] 27523#0: *4 internal redirect: "/index.html?"
+2018/06/13 18:17:36 [debug] 27523#0: *4 rewrite phase: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 test location: "/"
+2018/06/13 18:17:36 [debug] 27523#0: *4 test location: "404.html"
+2018/06/13 18:17:36 [debug] 27523#0: *4 using configuration "/"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http cl:-1 max:1048576
+2018/06/13 18:17:36 [debug] 27523#0: *4 rewrite phase: 2
+2018/06/13 18:17:36 [debug] 27523#0: *4 post rewrite phase: 3
+2018/06/13 18:17:36 [debug] 27523#0: *4 access phase: 4
+2018/06/13 18:17:36 [debug] 27523#0: *4 post access phase: 5
+2018/06/13 18:17:36 [debug] 27523#0: *4 content phase: 6
+2018/06/13 18:17:36 [debug] 27523#0: *4 content phase: 7
+2018/06/13 18:17:36 [debug] 27523#0: *4 http filename: "./html_global/index.html"
+2018/06/13 18:17:36 [debug] 27523#0: *4 add cleanup: 000056417F78CAA8
+2018/06/13 18:17:36 [debug] 27523#0: *4 http static fd: 14
+2018/06/13 18:17:36 [debug] 27523#0: *4 http set discard body
+2018/06/13 18:17:36 [debug] 27523#0: *4 posix_memalign: 000056417F78CC60:4096 @16
+2018/06/13 18:17:36 [debug] 27523#0: *4 HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Wed, 13 Jun 2018 10:17:36 GMT
+Content-Type: text/html
+Content-Length: 277
+Last-Modified: Wed, 13 Jun 2018 02:55:08 GMT
+Connection: keep-alive
+ETag: "5b20878c-115"
+Accept-Ranges: bytes
+
+2018/06/13 18:17:36 [debug] 27523#0: *4 write new buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 http write filter: l:0 f:0 s:238
+2018/06/13 18:17:36 [debug] 27523#0: *4 http output filter "/index.html?"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http copy filter: "/index.html?"
+2018/06/13 18:17:36 [debug] 27523#0: *4 write old buf t:1 f:0 000056417F78CCD0, pos 000056417F78CCD0, size: 238 file: 0, size: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 write new buf t:0 f:1 0000000000000000, pos 0000000000000000, size: 0 file: 0, size: 277
+2018/06/13 18:17:36 [debug] 27523#0: *4 http write filter: l:1 f:0 s:515
+2018/06/13 18:17:36 [debug] 27523#0: *4 http write filter limit 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 writev: 238 of 238
+2018/06/13 18:17:36 [debug] 27523#0: *4 sendfile: @0 277
+2018/06/13 18:17:36 [debug] 27523#0: *4 sendfile: 277 of 277 @0
+2018/06/13 18:17:36 [debug] 27523#0: *4 http write filter 0000000000000000
+2018/06/13 18:17:36 [debug] 27523#0: *4 http copy filter: 0 "/index.html?"
+2018/06/13 18:17:36 [debug] 27523#0: *4 http finalize request: 0, "/index.html?" a:1, c:2
+2018/06/13 18:17:36 [debug] 27523#0: *4 http request count:2 blk:0
+2018/06/13 18:17:36 [debug] 27523#0: *4 http finalize request: -4, "/index.html?" a:1, c:1
+2018/06/13 18:17:36 [debug] 27523#0: *4 set http keepalive handler
+2018/06/13 18:17:36 [debug] 27523#0: *4 http close request
+2018/06/13 18:17:36 [debug] 27523#0: *4 http log handler
+2018/06/13 18:17:36 [debug] 27523#0: *4 run cleanup: 000056417F78CAA8
+2018/06/13 18:17:36 [debug] 27523#0: *4 file cleanup: fd:14
+2018/06/13 18:17:36 [debug] 27523#0: *4 free: 000056417F78BC50, unused: 16
+2018/06/13 18:17:36 [debug] 27523#0: *4 free: 000056417F78CC60, unused: 3504
+2018/06/13 18:17:36 [debug] 27523#0: *4 free: 000056417F7A6320
+2018/06/13 18:17:36 [debug] 27523#0: *4 hc free: 0000000000000000 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 hc busy: 0000000000000000 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 tcp_nodelay
+2018/06/13 18:17:36 [debug] 27523#0: *4 reusable connection: 1
+2018/06/13 18:17:36 [debug] 27523#0: *4 event timer add: 13: 65000:1528885121171
+2018/06/13 18:17:36 [debug] 27523#0: *4 post event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: posted event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: *4 delete posted event 000056417F7AAB10
+2018/06/13 18:17:36 [debug] 27523#0: *4 http keepalive handler
+2018/06/13 18:17:36 [debug] 27523#0: *4 malloc: 000056417F7A6320:1024
+2018/06/13 18:17:36 [debug] 27523#0: *4 recv: fd:13 0 of 1024
+2018/06/13 18:17:36 [info] 27523#0: *4 client 127.0.0.1 closed keepalive connection
+2018/06/13 18:17:36 [debug] 27523#0: *4 close http connection: 13
+2018/06/13 18:17:36 [debug] 27523#0: *4 event timer del: 13: 1528885121171
+2018/06/13 18:17:36 [debug] 27523#0: *4 reusable connection: 0
+2018/06/13 18:17:36 [debug] 27523#0: *4 free: 000056417F7A6320
+2018/06/13 18:17:36 [debug] 27523#0: *4 free: 000056417F7A6110, unused: 144
+2018/06/13 18:17:36 [debug] 27523#0: worker cycle
+2018/06/13 18:17:36 [debug] 27523#0: accept mutex locked
+2018/06/13 18:17:36 [debug] 27523#0: epoll timer: -1
+2018/06/13 18:17:36 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:36 [debug] 27524#0: worker cycle
+2018/06/13 18:17:36 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:36 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:36 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:36 [debug] 27524#0: worker cycle
+2018/06/13 18:17:36 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:36 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:37 [debug] 27524#0: timer delta: 502
+2018/06/13 18:17:37 [debug] 27524#0: worker cycle
+2018/06/13 18:17:37 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:37 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:37 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:37 [debug] 27524#0: worker cycle
+2018/06/13 18:17:37 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:37 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:38 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:38 [debug] 27524#0: worker cycle
+2018/06/13 18:17:38 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:38 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:38 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:38 [debug] 27524#0: worker cycle
+2018/06/13 18:17:38 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:38 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:39 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:39 [debug] 27524#0: worker cycle
+2018/06/13 18:17:39 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:39 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:39 [debug] 27524#0: timer delta: 500
+2018/06/13 18:17:39 [debug] 27524#0: worker cycle
+2018/06/13 18:17:39 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:39 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:40 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:40 [debug] 27524#0: worker cycle
+2018/06/13 18:17:40 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:40 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:40 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:40 [debug] 27524#0: worker cycle
+2018/06/13 18:17:40 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:40 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:41 [debug] 27524#0: timer delta: 501
+2018/06/13 18:17:41 [debug] 27524#0: worker cycle
+2018/06/13 18:17:41 [debug] 27524#0: accept mutex lock failed: 0
+2018/06/13 18:17:41 [debug] 27524#0: epoll timer: 500
+2018/06/13 18:17:41 [notice] 27522#0: signal 2 (SIGINT) received, exiting
+2018/06/13 18:17:41 [debug] 27522#0: wake up, sigio 0
+2018/06/13 18:17:41 [debug] 27522#0: child: 0 27523 e:0 t:0 d:0 r:1 j:0
+2018/06/13 18:17:41 [debug] 27522#0: child: 1 27524 e:0 t:0 d:0 r:1 j:0
+2018/06/13 18:17:41 [debug] 27522#0: termination cycle: 50
+2018/06/13 18:17:41 [debug] 27522#0: sigsuspend
+2018/06/13 18:17:41 [notice] 27523#0: signal 2 (SIGINT) received, exiting
+2018/06/13 18:17:41 [info] 27523#0: epoll_wait() failed (4: Interrupted system call)
+2018/06/13 18:17:41 [debug] 27523#0: timer delta: 5530
+2018/06/13 18:17:41 [notice] 27523#0: exiting
+2018/06/13 18:17:41 [debug] 27523#0: flush files
+2018/06/13 18:17:41 [debug] 27523#0: run cleanup: 000056417F7A0F78
+2018/06/13 18:17:41 [debug] 27523#0: cleanup resolver
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F798EC0
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F793DF0
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F792D30
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F791C70
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F786430, unused: 1
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F794EB0, unused: 0
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F799ED0, unused: 1
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F79DEE0, unused: 0
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F7A2100, unused: 328
+2018/06/13 18:17:41 [debug] 27523#0: free: 000056417F7A6920, unused: 11232
+2018/06/13 18:17:41 [notice] 27523#0: exit
+2018/06/13 18:17:41 [notice] 27522#0: signal 17 (SIGCHLD) received
+2018/06/13 18:17:41 [notice] 27522#0: worker process 27523 exited with code 0
+2018/06/13 18:17:41 [debug] 27522#0: shmtx forced unlock
+2018/06/13 18:17:41 [debug] 27522#0: wake up, sigio 4
+2018/06/13 18:17:41 [debug] 27522#0: reap children
+2018/06/13 18:17:41 [debug] 27522#0: child: 0 27523 e:1 t:1 d:0 r:1 j:0
+2018/06/13 18:17:41 [debug] 27522#0: pass close channel s:0 pid:27523 to:27524
+2018/06/13 18:17:41 [debug] 27522#0: child: 1 27524 e:1 t:0 d:0 r:1 j:0
+2018/06/13 18:17:41 [debug] 27522#0: termination cycle: 50
+2018/06/13 18:17:41 [debug] 27522#0: sigsuspend
+2018/06/13 18:17:41 [notice] 27522#0: signal 29 (SIGIO) received
+2018/06/13 18:17:41 [debug] 27522#0: wake up, sigio 3
+2018/06/13 18:17:41 [debug] 27522#0: termination cycle: 50
+2018/06/13 18:17:41 [debug] 27522#0: sigsuspend
+2018/06/13 18:17:41 [notice] 27524#0: signal 2 (SIGINT) received, exiting
+2018/06/13 18:17:41 [info] 27524#0: epoll_wait() failed (4: Interrupted system call)
+2018/06/13 18:17:41 [debug] 27524#0: timer delta: 221
+2018/06/13 18:17:41 [notice] 27524#0: exiting
+2018/06/13 18:17:41 [debug] 27524#0: flush files
+2018/06/13 18:17:41 [debug] 27524#0: run cleanup: 000056417F7A0F78
+2018/06/13 18:17:41 [debug] 27524#0: cleanup resolver
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F798EC0
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F793DF0
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F792D30
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F791C70
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F786430, unused: 1
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F794EB0, unused: 0
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F799ED0, unused: 1
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F79DEE0, unused: 0
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F7A2100, unused: 328
+2018/06/13 18:17:41 [debug] 27524#0: free: 000056417F7A6920, unused: 11232
+2018/06/13 18:17:41 [notice] 27524#0: exit
+2018/06/13 18:17:41 [notice] 27522#0: signal 17 (SIGCHLD) received
+2018/06/13 18:17:41 [notice] 27522#0: worker process 27524 exited with code 0
+2018/06/13 18:17:41 [debug] 27522#0: shmtx forced unlock
+2018/06/13 18:17:41 [debug] 27522#0: wake up, sigio 2
+2018/06/13 18:17:41 [debug] 27522#0: reap children
+2018/06/13 18:17:41 [debug] 27522#0: child: 0 -1 e:1 t:1 d:0 r:1 j:0
+2018/06/13 18:17:41 [debug] 27522#0: child: 1 27524 e:1 t:1 d:0 r:1 j:0
+2018/06/13 18:17:41 [notice] 27522#0: exit
+2018/06/13 18:17:41 [debug] 27522#0: close listening 0.0.0.0:80 #6 
+2018/06/13 18:17:41 [debug] 27522#0: close listening 0.0.0.0:81 #7 
+2018/06/13 18:17:41 [debug] 27522#0: close listening 0.0.0.0:82 #8 
+2018/06/13 18:17:41 [debug] 27522#0: close listening 0.0.0.0:83 #9 
+2018/06/13 18:17:41 [debug] 27522#0: run cleanup: 000056417F7A0F78
+2018/06/13 18:17:41 [debug] 27522#0: cleanup resolver
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F798EC0
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F793DF0
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F792D30
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F791C70
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F786430, unused: 1
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F794EB0, unused: 0
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F799ED0, unused: 1
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F79DEE0, unused: 0
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F7A2100, unused: 340
+2018/06/13 18:17:41 [debug] 27522#0: free: 000056417F7A6920, unused: 11232
