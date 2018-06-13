@@ -203,16 +203,6 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
     } else {
         timer = ngx_event_find_timer();
         flags = NGX_UPDATE_TIME;
-
-#if (NGX_WIN32)
-
-        /* handle signals from master in case of network inactivity */
-
-        if (timer == NGX_TIMER_INFINITE || timer > 500) {
-            timer = 500;
-        }
-
-#endif
     }
 
     if (ngx_use_accept_mutex) {
@@ -588,16 +578,7 @@ ngx_event_process_init(ngx_cycle_t *cycle)
         ngx_use_accept_mutex = 0;
     }
 
-#if (NGX_WIN32)
 
-    /*
-     * disable accept mutex on win32 as it may cause deadlock if
-     * grabbed by a process which can't accept connections
-     */
-
-    ngx_use_accept_mutex = 0;
-
-#endif
 
     ngx_queue_init(&ngx_posted_accept_events);
     ngx_queue_init(&ngx_posted_events);
@@ -625,7 +606,6 @@ ngx_event_process_init(ngx_cycle_t *cycle)
         break;
     }
 
-#if !(NGX_WIN32)
 
     if (ngx_timer_resolution && !(ngx_event_flags & NGX_USE_TIMER_EVENT)) {
         struct sigaction  sa;
@@ -670,16 +650,7 @@ ngx_event_process_init(ngx_cycle_t *cycle)
         }
     }
 
-#else
 
-    if (ngx_timer_resolution && !(ngx_event_flags & NGX_USE_TIMER_EVENT)) {
-        ngx_log_error(NGX_LOG_WARN, cycle->log, 0,
-                      "the \"timer_resolution\" directive is not supported "
-                      "with the configured event method, ignored");
-        ngx_timer_resolution = 0;
-    }
-
-#endif
 
     cycle->connections =
         ngx_alloc(sizeof(ngx_connection_t) * cycle->connection_n, cycle->log);
