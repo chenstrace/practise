@@ -36,11 +36,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/ABC.o \
+	${OBJECTDIR}/epoll_et_test.o \
+	${OBJECTDIR}/first_epoll.o \
 	${OBJECTDIR}/for_fork_puzzle.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/pipe_test.o \
 	${OBJECTDIR}/recvmsg.o \
 	${OBJECTDIR}/sendmsg.o \
+	${OBJECTDIR}/sizeof_test.o \
 	${OBJECTDIR}/socketpair_nonblock_in_one_process.o \
 	${OBJECTDIR}/socketpair_test.o
 
@@ -73,6 +76,16 @@ ${OBJECTDIR}/ABC.o: ABC.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ABC.o ABC.cpp
 
+${OBJECTDIR}/epoll_et_test.o: epoll_et_test.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/epoll_et_test.o epoll_et_test.cpp
+
+${OBJECTDIR}/first_epoll.o: first_epoll.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/first_epoll.o first_epoll.cpp
+
 ${OBJECTDIR}/for_fork_puzzle.o: for_fork_puzzle.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -97,6 +110,11 @@ ${OBJECTDIR}/sendmsg.o: sendmsg.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sendmsg.o sendmsg.cpp
+
+${OBJECTDIR}/sizeof_test.o: sizeof_test.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sizeof_test.o sizeof_test.cpp
 
 ${OBJECTDIR}/socketpair_nonblock_in_one_process.o: socketpair_nonblock_in_one_process.cpp
 	${MKDIR} -p ${OBJECTDIR}

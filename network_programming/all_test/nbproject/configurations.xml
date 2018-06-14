@@ -6,11 +6,14 @@
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
       <itemPath>ABC.cpp</itemPath>
+      <itemPath>epoll_et_test.cpp</itemPath>
+      <itemPath>first_epoll.cpp</itemPath>
       <itemPath>for_fork_puzzle.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>pipe_test.cpp</itemPath>
       <itemPath>recvmsg.cpp</itemPath>
       <itemPath>sendmsg.cpp</itemPath>
+      <itemPath>sizeof_test.cpp</itemPath>
       <itemPath>socketpair_nonblock_in_one_process.cpp</itemPath>
       <itemPath>socketpair_test.cpp</itemPath>
     </logicalFolder>
@@ -43,6 +46,10 @@
       </compileType>
       <item path="ABC.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="epoll_et_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="first_epoll.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="for_fork_puzzle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="headers.h" ex="false" tool="3" flavor2="0">
@@ -54,6 +61,8 @@
       <item path="recvmsg.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sendmsg.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sizeof_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="socketpair_nonblock_in_one_process.cpp"
             ex="false"
@@ -85,6 +94,10 @@
       </compileType>
       <item path="ABC.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="epoll_et_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="first_epoll.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="for_fork_puzzle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="headers.h" ex="false" tool="3" flavor2="0">
@@ -96,6 +109,8 @@
       <item path="recvmsg.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sendmsg.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sizeof_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="socketpair_nonblock_in_one_process.cpp"
             ex="false"
