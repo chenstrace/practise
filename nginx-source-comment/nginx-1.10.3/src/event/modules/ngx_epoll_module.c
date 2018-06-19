@@ -745,8 +745,7 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
             return NGX_OK;
         }
 
-        ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
-                      "epoll_wait() returned no events without timeout");
+        ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll_wait() returned no events without timeout");
         return NGX_ERROR;
     }
 
@@ -765,8 +764,7 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
              * that was just closed in this iteration
              */
 
-            ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                           "epoll: stale event %p", c);
+            ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "epoll: stale event %p", c);
             continue;
         }
 
@@ -813,8 +811,7 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
             rev->ready = 1;
 
             if (flags & NGX_POST_EVENTS) {
-                queue = rev->accept ? &ngx_posted_accept_events
-                                    : &ngx_posted_events;
+                queue = rev->accept ? &ngx_posted_accept_events : &ngx_posted_events;
 
                 ngx_post_event(rev, queue);
 
