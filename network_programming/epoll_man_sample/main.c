@@ -55,7 +55,7 @@ static char* get_epoll_events_str(uint32_t event) {
 int main(int argc, char** argv) {
     int wfd, rfd;
     int epfd;
-    struct
+    
     struct epoll_event event;
     struct epoll_event events[512];
     int nfds;
