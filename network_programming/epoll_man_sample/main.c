@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 
     write(wfd, "hello", sizeof ("hello"));
 
-    epoll_wait(epfd, events, 512, -1);
+    nfds = epoll_wait(epfd, events, 512, -1);
 
     printf("first call epoll_wait return %d\n", nfds);
 
