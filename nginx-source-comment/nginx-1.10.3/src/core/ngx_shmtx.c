@@ -16,8 +16,10 @@ static void ngx_shmtx_wakeup(ngx_shmtx_t *mtx);
 
 
 ngx_int_t
-ngx_shmtx_create(ngx_shmtx_t *mtx, ngx_shmtx_sh_t *addr, u_char *name)
-{
+ngx_shmtx_create(ngx_shmtx_t *mtx, ngx_shmtx_sh_t *addr, u_char *name) {
+    //因为创建共享内存时使用了MAP_ANONYMOUS选项，The mapping is not backed by any file; its contents are initialized to zero
+    //所以addr->lock的值初始为0
+    //详见 ngx_shm_alloc,  man mmap
     mtx->lock = &addr->lock;
 
     if (mtx->spin == (ngx_uint_t) -1) {
@@ -60,8 +62,8 @@ ngx_shmtx_destroy(ngx_shmtx_t *mtx)
 
 
 ngx_uint_t
-ngx_shmtx_trylock(ngx_shmtx_t *mtx)
-{
+ngx_shmtx_trylock(ngx_shmtx_t *mtx) {
+    //__sync_bool_compare_and_swap(mtx->lock, 0, ngx_pid);
     return (*mtx->lock == 0 && ngx_atomic_cmp_set(mtx->lock, 0, ngx_pid));
 }
 
