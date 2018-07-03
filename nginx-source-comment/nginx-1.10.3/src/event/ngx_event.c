@@ -236,6 +236,7 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                    "timer delta: %M", delta);
 
+    //ngx_posted_accept_events 在 ngx_event_process_init 初始化
     ngx_event_process_posted(cycle, &ngx_posted_accept_events);
 
     if (ngx_accept_mutex_held) {
@@ -245,7 +246,7 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
     if (delta) {
         ngx_event_expire_timers();
     }
-
+    //ngx_posted_events 在 ngx_event_process_init 初始化
     ngx_event_process_posted(cycle, &ngx_posted_events);
 }
 
@@ -553,8 +554,8 @@ ngx_timer_signal_handler(int signo)
 
 
 static ngx_int_t
-ngx_event_process_init(ngx_cycle_t *cycle)
-{
+ngx_event_process_init(ngx_cycle_t *cycle) {
+    //此函数由worker进程调用
     ngx_uint_t           m, i;
     ngx_event_t         *rev, *wev;
     ngx_listening_t     *ls;
