@@ -535,6 +535,8 @@ ngx_epoll_add_event(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags)
     }
 
     ee.events = events | (uint32_t) flags;
+    //这里隐含了一个条件，是一个小技巧
+    //c的最低位一定是0，这样做把instance和c都装进了ee.data.ptr里面，在epoll_wait的时候可以取用
     ee.data.ptr = (void *) ((uintptr_t) c | ev->instance);
 
     ngx_log_debug3(NGX_LOG_DEBUG_EVENT, ev->log, 0,
@@ -751,8 +753,10 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 
     for (i = 0; i < events; i++) {
         c = event_list[i].data.ptr;
-
+        //保留最低位，其他位置0，这样做是用来取出instance的值
         instance = (uintptr_t) c & 1;
+
+        //c的最低位置0，这样做是用来恢复c的值
         c = (ngx_connection_t *) ((uintptr_t) c & (uintptr_t) ~1);
 
         rev = c->read;
@@ -811,8 +815,9 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
             rev->ready = 1;
 
             if (flags & NGX_POST_EVENTS) {
+                //如果是listen的fd, rev->accept为1
                 queue = rev->accept ? &ngx_posted_accept_events : &ngx_posted_events;
-
+                //在这里并不做accept操作
                 ngx_post_event(rev, queue);
 
             } else {
