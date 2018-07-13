@@ -686,7 +686,11 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
 
     do {
         i--;
-
+        //data字段的意义是下一个可用的连接，假如connection_n为1024，则有
+        //c[1023].data = NULL;  最后一个了，没有下一个可用的
+        //c[1022].data = c[1023] 其实就是一个数组
+        //......
+        //c[0].data = c[1] 第0个的下一个是第1个
         c[i].data = next;
         c[i].read = &cycle->read_events[i];
         c[i].write = &cycle->write_events[i];
@@ -695,6 +699,7 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
         next = &c[i];
     } while (i);
 
+    //cycle->free_connections指向c[0]
     cycle->free_connections = next;
     cycle->free_connection_n = cycle->connection_n;
 

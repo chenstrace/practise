@@ -1041,7 +1041,7 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
                       s, ngx_cycle->files_n);
         return NULL;
     }
-
+    //获取当前可用的连接
     c = ngx_cycle->free_connections;
 
     if (c == NULL) {
@@ -1056,7 +1056,7 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
 
         return NULL;
     }
-
+    //可用连接的指针移向next，数量减1
     ngx_cycle->free_connections = c->data;
     ngx_cycle->free_connection_n--;
 
