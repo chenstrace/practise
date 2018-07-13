@@ -636,19 +636,24 @@ ngx_event_recvmsg(ngx_event_t *ev)
 
 #endif
 
-
 ngx_int_t
-ngx_trylock_accept_mutex(ngx_cycle_t *cycle)
-{
+ngx_trylock_accept_mutex(ngx_cycle_t *cycle) {
+
+    //ngx_accept_mutex 在 ngx_event_module_init 中初始化
+
     if (ngx_shmtx_trylock(&ngx_accept_mutex)) {
+        //return (*mtx->lock == 0 && __sync_bool_compare_and_swap(mtx->lock, 0, ngx_pid));
+        //这一次抢到了锁
 
         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                        "accept mutex locked");
-
+        //当使用epoll的时候,ngx_accept_events始终为0,所以相当于if(ngx_accept_mutex_held){return NGX_OK;}
         if (ngx_accept_mutex_held && ngx_accept_events == 0) {
+            //上一次也抢到了锁,因为上次已经加入了listen的fd,所以直接返回
             return NGX_OK;
         }
-
+        //epoll_ctl失败的时候, ngx_enable_accept_events会返回NGX_ERROR
+        //TODO 构造一个失败的场景
         if (ngx_enable_accept_events(cycle) == NGX_ERROR) {
             ngx_shmtx_unlock(&ngx_accept_mutex);
             return NGX_ERROR;
@@ -663,12 +668,21 @@ ngx_trylock_accept_mutex(ngx_cycle_t *cycle)
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                    "accept mutex lock failed: %ui", ngx_accept_mutex_held);
 
+    //以下是这一次没有抢到锁的情景
+
     if (ngx_accept_mutex_held) {
+        //之前获得了锁的情景
         if (ngx_disable_accept_events(cycle, 0) == NGX_ERROR) {
             return NGX_ERROR;
         }
 
         ngx_accept_mutex_held = 0;
+    } else {
+        //之前没有获得锁的情景
+        //举个例子,初始时,两个进程ngx_shmtx_trylock,
+        //都执行return (*mtx->lock == 0 && __sync_bool_compare_and_swap(mtx->lock, 0, ngx_pid));
+        //*mtx->lock都为0, 执行__sync_bool_compare_and_swap只有一个进程成功
+
     }
 
     return NGX_OK;
@@ -690,7 +704,7 @@ ngx_enable_accept_events(ngx_cycle_t *cycle)
         if (c == NULL || c->read->active) {
             continue;
         }
-
+        //ngx_epoll_add_event
         if (ngx_add_event(c->read, NGX_READ_EVENT, 0) == NGX_ERROR) {
             return NGX_ERROR;
         }
