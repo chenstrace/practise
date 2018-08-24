@@ -1165,6 +1165,7 @@ ngx_close_connection(ngx_connection_t *c)
     if (c->shared) {
         return;
     }
+    ngx_log_error(NGX_LOG_ALERT, c->log, 0, "cjl ngx_close_socket %d", fd);
 
     if (ngx_close_socket(fd) == -1) {
 
