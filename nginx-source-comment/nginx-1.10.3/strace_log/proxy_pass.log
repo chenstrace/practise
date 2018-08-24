@@ -1,0 +1,107 @@
+mkdir("./client_body_temp", 0700)       = -1 EEXIST (File exists)
+stat("./client_body_temp", {st_mode=S_IFDIR|0700, st_size=6, ...}) = 0
+mkdir("./proxy_temp", 0700)             = -1 EEXIST (File exists)
+stat("./proxy_temp", {st_mode=S_IFDIR|0700, st_size=86, ...}) = 0
+mkdir("./fastcgi_temp", 0700)           = -1 EEXIST (File exists)
+stat("./fastcgi_temp", {st_mode=S_IFDIR|0700, st_size=6, ...}) = 0
+open("./logs/error.log", O_WRONLY|O_CREAT|O_APPEND, 0644) = 4
+fcntl(4, F_SETFD, FD_CLOEXEC)           = 0
+open("./logs/access.log", O_WRONLY|O_CREAT|O_APPEND, 0644) = 5
+fcntl(5, F_SETFD, FD_CLOEXEC)           = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 6
+setsockopt(6, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+ioctl(6, FIONBIO, [1])                  = 0
+bind(6, {sa_family=AF_INET, sin_port=htons(84), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+listen(6, 511)                          = 0
+listen(6, 511)                          = 0
+getrlimit(RLIMIT_NOFILE, {rlim_cur=1024, rlim_max=4*1024}) = 0
+rt_sigaction(SIGHUP, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGUSR1, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGWINCH, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGTERM, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGUSR2, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGALRM, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGINT, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGIO, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGCHLD, {0x443068, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGSYS, {SIG_IGN, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+rt_sigaction(SIGPIPE, {SIG_IGN, [], SA_RESTORER, 0x7f5db3a82370}, NULL, 8) = 0
+open("./logs/nginx.pid", O_RDWR|O_CREAT|O_TRUNC, 0644) = 7
+pwrite(7, "19199\n", 6, 0)              = 6
+close(7)                                = 0
+dup2(4, 2)                              = 2
+close(3)                                = 0
+epoll_create(512)                       = 3
+eventfd2(0, 0)                          = 7
+epoll_ctl(3, EPOLL_CTL_ADD, 7, {EPOLLIN|EPOLLET, {u32=7206336, u64=7206336}}) = 0
+mmap(NULL, 225280, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f5db4063000
+brk(0)                                  = 0x160e000
+brk(0x163f000)                          = 0x163f000
+epoll_ctl(3, EPOLL_CTL_ADD, 6, {EPOLLIN|EPOLLRDHUP, {u32=3020304400, u64=140040428990480}}) = 0
+epoll_wait(3, {{EPOLLIN, {u32=3020304400, u64=140040428990480}}}, 512, -1) = 1
+accept4(6, {sa_family=AF_INET, sin_port=htons(53642), sin_addr=inet_addr("10.9.19.249")}, [16], SOCK_NONBLOCK) = 8
+epoll_ctl(3, EPOLL_CTL_ADD, 8, {EPOLLIN|EPOLLRDHUP|EPOLLET, {u32=3020304616, u64=140040428990696}}) = 0
+epoll_wait(3, {{EPOLLIN, {u32=3020304616, u64=140040428990696}}}, 512, 60000) = 1
+recvfrom(8, "GET /k.rpm HTTP/1.1\r\nUser-Agent:"..., 1024, 0, NULL, NULL) = 82
+epoll_ctl(3, EPOLL_CTL_MOD, 8, {EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, {u32=3020304616, u64=140040428990696}}) = 0
+socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 9
+ioctl(9, FIONBIO, [1])                  = 0
+epoll_ctl(3, EPOLL_CTL_ADD, 9, {EPOLLIN|EPOLLOUT|EPOLLRDHUP|EPOLLET, {u32=3020304832, u64=140040428990912}}) = 0
+connect(9, {sa_family=AF_INET, sin_port=htons(84), sin_addr=inet_addr("10.9.19.226")}, 16) = -1 EINPROGRESS (Operation now in progress)
+epoll_wait(3, {{EPOLLOUT, {u32=3020304616, u64=140040428990696}}}, 512, 60000) = 1
+recvfrom(8, 0x7ffe11c878c3, 1, 2, 0, 0) = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59998) = 1
+getsockopt(9, SOL_SOCKET, SO_ERROR, [0], [4]) = 0
+writev(9, [{"GET /k.rpm HTTP/1.0\r\nHost: 10.9."..., 102}], 1) = 102
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 60000) = 1
+recvfrom(9, "HTTP/1.1 200 OK\r\nServer: nginx/1"..., 4096, 0, NULL, NULL) = 271
+readv(9, 0x7ffe11c872c0, 1)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59953) = 1
+readv(9, [{"\355\253\356\333\3\0\0\0\0\1kernel-debuginfo-3.10."..., 3825}], 1) = 1368
+readv(9, 0x7ffe11c87360, 1)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59950) = 1
+readv(9, [{"\0\0\4\31\0\0\0\10\0\v\354\354\0\0\0\5\0\0\4\32\0\0\0\10\0\v\355n\0\0\0\5"..., 2457}], 1) = 1368
+readv(9, [{"\0\0\0\\\0\0\0Y\0\0\0U\0\0\0R\0\0\0T\0\0\0Q\0\0\0N\0\0\0K"..., 1089}], 1) = 1089
+readv(9, [{"\0\0Q\0\0\0N\0\0\0W\0\0\0T\0\0\0R\0\0\0O\0\0\0f\0\0\0c\0"..., 4096}], 1) = 279
+readv(9, 0x7ffe11c87360, 1)             = -1 EAGAIN (Resource temporarily unavailable)
+writev(8, [{"HTTP/1.1 200 OK\r\nServer: nginx/1"..., 276}, {"\355\253\356\333\3\0\0\0\0\1kernel-debuginfo-3.10."..., 3825}], 2) = 4101
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59949) = 1
+readv(9, [{"\0\0\0[\0\0\0X\0\0\0^\0\0\0[\0\0\0Y\0\0\0V\0\0\0[\0\0\0X"..., 3817}, {"HTTP/1.1 200 OK\r\nServer: nginx/1"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 2)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59947) = 1
+readv(9, [{"\0\0\0_\0\0\0\\\0\0\0X\0\0\0U\0\0\0X\0\0\0U\0\0\0^\0\0\0["..., 2449}, {"HTTP/1.1 200 OK\r\nServer: nginx/1"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 2)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59946) = 1
+readv(9, [{"\0\0\0i\0\0\0f\0\0\0L\0\0\0I\0\0\20\0\0\0\0`\0\0\0]\0\0\0_"..., 1081}, {"\0\0T\0\0\20\0\0\0\0h\0\0\0e\0\0\0X\0\0\0U\0\0\0T\0\0\0Q\0"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 1)             = -1 EAGAIN (Resource temporarily unavailable)
+writev(8, [{"\0\0Q\0\0\0N\0\0\0W\0\0\0T\0\0\0R\0\0\0O\0\0\0f\0\0\0c\0"..., 4096}], 1) = 4096
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59945) = 1
+readv(9, [{"\0\0\0O\0\0\0L\0\0\0V\0\0\0S\0\0\0Y\0\0\0V\0\0\0b\0\0\0_"..., 3809}, {"\0\0Q\0\0\0N\0\0\0W\0\0\0T\0\0\0R\0\0\0O\0\0\0f\0\0\0c\0"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 2)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59944) = 1
+readv(9, [{"\0\0\0T\0\0\0Q\0\0\0[\0\0\0X\0\0\0e\0\0\0b\0\0\0a\0\0\0^"..., 2441}, {"\0\0Q\0\0\0N\0\0\0W\0\0\0T\0\0\0R\0\0\0O\0\0\0f\0\0\0c\0"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 2)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59943) = 1
+readv(9, [{"\0\0\0V\0\0\0S\0\0\20\0\0\0\0U\0\0\0R\0\0\0e\0\0\0b\0\0\0]"..., 1073}, {"\0\0Z\0\0\0Y\0\0\0V\0\0\0X\0\0\0U\0\0\0]\0\0\0Z\0\0\0W\0"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 1)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59890) = 1
+readv(9, [{"\0\3h\20\0\3V`\0\6N\340\0\3~\320\0\3\203P\0\3_@\0\3iP\0\3\267`"..., 2401}, {"\2\236\270\0\2\307\250\0\2\320\10\0\0\0\22\0\0\0\35\0\2\204\220\0\0\20\0\0\0\0&\0"..., 4096}], 2) = 1368
+readv(9, 0x7ffe11c87360, 2)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59879) = 1
+readv(9, [{"\22\275\311La\376\335\2554{NB\274\253IF\320\236\270\354\f\241\6\5\266N\217\247)\317Tn"..., 3633}, {"m\2661\324\322\24\335\22\17I\214\250\270\352\352;\2437\250\344\244\"\213\7\246w\371@\375^LJ"..., 4096}, {"M\311\34\310\27\340\352\210*\364\6\346\32\265]w\320\245\216\314\t\357\255\357\222\10\302P\257\375 \254"..., 4096}, {"\357\3023\233Qtm\26-L \233y\230\350\307\353\270\301\2z\267m\314\343\243S\372\274\353\332\355"..., 4096}, {"\250\203\4\320\25\21\2262\314g\350\315!\3544n\377F\256\206\320\3213o@\31\303\233F\351\354H"..., 4096}, {"\223\365\256\374\315\324|\340\233\225\201\203@h)7;\335`\233r\235\317\254\215*\232d\355^j\344"..., 4096}, {"\31\341~\323\21\345\267\372N\336\25\332\n{$\0209\235\313\276\313\17/\0309\233X\350\f\355\365\335"..., 4096}, {"\32\261f\200\273\253\317\216W\213d\247m\n\27O\213L\267\r\377W\240\352\251\16D\v:\305\251\255"..., 4096}, {"-\342\356Y\212\0\247iL\263\211\36a\215\212L\200\356\321\213\342\26z\244\205\26\311\374\353\270I\316"..., 4096}], 9) = 1368
+readv(9, 0x7ffe11c87360, 9)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59878) = 1
+readv(9, [{"@\361\206X\16g\10\226\361\306\361l\312F\274\354\7\212$\20P\210\363\230\nC\241Mw\211\242\230"..., 2265}, {"m\2661\324\322\24\335\22\17I\214\250\270\352\352;\2437\250\344\244\"\213\7\246w\371@\375^LJ"..., 4096}, {"M\311\34\310\27\340\352\210*\364\6\346\32\265]w\320\245\216\314\t\357\255\357\222\10\302P\257\375 \254"..., 4096}, {"\357\3023\233Qtm\26-L \233y\230\350\307\353\270\301\2z\267m\314\343\243S\372\274\353\332\355"..., 4096}, {"\250\203\4\320\25\21\2262\314g\350\315!\3544n\377F\256\206\320\3213o@\31\303\233F\351\354H"..., 4096}, {"\223\365\256\374\315\324|\340\233\225\201\203@h)7;\335`\233r\235\317\254\215*\232d\355^j\344"..., 4096}, {"\31\341~\323\21\345\267\372N\336\25\332\n{$\0209\235\313\276\313\17/\0309\233X\350\f\355\365\335"..., 4096}, {"\32\261f\200\273\253\317\216W\213d\247m\n\27O\213L\267\r\377W\240\352\251\16D\v:\305\251\255"..., 4096}, {"-\342\356Y\212\0\247iL\263\211\36a\215\212L\200\356\321\213\342\26z\244\205\26\311\374\353\270I\316"..., 4096}], 9) = 1368
+readv(9, 0x7ffe11c87360, 9)             = -1 EAGAIN (Resource temporarily unavailable)
+epoll_wait(3, {{EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59877) = 1
+readv(9, [{"\1C\215\27\343\372\\\372\257Ha\333\207\325Tn\273\205\37\253\262\202\\o(G:\350I\315a\323"..., 897}, {"\206<\257#5l\303\364\2H\342\31\4\310wO\340\10\334}\266Hz\324\357<Z\f+j\234\37"..., 4096}, {"M\311\34\310\27\340\352\210*\364\6\346\32\265]w\320\245\216\314\t\357\255\357\222\10\302P\257\375 \254"..., 4096}, {"\357\3023\233Qtm\26-L \233y\230\350\307\353\270\301\2z\267m\314\343\243S\372\274\353\332\355"..., 4096}, {"\250\203\4\320\25\21\2262\314g\350\315!\3544n\377F\256\206\320\3213o@\31\303\233F\351\354H"..., 4096}, {"\223\365\256\374\315\324|\340\233\225\201\203@h)7;\335`\233r\235\317\254\215*\232d\355^j\344"..., 4096}, {"\31\341~\323\21\345\267\372N\336\25\332\n{$\0209\235\313\276\313\17/\0309\233X\350\f\355\365\335"..., 4096}, {"\32\261f\200\273\253\317\216W\213d\247m\n\27O\213L\267\r\377W\240\352\251\16D\v:\305\251\255"..., 4096}, {"-\342\356Y\212\0\247iL\263\211\36a\215\212L\200\356\321\213\342\26z\244\205\26\311\374\353\270I\316"..., 4096}], 9) = 1368
+readv(9, 0x7ffe11c87360, 8)             = -1 EAGAIN (Resource temporarily unavailable)
+writev(8, [{"0\242kD\352\260\31\225\263@un|\270\245\34\331\33JU\337D\321\350\224\255\256a\345\311\27\323"..., 4096}], 1) = 4096
+epoll_wait(3, {{EPOLLIN|EPOLLOUT|EPOLLRDHUP, {u32=3020304616, u64=140040428990696}}, {EPOLLIN|EPOLLOUT, {u32=3020304832, u64=140040428990912}}}, 512, 59876) = 2
+getsockopt(8, SOL_SOCKET, SO_ERROR, [0], [4]) = 0
+close(9)                                = 0
+write(5, "10.9.19.249 - - [24/Aug/2018:14:"..., 109) = 109
+close(10)                               = 0
+close(8)                                = 0
+
