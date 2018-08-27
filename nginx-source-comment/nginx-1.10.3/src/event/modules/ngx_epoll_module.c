@@ -759,8 +759,6 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 
     /* NGX_TIMER_INFINITE == INFTIM */
 
-
-
     events = epoll_wait(ep, event_list, (int) nevents, timer);
 
     ngx_print_epoll_wait_info(cycle, events, event_list);
@@ -808,36 +806,23 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 
         rev = c->read;
 
-        if (c->fd == -1 || rev->instance != instance) {
-
-            /*
-             * the stale event from a file descriptor
-             * that was just closed in this iteration
-             */
+        if (c->fd == -1) {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll: cjl a stale event, for it time(%d)", i);
-            
+            continue;
+        }
+
+        if (rev->instance != instance) {
+            ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll: cjl b stale event, for it time(%d)", i);
             continue;
         }
 
         revents = event_list[i].events;
 
-        ngx_log_debug3(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                       "epoll: fd:%d ev:%04XD d:%p",
-                       c->fd, revents, event_list[i].data.ptr);
+        ngx_log_debug3(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "epoll: fd:%d ev:%04XD d:%p", c->fd, revents, event_list[i].data.ptr);
 
         if (revents & (EPOLLERR|EPOLLHUP)) {
-            ngx_log_debug2(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                           "epoll_wait() error on fd:%d ev:%04XD",
-                           c->fd, revents);
+            ngx_log_debug2(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "epoll_wait() error on fd:%d ev:%04XD", c->fd, revents);
         }
-
-#if 0
-        if (revents & ~(EPOLLIN|EPOLLOUT|EPOLLERR|EPOLLHUP)) {
-            ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
-                          "strange epoll_wait() events fd:%d ev:%04XD",
-                          c->fd, revents);
-        }
-#endif
 
         if ((revents & (EPOLLERR|EPOLLHUP))
              && (revents & (EPOLLIN|EPOLLOUT)) == 0)
@@ -876,15 +861,13 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 
         if ((revents & EPOLLOUT) && wev->active) {
 
-            if (c->fd == -1 || wev->instance != instance) {
+            if (c->fd == -1) {
+                ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll: cjl c stale event, for it time(%d)", i);
+                continue;
+            }
 
-                /*
-                 * the stale event from a file descriptor
-                 * that was just closed in this iteration
-                 */
-                ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll: cjl b stale event %p", c);
-
-                ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "epoll: stale event %p", c);
+            if (wev->instance != instance) {
+                ngx_log_error(NGX_LOG_ALERT, cycle->log, 0, "epoll: cjl d stale event, for it time(%d)", i);
                 continue;
             }
 
@@ -892,7 +875,6 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 #if (NGX_THREADS)
             wev->complete = 1;
 #endif
-
             if (flags & NGX_POST_EVENTS) {
                 ngx_post_event(wev, &ngx_posted_events);
 
