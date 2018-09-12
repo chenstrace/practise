@@ -392,12 +392,11 @@ ngx_epoll_init(ngx_cycle_t *cycle, ngx_msec_t timer)
     ngx_event_actions = ngx_epoll_module_ctx.actions;
 
 #if (NGX_HAVE_CLEAR_EVENT)
-    ngx_event_flags = NGX_USE_CLEAR_EVENT
+    ngx_event_flags = NGX_USE_CLEAR_EVENT | NGX_USE_GREEDY_EVENT | NGX_USE_EPOLL_EVENT;
 #else
-    ngx_event_flags = NGX_USE_LEVEL_EVENT
+    ngx_event_flags = NGX_USE_LEVEL_EVENT | NGX_USE_GREEDY_EVENT | NGX_USE_EPOLL_EVENT;
 #endif
-                      |NGX_USE_GREEDY_EVENT
-                      |NGX_USE_EPOLL_EVENT;
+
 
     return NGX_OK;
 }
