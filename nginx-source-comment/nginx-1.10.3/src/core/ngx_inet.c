@@ -176,11 +176,11 @@ ngx_inet6_addr(u_char *p, size_t len, u_char *addr)
 
 #endif
 
-
 size_t
-ngx_sock_ntop(struct sockaddr *sa, socklen_t socklen, u_char *text, size_t len,
-    ngx_uint_t port)
-{
+ngx_sock_ntop(struct sockaddr *sa, socklen_t socklen, u_char *text, size_t len, ngx_uint_t port) {
+    //自己实现了类似inet_ntop的功能，区别是ngx_sock_ntop加入了端口。
+    //点分十进制的地址字符串保存在text里面，返回text的长度
+    //ntop: network address structure to point（从网络地址结构转到点分十进制的形式）
     u_char               *p;
     struct sockaddr_in   *sin;
 #if (NGX_HAVE_INET6)

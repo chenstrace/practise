@@ -2733,22 +2733,7 @@ ngx_http_test_reading(ngx_http_request_t *r)
 
 #endif
 
-#if (NGX_HAVE_KQUEUE)
 
-    if (ngx_event_flags & NGX_USE_KQUEUE_EVENT) {
-
-        if (!rev->pending_eof) {
-            return;
-        }
-
-        rev->eof = 1;
-        c->error = 1;
-        err = rev->kq_errno;
-
-        goto closed;
-    }
-
-#endif
 
 #if (NGX_HAVE_EPOLLRDHUP)
 
