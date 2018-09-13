@@ -47,60 +47,42 @@ ngx_event_accept(ngx_event_t *ev)
     ecf = ngx_event_get_conf(ngx_cycle->conf_ctx, ngx_event_core_module);
 
     if (!(ngx_event_flags & NGX_USE_KQUEUE_EVENT)) {
+        //使用epoll的时候，ev->available就是一个bit，取值为0或1
+        //ecf->multi_accept的取值为0或1， 默认是0，表示一次只accept一个连接
+        //所以默认情况下,这里ev->available的值为0， 下面的do while循环只执行一次，而如果配置了使用multi_accept，则会一直建立连接，直到accept返回错误
+        
         ev->available = ecf->multi_accept;
     }
 
-    lc = ev->data;
-    ls = lc->listening;
+    lc = ev->data; //ngx_connection_t*
+    ls = lc->listening; //ngx_listening_t*
     ev->ready = 0;
 
-    ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0,
-                   "accept on %V, ready: %d", &ls->addr_text, ev->available);
+    ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0, "accept on %V, ready: %d", &ls->addr_text, ev->available);
 
     do {
         socklen = NGX_SOCKADDRLEN;
 
-#if (NGX_HAVE_ACCEPT4)
-        if (use_accept4) {
-            s = accept4(lc->fd, (struct sockaddr *) sa, &socklen,
-                        SOCK_NONBLOCK);
-        } else {
-            s = accept(lc->fd, (struct sockaddr *) sa, &socklen);
-        }
-#else
-        s = accept(lc->fd, (struct sockaddr *) sa, &socklen);
-#endif
+        s = accept4(lc->fd, (struct sockaddr *) sa, &socklen, SOCK_NONBLOCK);
 
         if (s == (ngx_socket_t) -1) {
             err = ngx_socket_errno;
 
             if (err == NGX_EAGAIN) {
-                ngx_log_debug0(NGX_LOG_DEBUG_EVENT, ev->log, err,
-                               "accept() not ready");
+                ngx_log_debug0(NGX_LOG_DEBUG_EVENT, ev->log, err, "accept() not ready");
                 return;
             }
 
             level = NGX_LOG_ALERT;
 
-            if (err == NGX_ECONNABORTED) {
-                level = NGX_LOG_ERR;
-
-            } else if (err == NGX_EMFILE || err == NGX_ENFILE) {
-                level = NGX_LOG_CRIT;
-            }
-
-#if (NGX_HAVE_ACCEPT4)
-            ngx_log_error(level, ev->log, err,
-                          use_accept4 ? "accept4() failed" : "accept() failed");
+            ngx_log_error(level, ev->log, err, use_accept4 ? "accept4() failed" : "accept() failed");
 
             if (use_accept4 && err == NGX_ENOSYS) {
                 use_accept4 = 0;
                 ngx_inherited_nonblocking = 0;
                 continue;
             }
-#else
-            ngx_log_error(level, ev->log, err, "accept() failed");
-#endif
+
 
             if (err == NGX_ECONNABORTED) {
                 if (ngx_event_flags & NGX_USE_KQUEUE_EVENT) {
@@ -113,8 +95,7 @@ ngx_event_accept(ngx_event_t *ev)
             }
 
             if (err == NGX_EMFILE || err == NGX_ENFILE) {
-                if (ngx_disable_accept_events((ngx_cycle_t *) ngx_cycle, 1)
-                    != NGX_OK)
+                if (ngx_disable_accept_events((ngx_cycle_t *) ngx_cycle, 1) != NGX_OK)
                 {
                     return;
                 }
@@ -131,34 +112,25 @@ ngx_event_accept(ngx_event_t *ev)
                     ngx_add_timer(ev, ecf->accept_mutex_delay);
                 }
             }
-
             return;
         }
 
-#if (NGX_STAT_STUB)
-        (void) ngx_atomic_fetch_add(ngx_stat_accepted, 1);
-#endif
 
-        ngx_accept_disabled = ngx_cycle->connection_n / 8
-                              - ngx_cycle->free_connection_n;
+        //计算ngx_accept_disabled，为下一个事件循环做准备
+        ngx_accept_disabled = ngx_cycle->connection_n / 8 - ngx_cycle->free_connection_n;
 
         c = ngx_get_connection(s, ev->log);
 
         if (c == NULL) {
             if (ngx_close_socket(s) == -1) {
-                ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno,
-                              ngx_close_socket_n " failed");
+                ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno, ngx_close_socket_n " failed");
             }
 
             return;
         }
 
         c->type = SOCK_STREAM;
-
-#if (NGX_STAT_STUB)
-        (void) ngx_atomic_fetch_add(ngx_stat_active, 1);
-#endif
-
+        //为新加入的连接创建内存池
         c->pool = ngx_create_pool(ls->pool_size, ev->log);
         if (c->pool == NULL) {
             ngx_close_accepted_connection(c);
@@ -177,29 +149,6 @@ ngx_event_accept(ngx_event_t *ev)
         if (log == NULL) {
             ngx_close_accepted_connection(c);
             return;
-        }
-
-        /* set a blocking mode for iocp and non-blocking mode for others */
-
-        if (ngx_inherited_nonblocking) {
-            if (ngx_event_flags & NGX_USE_IOCP_EVENT) {
-                if (ngx_blocking(s) == -1) {
-                    ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno,
-                                  ngx_blocking_n " failed");
-                    ngx_close_accepted_connection(c);
-                    return;
-                }
-            }
-
-        } else {
-            if (!(ngx_event_flags & NGX_USE_IOCP_EVENT)) {
-                if (ngx_nonblocking(s) == -1) {
-                    ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno,
-                                  ngx_nonblocking_n " failed");
-                    ngx_close_accepted_connection(c);
-                    return;
-                }
-            }
         }
 
         *log = ls->log;
@@ -223,10 +172,6 @@ ngx_event_accept(ngx_event_t *ev)
         if (c->sockaddr->sa_family == AF_UNIX) {
             c->tcp_nopush = NGX_TCP_NOPUSH_DISABLED;
             c->tcp_nodelay = NGX_TCP_NODELAY_DISABLED;
-#if (NGX_SOLARIS)
-            /* Solaris's sendfilev() supports AF_NCA, AF_INET, and AF_INET6 */
-            c->sendfile = 0;
-#endif
         }
 #endif
 
@@ -235,34 +180,14 @@ ngx_event_accept(ngx_event_t *ev)
 
         wev->ready = 1;
 
-        if (ngx_event_flags & NGX_USE_IOCP_EVENT) {
-            rev->ready = 1;
-        }
-
         if (ev->deferred_accept) {
             rev->ready = 1;
-#if (NGX_HAVE_KQUEUE)
-            rev->available = 1;
-#endif
         }
 
         rev->log = log;
         wev->log = log;
 
-        /*
-         * TODO: MT: - ngx_atomic_fetch_add()
-         *             or protection by critical section or light mutex
-         *
-         * TODO: MP: - allocated in a shared memory
-         *           - ngx_atomic_fetch_add()
-         *             or protection by critical section or light mutex
-         */
-
         c->number = ngx_atomic_fetch_add(ngx_connection_counter, 1);
-
-#if (NGX_STAT_STUB)
-        (void) ngx_atomic_fetch_add(ngx_stat_handled, 1);
-#endif
 
         if (ls->addr_ntop) {
             c->addr_text.data = ngx_pnalloc(c->pool, ls->addr_text_max_len);
@@ -271,36 +196,8 @@ ngx_event_accept(ngx_event_t *ev)
                 return;
             }
 
-            c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->socklen,
-                                             c->addr_text.data,
-                                             ls->addr_text_max_len, 0);
+            c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->socklen, c->addr_text.data, ls->addr_text_max_len, 0);
             if (c->addr_text.len == 0) {
-                ngx_close_accepted_connection(c);
-                return;
-            }
-        }
-
-#if (NGX_DEBUG)
-        {
-        ngx_str_t  addr;
-        u_char     text[NGX_SOCKADDR_STRLEN];
-
-        ngx_debug_accepted_connection(ecf, c);
-
-        if (log->log_level & NGX_LOG_DEBUG_EVENT) {
-            addr.data = text;
-            addr.len = ngx_sock_ntop(c->sockaddr, c->socklen, text,
-                                     NGX_SOCKADDR_STRLEN, 1);
-
-            ngx_log_debug3(NGX_LOG_DEBUG_EVENT, log, 0,
-                           "*%uA accept: %V fd:%d", c->number, &addr, s);
-        }
-
-        }
-#endif
-
-        if (ngx_add_conn && (ngx_event_flags & NGX_USE_EPOLL_EVENT) == 0) {
-            if (ngx_add_conn(c) == NGX_ERROR) {
                 ngx_close_accepted_connection(c);
                 return;
             }
@@ -310,10 +207,6 @@ ngx_event_accept(ngx_event_t *ev)
         log->handler = NULL;
 
         ls->handler(c);
-
-        if (ngx_event_flags & NGX_USE_KQUEUE_EVENT) {
-            ev->available--;
-        }
 
     } while (ev->available);
 }

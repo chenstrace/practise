@@ -74,46 +74,13 @@ struct ngx_event_s {
     unsigned         channel:1;
     unsigned         resolver:1;
 
-    unsigned         cancelable:1;
-
-#if (NGX_WIN32)
-    /* setsockopt(SO_UPDATE_ACCEPT_CONTEXT) was successful */
-    unsigned         accept_context_updated:1;
-#endif
-
-#if (NGX_HAVE_KQUEUE)
-    unsigned         kq_vnode:1;
-
-    /* the pending errno reported by kqueue */
-    int              kq_errno;
-#endif
-
-    /*
-     * kqueue only:
-     *   accept:     number of sockets that wait to be accepted
-     *   read:       bytes to read when event is ready
-     *               or lowat when event is set with NGX_LOWAT_EVENT flag
-     *   write:      available space in buffer when event is ready
-     *               or lowat when event is set with NGX_LOWAT_EVENT flag
-     *
-     * iocp: TODO
-     *
-     * otherwise:
-     *   accept:     1 if accept many, 0 otherwise
-     */
-
-#if (NGX_HAVE_KQUEUE) || (NGX_HAVE_IOCP)
-    int              available;
-#else
+    unsigned cancelable : 1;
     unsigned         available:1;
-#endif
 
     ngx_event_handler_pt  handler;
 
 
-#if (NGX_HAVE_IOCP)
-    ngx_event_ovlp_t ovlp;
-#endif
+
 
     ngx_uint_t       index;
 
@@ -122,27 +89,7 @@ struct ngx_event_s {
     ngx_rbtree_node_t   timer;
 
     /* the posted queue */
-    ngx_queue_t      queue;
-
-#if 0
-
-    /* the threads support */
-
-    /*
-     * the event thread context, we store it here
-     * if $(CC) does not understand __thread declaration
-     * and pthread_getspecific() is too costly
-     */
-
-    void            *thr_ctx;
-
-#if (NGX_EVENT_T_PADDING)
-
-    /* event should not cross cache line in SMP */
-
-    uint32_t         padding[NGX_EVENT_T_PADDING];
-#endif
-#endif
+    ngx_queue_t queue;
 };
 
 
