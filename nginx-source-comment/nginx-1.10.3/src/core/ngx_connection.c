@@ -1048,9 +1048,11 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
     ngx_cycle->free_connections = c->data;
     ngx_cycle->free_connection_n--;
 
+    //取出read和write，暂存
     rev = c->read;
     wev = c->write;
 
+    //清空connection结构
     ngx_memzero(c, sizeof(ngx_connection_t));
 
     c->read = rev;
@@ -1061,14 +1063,16 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
     instance = rev->instance;
 
     ngx_memzero(rev, sizeof(ngx_event_t));
-    ngx_memzero(wev, sizeof(ngx_event_t));
-
+    ngx_memzero(wev, sizeof (ngx_event_t));
+    
+    //使用与上一次相反的instance值
     rev->instance = !instance;
     wev->instance = !instance;
 
     rev->index = NGX_INVALID_INDEX;
     wev->index = NGX_INVALID_INDEX;
 
+    //在event结构的data字段上， 挂接connection结构
     rev->data = c;
     wev->data = c;
 
@@ -1191,23 +1195,13 @@ ngx_reusable_connection(ngx_connection_t *c, ngx_uint_t reusable)
 
     if (c->reusable) {
         ngx_queue_remove(&c->queue);
-
-#if (NGX_STAT_STUB)
-        (void) ngx_atomic_fetch_add(ngx_stat_waiting, -1);
-#endif
     }
 
     c->reusable = reusable;
 
     if (reusable) {
         /* need cast as ngx_cycle is volatile */
-
-        ngx_queue_insert_head(
-            (ngx_queue_t *) &ngx_cycle->reusable_connections_queue, &c->queue);
-
-#if (NGX_STAT_STUB)
-        (void) ngx_atomic_fetch_add(ngx_stat_waiting, 1);
-#endif
+        ngx_queue_insert_head((ngx_queue_t *) & ngx_cycle->reusable_connections_queue, &c->queue);
     }
 }
 

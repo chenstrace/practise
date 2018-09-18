@@ -318,7 +318,7 @@ static char* ngx_get_epoll_events_str(uint32_t event) {
     memset(epoll_event_str, 0, sizeof (epoll_event_str));
     if (event == 0) {
         strcat(epoll_event_str, "event 0");
-        return NULL;
+        return epoll_event_str;
     }
     
     if (event & EPOLLIN) strcat(epoll_event_str, "EPOLLIN,");
@@ -338,9 +338,9 @@ static char* ngx_get_epoll_events_str(uint32_t event) {
 
     if (strlen(epoll_event_str) == 0) {
         strcat(epoll_event_str, "event length 0");
-        return NULL;
+        return epoll_event_str;
     }
-    return NULL;
+    return epoll_event_str;
 }
 
 

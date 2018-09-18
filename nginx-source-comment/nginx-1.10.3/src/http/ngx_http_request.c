@@ -206,12 +206,18 @@ ngx_http_init_connection(ngx_connection_t *c)
     ngx_http_in6_addr_t    *addr6;
 #endif
 
+    //设置read事件的处理函数 ngx_http_wait_request_handler
+    //设置write事件的处理函数 ngx_http_empty_handler,此时只需要读取请求的内容，所以write事件的handler的实现为空
+    //设置accept之后的超时时间
+    //设置ngx_reusable_connection(c, 1);
+    //设置accept的fd加入epoll集合
+    
     hc = ngx_pcalloc(c->pool, sizeof(ngx_http_connection_t));
     if (hc == NULL) {
         ngx_http_close_connection(c);
         return;
     }
-
+    //c的data字段已经在ngx_get_connection时被ngx_cycle->free_connections保存了，所以可以用作别处
     c->data = hc;
 
     /* find the server configuration for the address:port */
@@ -232,26 +238,6 @@ ngx_http_init_connection(ngx_connection_t *c)
         }
 
         switch (c->local_sockaddr->sa_family) {
-
-#if (NGX_HAVE_INET6)
-        case AF_INET6:
-            sin6 = (struct sockaddr_in6 *) c->local_sockaddr;
-
-            addr6 = port->addrs;
-
-            /* the last address is "*" */
-
-            for (i = 0; i < port->naddrs - 1; i++) {
-                if (ngx_memcmp(&addr6[i].addr6, &sin6->sin6_addr, 16) == 0) {
-                    break;
-                }
-            }
-
-            hc->addr_conf = &addr6[i].conf;
-
-            break;
-#endif
-
         default: /* AF_INET */
             sin = (struct sockaddr_in *) c->local_sockaddr;
 
@@ -271,16 +257,7 @@ ngx_http_init_connection(ngx_connection_t *c)
         }
 
     } else {
-
         switch (c->local_sockaddr->sa_family) {
-
-#if (NGX_HAVE_INET6)
-        case AF_INET6:
-            addr6 = port->addrs;
-            hc->addr_conf = &addr6[0].conf;
-            break;
-#endif
-
         default: /* AF_INET */
             addr = port->addrs;
             hc->addr_conf = &addr[0].conf;
@@ -347,7 +324,7 @@ ngx_http_init_connection(ngx_connection_t *c)
         hc->proxy_protocol = 1;
         c->log->action = "reading PROXY protocol";
     }
-
+    //在ngx_event_accept中，如果有deferred_accept,则会走下面的分支
     if (rev->ready) {
         /* the deferred accept(), iocp */
 
@@ -359,10 +336,10 @@ ngx_http_init_connection(ngx_connection_t *c)
         rev->handler(rev);
         return;
     }
-
+    //post_accept_timeout即client_header_timeout
     ngx_add_timer(rev, c->listening->post_accept_timeout);
     ngx_reusable_connection(c, 1);
-
+    
     if (ngx_handle_read_event(rev, 0) != NGX_OK) {
         ngx_http_close_connection(c);
         return;

@@ -233,8 +233,7 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
 
     delta = ngx_current_msec - delta;
 
-    ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                   "timer delta: %M", delta);
+    ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "timer delta: %M", delta);
 
     //ngx_posted_accept_events 在 ngx_event_process_init 初始化
     ngx_event_process_posted(cycle, &ngx_posted_accept_events);
@@ -259,65 +258,18 @@ ngx_handle_read_event(ngx_event_t *rev, ngx_uint_t flags)
         /* kqueue, epoll */
 
         if (!rev->active && !rev->ready) {
-            if (ngx_add_event(rev, NGX_READ_EVENT, NGX_CLEAR_EVENT)
-                == NGX_ERROR)
+            //调用 ngx_epoll_add_event，将fd加入epoll集合
+            if (ngx_add_event(rev, NGX_READ_EVENT, NGX_CLEAR_EVENT) == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
         }
 
         return NGX_OK;
-
-    } else if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
-
-        /* select, poll, /dev/poll */
-
-        if (!rev->active && !rev->ready) {
-            if (ngx_add_event(rev, NGX_READ_EVENT, NGX_LEVEL_EVENT)
-                == NGX_ERROR)
-            {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-        if (rev->active && (rev->ready || (flags & NGX_CLOSE_EVENT))) {
-            if (ngx_del_event(rev, NGX_READ_EVENT, NGX_LEVEL_EVENT | flags)
-                == NGX_ERROR)
-            {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-    } else if (ngx_event_flags & NGX_USE_EVENTPORT_EVENT) {
-
-        /* event ports */
-
-        if (!rev->active && !rev->ready) {
-            if (ngx_add_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-        if (rev->oneshot && !rev->ready) {
-            if (ngx_del_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
     }
-
-    /* iocp */
 
     return NGX_OK;
 }
-
 
 ngx_int_t
 ngx_handle_write_event(ngx_event_t *wev, size_t lowat)
@@ -344,55 +296,8 @@ ngx_handle_write_event(ngx_event_t *wev, size_t lowat)
                 return NGX_ERROR;
             }
         }
-
         return NGX_OK;
-
-    } else if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
-
-        /* select, poll, /dev/poll */
-
-        if (!wev->active && !wev->ready) {
-            if (ngx_add_event(wev, NGX_WRITE_EVENT, NGX_LEVEL_EVENT)
-                == NGX_ERROR)
-            {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-        if (wev->active && wev->ready) {
-            if (ngx_del_event(wev, NGX_WRITE_EVENT, NGX_LEVEL_EVENT)
-                == NGX_ERROR)
-            {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-    } else if (ngx_event_flags & NGX_USE_EVENTPORT_EVENT) {
-
-        /* event ports */
-
-        if (!wev->active && !wev->ready) {
-            if (ngx_add_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
-
-        if (wev->oneshot && wev->ready) {
-            if (ngx_del_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR) {
-                return NGX_ERROR;
-            }
-
-            return NGX_OK;
-        }
     }
-
-    /* iocp */
 
     return NGX_OK;
 }
@@ -402,8 +307,7 @@ static char *
 ngx_event_init_conf(ngx_cycle_t *cycle, void *conf)
 {
     if (ngx_get_conf(cycle->conf_ctx, ngx_events_module) == NULL) {
-        ngx_log_error(NGX_LOG_EMERG, cycle->log, 0,
-                      "no \"events\" section in configuration");
+        ngx_log_error(NGX_LOG_EMERG, cycle->log, 0, "no \"events\" section in configuration");
         return NGX_CONF_ERROR;
     }
 
