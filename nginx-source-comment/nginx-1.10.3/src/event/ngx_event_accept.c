@@ -14,8 +14,7 @@ static ngx_int_t ngx_enable_accept_events(ngx_cycle_t *cycle);
 static ngx_int_t ngx_disable_accept_events(ngx_cycle_t *cycle, ngx_uint_t all);
 static void ngx_close_accepted_connection(ngx_connection_t *c);
 #if (NGX_DEBUG)
-static void ngx_debug_accepted_connection(ngx_event_conf_t *ecf,
-    ngx_connection_t *c);
+static void ngx_debug_accepted_connection(ngx_event_conf_t *ecf, ngx_connection_t *c);
 #endif
 
 
@@ -40,7 +39,6 @@ ngx_event_accept(ngx_event_t *ev)
         if (ngx_enable_accept_events((ngx_cycle_t *) ngx_cycle) != NGX_OK) {
             return;
         }
-
         ev->timedout = 0;
     }
 
@@ -50,12 +48,13 @@ ngx_event_accept(ngx_event_t *ev)
         //使用epoll的时候，ev->available就是一个bit，取值为0或1
         //ecf->multi_accept的取值为0或1， 默认是0，表示一次只accept一个连接
         //所以默认情况下,这里ev->available的值为0， 下面的do while循环只执行一次，而如果配置了使用multi_accept，则会一直建立连接，直到accept返回错误
-        
-        ev->available = ecf->multi_accept;
-    }
 
-    lc = ev->data; //ngx_connection_t*
-    ls = lc->listening; //ngx_listening_t*
+        ev->available = ecf->multi_accept; //0
+    }
+    //下面两项lc和ls，是提前在ngx_event_process_init中关联的
+
+    lc = ev->data; //lc类型为ngx_connection_t*， 是之前在ngx_get_connection中关联的
+    ls = lc->listening; //ls类型为ngx_listening_t*，是之前在ngx_event_process_init中关联的
     ev->ready = 0;
 
     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0, "accept on %V, ready: %d", &ls->addr_text, ev->available);
@@ -85,10 +84,6 @@ ngx_event_accept(ngx_event_t *ev)
 
 
             if (err == NGX_ECONNABORTED) {
-                if (ngx_event_flags & NGX_USE_KQUEUE_EVENT) {
-                    ev->available--;
-                }
-
                 if (ev->available) {
                     continue;
                 }
@@ -125,7 +120,6 @@ ngx_event_accept(ngx_event_t *ev)
             if (ngx_close_socket(s) == -1) {
                 ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno, ngx_close_socket_n " failed");
             }
-
             return;
         }
 
@@ -205,7 +199,7 @@ ngx_event_accept(ngx_event_t *ev)
 
         log->data = NULL;
         log->handler = NULL;
-
+        //ngx_http_init_connection
         ls->handler(c);
 
     } while (ev->available);
@@ -558,8 +552,7 @@ ngx_trylock_accept_mutex(ngx_cycle_t *cycle) {
         return NGX_OK;
     }
 
-    ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                   "accept mutex lock failed: %ui", ngx_accept_mutex_held);
+    ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "accept mutex lock failed: %ui", ngx_accept_mutex_held);
 
     //以下是这一次没有抢到锁的情景
 
@@ -673,10 +666,8 @@ ngx_close_accepted_connection(ngx_connection_t *c)
 
 
 u_char *
-ngx_accept_log_error(ngx_log_t *log, u_char *buf, size_t len)
-{
-    return ngx_snprintf(buf, len, " while accepting new connection on %V",
-                        log->data);
+ngx_accept_log_error(ngx_log_t *log, u_char *buf, size_t len) {
+    return ngx_snprintf(buf, len, " while accepting new connection on %V", log->data);
 }
 
 

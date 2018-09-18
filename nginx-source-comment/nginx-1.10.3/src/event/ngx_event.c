@@ -596,6 +596,7 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
 
         module = cycle->modules[m]->ctx;
 
+        //这里调用ngx_epoll_init，初始化全局的epfd，event_list,ngx_event_flags等
         if (module->actions.init(cycle, ngx_timer_resolution) != NGX_OK) {
             /* fatal */
             exit(2);
@@ -625,12 +626,12 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
         itv.it_value.tv_usec = (ngx_timer_resolution % 1000 ) * 1000;
 
         if (setitimer(ITIMER_REAL, &itv, NULL) == -1) {
-            ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
-                          "setitimer() failed");
+            ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno, "setitimer() failed");
         }
     }
 
     if (ngx_event_flags & NGX_USE_FD_EVENT) {
+        //当使用epoll的时候，这个分支不会走
         struct rlimit  rlmt;
 
         if (getrlimit(RLIMIT_NOFILE, &rlmt) == -1) {
@@ -641,25 +642,20 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
 
         cycle->files_n = (ngx_uint_t) rlmt.rlim_cur;
 
-        cycle->files = ngx_calloc(sizeof(ngx_connection_t *) * cycle->files_n,
-                                  cycle->log);
+        cycle->files = ngx_calloc(sizeof (ngx_connection_t *) * cycle->files_n, cycle->log);
         if (cycle->files == NULL) {
             return NGX_ERROR;
         }
     }
 
-
-
-    cycle->connections =
-        ngx_alloc(sizeof(ngx_connection_t) * cycle->connection_n, cycle->log);
+    cycle->connections = ngx_alloc(sizeof (ngx_connection_t) * cycle->connection_n, cycle->log);
     if (cycle->connections == NULL) {
         return NGX_ERROR;
     }
 
     c = cycle->connections;
 
-    cycle->read_events = ngx_alloc(sizeof(ngx_event_t) * cycle->connection_n,
-                                   cycle->log);
+    cycle->read_events = ngx_alloc(sizeof (ngx_event_t) * cycle->connection_n, cycle->log);
     if (cycle->read_events == NULL) {
         return NGX_ERROR;
     }
@@ -692,8 +688,8 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
         //......
         //c[0].data = c[1] 第0个的下一个是第1个
         c[i].data = next;
-        c[i].read = &cycle->read_events[i];
-        c[i].write = &cycle->write_events[i];
+        c[i].read = &cycle->read_events[i]; //connection结构下面的读事件
+        c[i].write = &cycle->write_events[i]; //connection结构下面的写事件
         c[i].fd = (ngx_socket_t) -1;
 
         next = &c[i];
@@ -703,7 +699,9 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
     cycle->free_connections = next;
     cycle->free_connection_n = cycle->connection_n;
 
-    /* for each listening socket */
+    //以上分配了connection结构、read event、write event
+    
+    //为每个listen fd分配connection结构
 
     ls = cycle->listening.elts;
     for (i = 0; i < cycle->listening.nelts; i++) {
@@ -713,7 +711,8 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
             continue;
         }
 #endif
-
+        //ngx_get_connection将event的带外数据关联了connection
+        //相当于c->read->data = c;   c->write->data = c;
         c = ngx_get_connection(ls[i].fd, cycle->log);
 
         if (c == NULL) {
@@ -723,8 +722,8 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
         c->type = ls[i].type;
         c->log = &ls[i].log;
 
-        c->listening = &ls[i];
-        ls[i].connection = c;
+        c->listening = &ls[i]; //c的listening结构
+        ls[i].connection = c; //listen结构的connection
 
         rev = c->read;
 
@@ -745,8 +744,7 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
 
                 old = ls[i].previous->connection;
 
-                if (ngx_del_event(old->read, NGX_READ_EVENT, NGX_CLOSE_EVENT)
-                    == NGX_ERROR)
+                if (ngx_del_event(old->read, NGX_READ_EVENT, NGX_CLOSE_EVENT) == NGX_ERROR)
                 {
                     return NGX_ERROR;
                 }
@@ -756,8 +754,7 @@ ngx_event_process_init(ngx_cycle_t *cycle) {
         }
 
 
-        rev->handler = (c->type == SOCK_STREAM) ? ngx_event_accept
-                                                : ngx_event_recvmsg;
+        rev->handler = (c->type == SOCK_STREAM) ? ngx_event_accept : ngx_event_recvmsg;
 
         if (ngx_use_accept_mutex
 #if (NGX_HAVE_REUSEPORT)

@@ -1032,15 +1032,6 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
     ngx_event_t       *rev, *wev;
     ngx_connection_t  *c;
 
-    /* disable warning: Win32 SOCKET is u_int while UNIX socket is int */
-
-    if (ngx_cycle->files && (ngx_uint_t) s >= ngx_cycle->files_n) {
-        ngx_log_error(NGX_LOG_ALERT, log, 0,
-                      "the new socket has number %d, "
-                      "but only %ui files are available",
-                      s, ngx_cycle->files_n);
-        return NULL;
-    }
     //获取当前可用的连接
     c = ngx_cycle->free_connections;
 
@@ -1050,19 +1041,12 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
     }
 
     if (c == NULL) {
-        ngx_log_error(NGX_LOG_ALERT, log, 0,
-                      "%ui worker_connections are not enough",
-                      ngx_cycle->connection_n);
-
+        ngx_log_error(NGX_LOG_ALERT, log, 0, "%ui worker_connections are not enough", ngx_cycle->connection_n);
         return NULL;
     }
     //可用连接的指针移向next，数量减1
     ngx_cycle->free_connections = c->data;
     ngx_cycle->free_connection_n--;
-
-    if (ngx_cycle->files && ngx_cycle->files[s] == NULL) {
-        ngx_cycle->files[s] = c;
-    }
 
     rev = c->read;
     wev = c->write;
