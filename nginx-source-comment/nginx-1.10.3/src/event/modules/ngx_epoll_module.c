@@ -335,11 +335,15 @@ static char* ngx_get_epoll_events_str(uint32_t event) {
     if (event & EPOLLWAKEUP) strcat(epoll_event_str, "EPOLLWAKEUP,");
     if (event & EPOLLONESHOT) strcat(epoll_event_str, "EPOLLONESHOT,");
     if (event & EPOLLET) strcat(epoll_event_str, "EPOLLET,");
-
-    if (strlen(epoll_event_str) == 0) {
+    size_t len = strlen(epoll_event_str);
+    if (len == 0) {
         strcat(epoll_event_str, "event length 0");
         return epoll_event_str;
     }
+    if (epoll_event_str[len - 1] == ',') {
+        epoll_event_str[len - 1] = '\0';
+    }
+    
     return epoll_event_str;
 }
 
