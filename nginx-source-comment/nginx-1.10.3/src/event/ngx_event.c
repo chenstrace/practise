@@ -191,8 +191,8 @@ ngx_module_t  ngx_event_core_module = {
 
 
 void
-ngx_process_events_and_timers(ngx_cycle_t *cycle)
-{
+ngx_process_events_and_timers(ngx_cycle_t *cycle) {
+    //由函数由 ngx_worker_process_cycle 调用
     ngx_uint_t  flags;
     ngx_msec_t  timer, delta;
 
@@ -201,11 +201,17 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
         flags = 0;
 
     } else {
+        //默认走这个分支，每次调用gettimeofday更新时间
+        //By default, gettimeofday() is called each time a kernel event is received
         timer = ngx_event_find_timer();
         flags = NGX_UPDATE_TIME;
     }
-
+    //走ngx_use_accept_mutex这个分支要同时满足3个条件
+    // 1. 使用master进程
+    // 2. worker进程的数量大于1
+    // 3. 打开accept_mutex（1.11.3版本之前是默认打开的）
     if (ngx_use_accept_mutex) {
+
         if (ngx_accept_disabled > 0) {
             ngx_accept_disabled--;
 
@@ -218,9 +224,11 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
                 flags |= NGX_POST_EVENTS;
 
             } else {
-                if (timer == NGX_TIMER_INFINITE
-                    || timer > ngx_accept_mutex_delay)
-                {
+                if (timer == NGX_TIMER_INFINITE || timer > ngx_accept_mutex_delay) {
+                    //accept_mutex_delay默认是500ms
+                    //http://nginx.org/en/docs/ngx_core_module.html#accept_mutex
+                    //If accept_mutex is enabled, 
+                    //specifies the maximum time during which a worker process will try to restart accepting new connections if another worker process is currently accepting new connections.
                     timer = ngx_accept_mutex_delay;
                 }
             }

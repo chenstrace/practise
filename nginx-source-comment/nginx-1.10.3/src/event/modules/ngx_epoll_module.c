@@ -764,13 +764,13 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
 
     events = epoll_wait(ep, event_list, (int) nevents, timer);
 
-    ngx_print_epoll_wait_info(cycle, events, event_list);
-
     err = (events == -1) ? ngx_errno : 0;
 
     if (flags & NGX_UPDATE_TIME || ngx_event_timer_alarm) {
         ngx_time_update();
     }
+    ngx_print_epoll_wait_info(cycle, events, event_list);
+
 
     if (err) {
         if (err == NGX_EINTR) {
