@@ -532,8 +532,7 @@ ngx_trylock_accept_mutex(ngx_cycle_t *cycle) {
         //return (*mtx->lock == 0 && __sync_bool_compare_and_swap(mtx->lock, 0, ngx_pid));
         //这一次抢到了锁
 
-        ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
-                       "accept mutex locked");
+        ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "accept mutex locked");
         //当使用epoll的时候,ngx_accept_events始终为0,所以相当于if(ngx_accept_mutex_held){return NGX_OK;}
         if (ngx_accept_mutex_held && ngx_accept_events == 0) {
             //上一次也抢到了锁,因为上次已经加入了listen的fd,所以直接返回
@@ -541,6 +540,7 @@ ngx_trylock_accept_mutex(ngx_cycle_t *cycle) {
         }
         //epoll_ctl失败的时候, ngx_enable_accept_events会返回NGX_ERROR
         //TODO 构造一个失败的场景
+        //ngx_enable_accept_events的作用是， 将所有的listen fd加入epoll集合，注意是所有的
         if (ngx_enable_accept_events(cycle) == NGX_ERROR) {
             ngx_shmtx_unlock(&ngx_accept_mutex);
             return NGX_ERROR;
@@ -629,8 +629,7 @@ ngx_disable_accept_events(ngx_cycle_t *cycle, ngx_uint_t all)
 
 #endif
 
-        if (ngx_del_event(c->read, NGX_READ_EVENT, NGX_DISABLE_EVENT)
-            == NGX_ERROR)
+        if (ngx_del_event(c->read, NGX_READ_EVENT, NGX_DISABLE_EVENT) == NGX_ERROR)
         {
             return NGX_ERROR;
         }

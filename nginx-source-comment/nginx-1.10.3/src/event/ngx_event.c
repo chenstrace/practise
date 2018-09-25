@@ -201,7 +201,7 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle) {
         flags = 0;
 
     } else {
-        //默认走这个分支，每次调用gettimeofday更新时间
+        //ngx_timer_resolution 默认为0，默认走这个分支，每次调用gettimeofday更新时间
         //By default, gettimeofday() is called each time a kernel event is received
         timer = ngx_event_find_timer();
         flags = NGX_UPDATE_TIME;
@@ -236,7 +236,10 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle) {
     }
 
     delta = ngx_current_msec;
-    //ngx_epoll_process_events
+    //ngx_process_events 将调用 ngx_epoll_process_events，做的事情如下
+    //1. 更新系统时间ngx_current_msec
+    //2. 处理epoll_wait返回的读写事件和stale event
+    //3. 将post event放入队列 (post accept队列和正常的post队列)
     (void) ngx_process_events(cycle, timer, flags);
 
     delta = ngx_current_msec - delta;

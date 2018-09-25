@@ -852,13 +852,14 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
             if (flags & NGX_POST_EVENTS) {
                 //如果是listen的fd, rev->accept为1
                 queue = rev->accept ? &ngx_posted_accept_events : &ngx_posted_events;
-                //在这里并不做accept操作
+                //在这里并不做accept操作，插入队列
                 ngx_post_event(rev, queue);
 
             } else {
                 rev->handler(rev);
             }
         }
+        //以下处理写事件
 
         wev = c->write;
 
