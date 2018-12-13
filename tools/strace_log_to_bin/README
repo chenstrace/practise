@@ -1,0 +1,5 @@
+使用方法：
+1. 使用strace -xx -s 1024000 -f -p pid 2> strace.log , 获取strace的日志
+2. 编辑strace.log, 只保留需要dump的一行，目前只能支持一行
+3. sh strace_log_extract.sh strace.log, 产生out.bin
+4. 查看out.bin
