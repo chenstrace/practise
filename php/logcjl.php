@@ -35,7 +35,7 @@ if (!function_exists('logcjl')) {
 
         if ($match) {
             if (is_array($data)) {
-                $data = json_encode($data);
+                $data = var_export($data,true);
             }
 
             if (is_string($data)) {
