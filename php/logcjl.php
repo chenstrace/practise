@@ -45,10 +45,7 @@ if (!function_exists('logcjl')) {
         $home_dir = getenv("HOME");
         $log_file_name = $home_dir . "/" . $log_file_name;
 
-
-        if (is_array($data)) {
-            $data = var_export($data, true);
-        }
+        $data = var_export($data, true);
 
         if (is_string($data)) {
             file_put_contents($log_file_name, $data . "\n", FILE_APPEND);
