@@ -1,46 +1,57 @@
 <?php
-error_reporting(-1);
-ini_set('display_errors', 1);
+if (!function_exists('getLogCjlFileName')) {
+
+    function getLogCjlFileName($url)
+    {
+        if (empty($url)) {
+            return '';
+        }
+        $arr = parse_url($url);
+        if (empty($arr['path'])) {
+            return '';
+        }
+        $pathArr = explode('/', $arr['path']);
+        if (empty($pathArr)) {
+            return '';
+        }
+        $pathArrTemp = array();
+        foreach ($pathArr as $value) {
+            if (!is_numeric($value)) {
+                $pathArrTemp[] = $value;
+            }
+        }
+
+        if (empty($pathArrTemp)) {
+            return '';
+        }
+        $pathUnderline = implode('_', $pathArrTemp);
+        if (empty($pathUnderline)) {
+            return '';
+        }
+
+        $logPath = "logcjl";
+        $d = date("Y-m-d");
+        $logFilename = $logPath . $pathUnderline . '-' . $d . ".log";
+        return $logFilename;
+    }
+}
 
 if (!function_exists('logcjl')) {
-    function logcjl($data, $log_uri = "", $filename = "tmp.log")
+    function logcjl($data)
     {
-        $BAIDUID = "";
-        $BDUSS = "";
-
-        if (empty($BAIDUID) && empty($BDUSS)) {
-            return;
-        }
-        if (isset($filename) && !is_string($filename)) {
-            return;
-        }
-
         $request_uri = $_SERVER['REQUEST_URI'];
-        if (!empty($log_uri) && $log_uri != $request_uri) {
-            return;
+        $log_file_name = getLogCjlFileName($request_uri);
+
+        $home_dir = getenv("HOME");
+        $log_file_name = $home_dir . "/" . $log_file_name;
+
+
+        if (is_array($data)) {
+            $data = var_export($data, true);
         }
 
-
-        $home_dir = getenv("HOME");  //home/cjl
-        if (empty($home_dir)) return;
-        $log_file_name = $home_dir . "/" . $filename;
-
-        $match = false;
-        if (isset($_COOKIE['BAIDUID']) && $_COOKIE['BAIDUID'] == $BAIDUID) {
-            $match = true;
-        }
-        if (isset($_COOKIE['BDUSS']) && $_COOKIE['BDUSS'] == $BDUSS) {
-            $match = true;
-        }
-
-        if ($match) {
-            if (is_array($data)) {
-                $data = var_export($data,true);
-            }
-
-            if (is_string($data)) {
-                file_put_contents($log_file_name, $data . "\n", FILE_APPEND);
-            }
+        if (is_string($data)) {
+            file_put_contents($log_file_name, $data . "\n", FILE_APPEND);
         }
     }
 }
