@@ -1,1 +1,1 @@
-gcc -g test.c && ./a.out
+gcc -g main.c didihttpparser.c
