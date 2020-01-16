@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <stdint.h>
 #include <stddef.h>
+#include "didihttpparser.h"
 
 typedef intptr_t ngx_int_t;
 typedef uintptr_t ngx_uint_t;
@@ -1127,13 +1128,6 @@ header_done:
 
     return NGX_HTTP_PARSE_HEADER_DONE;
 }
-
-struct didi_http_header {
-    const char* key;
-    int key_len;
-    const char* value;
-    int value_len;
-};
 
 int didi_parse_http_request(
     const char* buf,
