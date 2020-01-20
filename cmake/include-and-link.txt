@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(test)
+SET(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
+
+#file(GLOB PROJECT_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} "*.?pp" "*.h" "*.c")
+aux_source_directory(${PROJECT_SOURCE_DIR} PROJECT_SRC_FILES)
+
+message(STATUS "Found source files: ${PROJECT_SRC_FILES}")
+
+include_directories("/usr/include/hs")
+include_directories("/usr/include/boost169")
+add_executable(a.out ${PROJECT_SRC_FILES})
+
+target_link_libraries(a.out -linjection -lhs -luriparser -L/usr/lib64/boost169 -lboost_regex -lboost_filesystem -lboost_system)
+
+#target_link_libraries支持的几种形式，几乎是想怎么写就怎么写，另外可用link_directories来辅助
+#target_link_libraries(a.out -linjection -lhs)
+#target_link_libraries(a.out /usr/lib64/boost169/libboost_regex.so)
+#target_link_libraries(a.out /usr/lib64/boost169/libboost_regex.a)
+#target_link_libraries(a.out -L/usr/lib64/boost169 -lboost_regex)
