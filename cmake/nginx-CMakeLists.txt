@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.5)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+add_custom_command(
+        WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY}
+        OUTPUT ${CMAKE_HOME_DIRECTORY}/Makefile
+        COMMAND ./configure
+)
+
+add_custom_target(
+	nginx ALL
+        WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY}
+        COMMAND make
+        DEPENDS Makefile
+)
