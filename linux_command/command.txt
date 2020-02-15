@@ -1,0 +1,9 @@
+# find
+find . -name "*.mp3" -type f -delete
+find . -type f -size +100M
+
+
+
+#tcpdump
+#cat
+#git
