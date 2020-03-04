@@ -17,4 +17,5 @@
 # tcpdump
 # printf
 # gdb
-
+## set print repeats 0
+## set print elements 0
