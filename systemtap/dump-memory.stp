@@ -10,6 +10,6 @@ probe process("/root/a.out").function("mytest")
 {
     for(i=0;i<$size;i++)
     {
-        printf("\\x%02x", user_int8($ptr+i))
+        printf("\\x%02x", user_uint8($ptr+i))
     }
 }
