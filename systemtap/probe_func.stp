@@ -1,0 +1,4 @@
+probe process("libfoo.so").function("*").call 
+{
+	printf("%s\n",probefunc())
+}

@@ -1,0 +1,4 @@
+probe process("libfoo.so").function("func_bar").return 
+{ 
+    printf("func_bar return %d\n",$return) 
+}

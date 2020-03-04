@@ -1,0 +1,6 @@
+probe process("libfoo.so").function("func_bar").call
+{
+    printf("str is [%s]\n", text_str(user_string_n($str, $size)))
+}
+
+

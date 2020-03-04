@@ -1,0 +1,15 @@
+//demonstrate how to dump memory in a systemtap probe handler, inspired by 'dump memory' in GDB
+//$ptr is a pointer, in C/C++, its type can be char* or unsigned char*
+//$size is an integer, in C/C++, its type can be int or long int, etc
+
+// man 1 printf, we can see printf accept format: \x2e\x6a\x23,
+// so we construct the data by printf("\\x%02x",char)
+
+
+probe process("/root/a.out").function("mytest")
+{
+    for(i=0;i<$size;i++)
+    {
+        printf("\\x%02x", user_int8($ptr+i))
+    }
+}
