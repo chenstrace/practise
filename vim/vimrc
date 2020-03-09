@@ -1,64 +1,92 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
+Plug 'mileszs/ack.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'Shougo/echodoc.vim'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'skywind3000/asyncrun.vim'
+Plug 'vim-scripts/vim-auto-save', { 'for': ['h','hpp', 'c', 'cpp'] }
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-surround'
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'kien/ctrlp.vim'
-Plugin 'mileszs/ack.vim'
-Plugin 'easymotion/vim-easymotion'
+"SirVer/ultisnips 
 
-" Plugin 'scrooloose/syntastic'
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-" autocmd vimenter * NERDTree
+call plug#end()
 
 let mapleader=";"
-
-map <C-e> :NERDTreeToggle<CR>
+"Ack
 map <C-f> :Ack<space>
+
+"asyncrun
+nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+"NERDTree
+map <silent> <C-e> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$','\.so$','\.zip$','\.tar.gz$','\.tar.xz$','\.tar.bz2$','\.a$']
+let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeChDirMode = 2
+
+"LeaderF
+"LeaderfFunction 的浏览模式中，按 i 进入模糊匹配模式（按 TAB切换回来）
+map <silent> <C-B> :LeaderfFunction!<CR>
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_PreviewResult = {'Function':0}
+map <leader>b :LeaderfFunction!<CR>
+
+"coc
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gf :call CocAction('format')<cr>:w<cr>
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+nnoremap <silent> <C-T> :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>t :<C-u>CocList -I symbols<cr>
+
+"NERDCommenter
+map  <silent> <C-_> <Plug>NERDCommenterToggle
+imap <silent> <C-_> <ESC><Plug>NERDCommenterToggle
+
+"AsyncRun
+let g:asyncrun_open = 6
+nnoremap <silent> <F10> :call asyncrun#quickfix_toggle(6)<cr>
+nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT).out" <cr>
+autocmd FileType c nnoremap <silent> <F7> :AsyncRun gcc -g3 -ggdb3 -Wall "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT).out" <cr>
+autocmd FileType cpp nnoremap <silent> <F7> :AsyncRun g++ -std=c++11 -g3 -ggdb3 -Wall "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT).out" <cr>
+
+"EasyMotion
+let g:EasyMotion_do_mapping = 0 
+let g:EasyMotion_smartcase = 1
+nmap f <Plug>(easymotion-overwin-f2)
+
+"Shougo/echodoc.vim
+let g:echodoc_enable_at_startup = 1
+set cmdheight=2
+"set noshowmode
+
+
+"vim-auto-save
+let g:auto_save = 1
+let g:auto_save_no_updatetime = 0
+let g:auto_save_in_insert_mode = 0
+let g:auto_save_silent = 1
+
+"窗口切换
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
 
 set backspace=indent,eol,start
 syntax on
+set nocompatible
 set autoindent
 set cindent
 set ruler
@@ -66,16 +94,11 @@ set hlsearch
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set expandtab 
+set expandtab
 set smartindent
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.tar.bz2,*.tar.gz,*.gz,*.tar.xz
 
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ }
-
+"保存时检查php文件的语法
 autocmd BufWritePost *.php call PHPSyntaxCheck()
 
 if !exists('g:PHP_SYNTAX_CHECK_BIN')
@@ -89,20 +112,8 @@ function! PHPSyntaxCheck()
     endif
 endfunction
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+"保存和退出
+map wq <ESC><ESC>:wq<CR>
+map qq <ESC><ESC>:q!<CR>
+map <F11> <ESC>:set invpaste<CR>
 
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{label}`
-" nmap s <Plug>(easymotion-overwin-f)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap f <Plug>(easymotion-overwin-f2)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-" JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif

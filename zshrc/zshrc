@@ -1,63 +1,98 @@
-export PATH=$HOME/bin:/usr/local/bin:/home/cjl/.local/bin:$PATH
-export ZSH="/home/cjl/.oh-my-zsh"
+export GOPATH=$HOME/go
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$GOPATH/bin:/opt/rh/llvm-toolset-7.0/root/usr/bin
 
-ZSH_THEME="clean"
+export ZSH="$HOME/.oh-my-zsh"
+export GOPROXY=https://goproxy.io
+export EDITOR=vim
+
+ZSH_THEME="chenjili"
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.work-related-alias
 
+#nginx begin
 alias pn="ps -ef|grep nginx|grep -v grep"
 alias kn="killall -9 nginx"
+alias onp="objs/nginx -p ./"
+#nginx end
+
+#docker begin
 alias dim="docker images"
 alias dps="docker ps -a"
 alias dlog="docker logs -f"
 alias dritd="docker run --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --privileged -v ~/.ssh/:/root/.ssh/ -v /etc/localtime:/etc/localtime:ro -itd "
 alias drit="docker run --privileged -v ~/.ssh/:/root/.ssh/ -v /etc/localtime:/etc/localtime:ro -it "
-alias db="docker build" 
-
-function timestamp() {
-    echo `perl -e 'print time'`
-}
-
+alias db="docker build"
 
 function docker_exec_it_bash() {
-	docker exec -it $1 bash
+    docker exec -it $1 bash
 }
 
 function docker_exec_it_command() {
-	docker exec -it $@ 
+    docker exec -it $@
 }
 alias deb=docker_exec_it_bash
 alias de=docker_exec_it_command
 
-
-alias zshrc="vim ~/.zshrc"
-
 function docker_kill_all() {
-	docker kill $(docker ps -qa)
-	docker rm $(docker ps -qa)
-	docker rmi $(docker images | grep "none" | awk '{print $3}')
+    docker kill $(docker ps -qa)
+    docker rm $(docker ps -qa)
+    docker rmi $(docker images | grep "none" | awk '{print $3}')
 }
 alias dkillall=docker_kill_all
+#docker end
+
+#others begin
+function ts() { echo `perl -e 'print time'` }
+
+function arbitrary_base_conversion () {
+    if (( $# != 3 )); then
+        echo "x2y ibase obase num" >&2
+        return 0
+    fi
+    echo "obase=$2;ibase=$1;$3" | bc
+} 
+
+function dec2bin() { echo "obase=2;ibase=10;$1" | bc }
+function bin2dec() { echo "obase=10;ibase=2;$1" | bc }
+function hex2bin() { echo "obase=2;ibase=16;$1" | bc }
+function bin2hex() { echo "obase=16;ibase=2;$1" | bc }
+function hex2dec() { echo "obase=10;ibase=16;$1" | bc }
+function dec2hex() { echo "obase=16;ibase=10;$1" | bc }
+
+
+alias x2y=arbitrary_base_conversion
+alias 10to2=dec2bin
+alias 2to10=bin2dec
+alias 16to2=hex2bin
+alias 2to16=bin2hex
+alias 16to10=hex2dec
+alias 10to16=dec2hex
 
 alias c="clear"
 alias empty="cat /dev/null >"
-
-function chpwd() {
-    emulate -L zsh
-        ls -l
-}
-#export GOPROXY=https://goproxy.io
-function arbitrary_base_conversion () {
-    if (( $# != 3 )); then
-        echo "usage: ./arbitrary_base_conversion input_base output_base num (./x2y 10 2 5 will get 101)" >&2
-        exit 22 
-    fi
-    echo "obase=$2;ibase=$1;$3" | bc
-}
-export EDITOR=vim
-alias ts=timestamp
 alias addr2line="addr2line -pfe"
-alias empty="cat /dev/null >"
-alias gdb="gdb -tui"
-alias x2y=arbitrary_base_conversion
+alias zshrc="vim ~/.zshrc"
+alias curldump="curl --dump-bin a"
+
+function forn() {
+    local number=$1
+    shift
+    echo $@
+    for n in $(seq $number); do
+      $@
+    done
+}
+
+alias ycm="vim ~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py"
+alias coc="vim ~/.vim/coc-settings.json"
+alias vimrc="vim ~/.vimrc"
+alias rmcmake="rm -rf cmake_install.cmake CMakeFiles CMakeCache.txt Makefile"
+function findx() { find . -type f -name "*.$1"}
+alias cptest="cp /usr/bin/test.cpp ."
+alias gdbtui="gdb -tui"
+alias tldr='docker run --rm -it -v ~/.tldr/:/root/.tldr/ nutellinoit/tldr'
+alias vi='vim'
+#others end 
+
