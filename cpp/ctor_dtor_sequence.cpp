@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 class A {
-   public:
+public:
     A() {
         //先执行类成员的构造函数，再执行类本身的构造函数。（本例中的顺序为vector的构造,list的构造，printf("A
         // ctor\n")） 成员构造函数的顺序依赖声明的顺序，而不是初始化列表的顺序
@@ -20,51 +21,55 @@ class A {
         printf("A dtor\n");
     }
 
-   private:
+private:
     vector<int> a;
     list<int> b;
 };
 
 class Base1 {
-   public:
+public:
     Base1() {
         printf("Base1 ctor\n");
     }
+
     ~Base1() {
         printf("Base1 dtor\n");
     }
 
-   public:
+public:
     list<int> l;
 };
+
 class Base2 {
-   public:
+public:
     Base2() {
         printf("Base2 ctor\n");
     }
+
     ~Base2() {
         printf("Base2 dtor\n");
     }
 
-   public:
-    map<int,int> m;
+public:
+    map<int, int> m;
 };
 
 class Derived : public Base1, public Base2 {
-   public:
+public:
     Derived() {
         l.push_back(11);
         printf("Derived ctor\n");
     }
+
     ~Derived() {
         printf("Derived dtor\n");
     }
 
-   private:
+private:
     vector<int> v;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     A a;
     Derived d;
     return 0;

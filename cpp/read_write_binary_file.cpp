@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 #include <boost/filesystem/string_file.hpp>
+
+using namespace std;
 /*
     g++ -g -Wall test.cpp /usr/lib/libboost_system.a /usr/lib/libboost_filesystem.a
     ./a.out < a.out
 */
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     std::istreambuf_iterator<char> end;
 
     //read stdin 
@@ -14,7 +15,7 @@ int main(int argc, char** argv)
 
     //read binary file
     std::ifstream ifs("a.out");
-    std::string content(std::istreambuf_iterator<char>(ifs),end); 
+    std::string content(std::istreambuf_iterator<char>(ifs), end);
 
     //write binary file
     std::ofstream file;

@@ -31,3 +31,4 @@ tree.txt
 Thumbs.db
 #others
 .ccls-cache
+cmake-build-debug
