@@ -39,6 +39,6 @@ bool mkpath(const std::string& path)
 
 int main()
 {
-    mkpath("/Users/chenjili/practise/cpp/a/b/c/d");
+    mkpath("a/b/c/d");
     return 0;
 }
