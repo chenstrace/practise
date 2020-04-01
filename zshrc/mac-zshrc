@@ -1,0 +1,63 @@
+export GOPATH=$HOME/go
+export PATH=$HOME/bin:/usr/local/bin:$GOPATH/bin:$HOME/Library/Python/2.7/bin:/usr/local/Cellar/python/3.7.6_1/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/opt/llvm/bin:/usr/local/opt/gettext/bin:$PATH
+export LANG="zh_CN.UTF-8"
+export LC_COLLATE="zh_CN.UTF-8"
+export LC_CTYPE="zh_CN.UTF-8"
+export LC_MESSAGES="zh_CN.UTF-8"
+export LC_MONETARY="zh_CN.UTF-8"
+export LC_NUMERIC="zh_CN.UTF-8"
+export LC_TIME="zh_CN.UTF-8"
+
+export ZSH="/Users/chenjili/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+[ -f /usr/local/etc/profile.d/autojump.sh  ] && . /usr/local/etc/profile.d/autojump.sh
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+alias pn="ps -ef|grep nginx|grep -v grep"
+alias kn="killall -9 nginx"
+alias dim="docker images"
+alias dps="docker ps -a"
+alias dlog="docker logs -f"
+alias dritd="docker run --privileged -v ~/.ssh/:/root/.ssh/ -v /etc/localtime:/etc/localtime:ro -itd "
+alias drit="docker run --privileged -v ~/.ssh/:/root/.ssh/ -v /etc/localtime:/etc/localtime:ro -it "
+alias db="docker build"
+function timestamp() {
+    echo `perl -e 'print time'`
+}
+alias ts=timestamp
+
+function docker_exec_it_bash() {
+    docker exec -it $1 bash
+}
+
+function docker_exec_it_command() {
+    docker exec -it $@
+}
+alias deb=docker_exec_it_bash
+alias de=docker_exec_it_command
+
+alias zshrc="vim ~/.zshrc"
+
+function docker_kill_all() {
+    docker kill $(docker ps -qa)
+    docker rm $(docker ps -qa)
+    docker rmi $(docker images | grep "none" | awk '{print $3}')
+}
+alias dkillall=docker_kill_all
+alias c="clear"
+alias empty="cat /dev/null >"
+
+function chpwd() {
+    emulate -L zsh
+        ls -l
+}
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
+export PATH="/usr/local/opt/gettext/bin:$PATH"
+alias rmcmake='rm -rf cmake_install.cmake CMakeFiles CMakeCache.txt Makefile'
+eval $(thefuck --alias)
+#tmux
+alias tls="tmux ls"
