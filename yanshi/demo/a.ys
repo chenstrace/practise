@@ -1,0 +1,9 @@
+import 'c.ys' as C
+export main = goodnight C::world
+action good {
+    puts("good");
+}
+goodnight = good night
+good = [Gg] 'o'{2} 'd' @ good
+night = ("ni" [Gg] "ht" - 'niGht') @ C::night
+

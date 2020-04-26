@@ -1,0 +1,6 @@
+action night {
+   puts("night");
+}
+
+world = ([v-w] && [w-x]) 'orld' > {puts("world");}
+

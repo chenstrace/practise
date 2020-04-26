@@ -1,0 +1,30 @@
+number = [0-9]
+
+scheme = [hH][tT][tT][pP][sS]? '://'
+scheme_alter = scheme?
+username = [A-Za-z0-9_\.\-]+
+passwd = [A-Za-z0-9_\.\&%\$\-]+
+pre = username ':' passwd
+pre_alter = pre*
+prefix = pre_alter '@'
+prefix_alter = prefix?
+top = '.' [a-zA-Z]{2,4}
+second = [^\s\(\)\<\>\\\"\.\[\]\,@;:]+
+second_alter = '.' second*
+domain = second second_alter top
+ip_split = [01]? number{1,2} | 2[0-4] number | 25[0-5] 
+
+ip_split_dot = ip_split '.'
+ip = ip_split_dot{3} ip_split
+
+port = ':' number{0,5}
+port_alter = port?
+net = domain | ip
+netloc = prefix_alter net port_alter
+path = '/' [A-Za-z0-9_\/\.\-]+
+path_plus = path+  '?'?
+query = [A-Za-z0-9_\.+,~\[\]$@\-]+ '=' [A-Za-z0-9_.+&%~\-]*
+query_alter = query*
+url = scheme_alter netloc path_plus query_alter
+
+export main = url

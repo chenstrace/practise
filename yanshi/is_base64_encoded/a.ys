@@ -1,0 +1,18 @@
+#is base64 encoded
+#^([A-Za-z0-9+/_!\.-]{4})*([A-Za-z0-9+/_!\.-]{4}|[A-Za-z0-9+/_!\.-]{3}=|[A-Za-z0-9+/_!\.-]{2}==)$
+
+range = [A-Za-z0-9+/_!.\-]
+range4 = range{4}
+range4_alternative = range4*
+
+range3 = range{3}
+range2 = range{2}
+
+range3_plus_equal = range3 '='
+range2_plus_double_equal = range2 '=='
+
+range432 = range4  | range3_plus_equal | range2_plus_double_equal
+
+res = range4_alternative range432
+
+export base64 = res
