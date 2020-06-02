@@ -15,14 +15,14 @@ S: A S B
 
 int yyerror(char *msg) 
 { 
-printf("invalid string\n"); 
-exit(0); 
+    printf("invalid string\n"); 
+    exit(0); 
 } 
 
 //driver code 
 main() 
 { 
-printf("enter the string\n"); 
-yyparse(); 
+    printf("enter the string\n"); 
+    yyparse(); 
 } 
 
