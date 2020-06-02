@@ -1,7 +1,7 @@
 #is base64 encoded
 #^([A-Za-z0-9+/_!\.-]{4})*([A-Za-z0-9+/_!\.-]{4}|[A-Za-z0-9+/_!\.-]{3}=|[A-Za-z0-9+/_!\.-]{2}==)$
 
-range = [A-Za-z0-9+/_!.\-]
+range = [A-Za-z0-9+/_!\-]
 range4 = range{4}
 range4_alternative = range4*
 
