@@ -1,0 +1,10 @@
+#yanshi做不了这种数量匹配的CFG
+a1 = 'a'
+b1 = 'b'
+
+s = a1 !s b1
+empty = ''
+
+
+
+export main = !s|empty
