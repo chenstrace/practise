@@ -6,5 +6,5 @@ if ((  $# != 1 )); then
     exit 1
 fi
 
-flex $#
+flex $1
 gcc lex.yy.c -lfl
