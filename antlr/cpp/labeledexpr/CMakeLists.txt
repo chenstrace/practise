@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
-set(CMAKE_CXX_FLAGS "-g -ggdb3")
 project(labeledexpr)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_FLAGS "-g -ggdb3")
+set(CMAKE_C_FLAGS "-g -ggdb3")
 include_directories(
         ${PROJECT_SOURCE_DIR}/generated/
         ${PROJECT_SOURCE_DIR}/third_party/
