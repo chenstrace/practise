@@ -1,0 +1,23 @@
+/*演示使用systemtap访问C的结构体成员*/
+/*gcc -g access-struct-member.c -o access-struct-member*/
+/*stap access-struct-member.stp -c "./access-struct-member"*/
+probe process("./access-struct-member").statement("main@/root/practise/systemtap/access-struct-member.c:21")
+{
+    printf("$p$: %s\n$p$$: %s\n", $p$, $p$$)
+
+    printf("policy id: %d\n", $p->id);
+
+    id = @cast($p, "policy_t")->id;
+    printf("policy id by cast: %d\n", id);
+
+    name = &@cast($p, "policy_t")->name;
+    printf("policy string len is %d\n",name->len);
+
+    /*Returns the null terminated C string from a given user space memory address*/
+    printf("policy string is %s\n",user_string(name->data));
+
+    /*上面的写法是OK的，因为name->data是一个以\0结尾的C的字符*/
+    /*但是像ngx_str_t这种字符串，需要用下面的方式输出*/
+    printf("policy string is %s\n", text_str(user_string_n(name->data, name->len)))
+
+}
