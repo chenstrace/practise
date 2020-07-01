@@ -1,5 +1,5 @@
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mileszs/ack.vim'
@@ -10,7 +10,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'vim-scripts/vim-auto-save', { 'for': ['h','hpp', 'c', 'cpp'] }
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
-
+Plug 'stephpy/vim-php-cs-fixer', { 'for': ['php'] }
 
 
 "SirVer/ultisnips 
@@ -99,7 +99,8 @@ set smartindent
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.tar.bz2,*.tar.gz,*.gz,*.tar.xz
 
 "保存时检查php文件的语法
-autocmd BufWritePost *.php call PHPSyntaxCheck()
+autocmd BufWritePost *.php call PHPSyntaxCheck() 
+autocmd BufWritePost *.php call PhpCsFixerFixFile()
 
 if !exists('g:PHP_SYNTAX_CHECK_BIN')
     let g:PHP_SYNTAX_CHECK_BIN = 'php'
@@ -111,6 +112,17 @@ function! PHPSyntaxCheck()
         echohl WarningMsg | echo result | echohl None
     endif
 endfunction
+
+"php-cs-fixer
+let g:php_cs_fixer_path = "/usr/bin/php-cs-fixer"
+let g:php_cs_fixer_rules = "@PSR2,binary_operator_spaces"
+let g:php_cs_fixer_enable_default_mapping = 1
+let g:php_cs_fixer_dry_run = 0
+let g:php_cs_fixer_verbose = 0
+let g:php_cs_fixer_php_path = "/usr/bin/php"
+nnoremap <silent><leader>pcd :call PhpCsFixerFixDirectory()<CR>
+nnoremap <silent><leader>pcf :call PhpCsFixerFixFile()<CR>
+
 
 "保存和退出
 map wq <ESC><ESC>:wq<CR>
