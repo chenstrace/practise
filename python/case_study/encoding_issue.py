@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
+# https://ernest.me/post/python-setdefaultencoding-unicode-bytes/
+#立即停止使用 setdefaultencoding('utf-8')， 以及为什么
 
 #
 # print sys.getdefaultencoding()
