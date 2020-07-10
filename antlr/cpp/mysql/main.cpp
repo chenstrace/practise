@@ -43,6 +43,8 @@ int main(int argc, const char *argv[]) {
     MySqlLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 
+    MySqlParser parser(&tokens);
+
     input.load("1 OR 1=1");
     lexer.reset();
     lexer.setInputStream(&input);
@@ -58,16 +60,14 @@ int main(int argc, const char *argv[]) {
                 ts[i]->getType());
     }
 
-    tokens.seek(2);
-    cerr << "after seeking, token size is " << tokens.size() << endl;
-    return 0;
+    // tokens.seek(2);
+    // cerr << "after seeking, token size is " << tokens.size() << endl;
+    // //seek操作不会改变数组tokens的长度， 就好比对文件进行seek操作， 不会改变文件的大小一样
 
     //    size_t token_type = tokens.get(2)->getType();
     //    cerr << "token index 2 has type " << token_type << endl;
 
-    //    tokens.seek(1);
-
-    MySqlParser parser(&tokens);
+    parser.setTokenStream(&tokens);
 
     //一个parser可以有多个 ANTLRErrorListener成员，比如内置的 BaseErrorListener,
     // ConsoleErrorListener, DiagnosticErrorListener, ProxyErrorListener, XPathLexerErrorListener
@@ -84,6 +84,7 @@ int main(int argc, const char *argv[]) {
         cerr << "parser has default error handler" << endl;  //存在默认的error handler
     }
 
+    //如果使用BailErrorStrategy，那么解析错误之后，parser.getNumberOfSyntaxErrors()无法获得错误的数量
     auto errorHandler = std::make_shared<antlr4::BailErrorStrategy>();
     parser.setErrorHandler(errorHandler);
 
