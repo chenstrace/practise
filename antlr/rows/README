@@ -1,0 +1,4 @@
+不构建ParseTree，即在解析前调用parser.setBuildParseTree(false);
+
+程序使用方法
+cat t.rows|java Col 2
