@@ -1,0 +1,19 @@
+probe process("/home/jameschenjili/gatekeeper/waf_judge/nginx-1.9.14/objs/nginx").function("ngx_stream_judge_sqli_chantin_handler"){
+	//ngx_http_core_module = &@var("ngx_stream_judge_module")
+	//ctx_index = @cast(ngx_http_core_module, "ngx_module_t")->ctx_index
+	//printf("ctx_index =%d\n",ctx_index)
+	//ctx = &@cast($s->ctx[ctx_index], "ngx_stream_judge_ctx_t")
+
+	ctx = &@cast($s->ctx[8], "ngx_stream_judge_ctx_t")
+	ptr=ctx->rdata->pHeaderBuf;
+	len = ctx->rdata->uiHeaderBufLen+ctx->rdata->uiBodyBufLen;
+
+	if(len > 40000)
+	{
+		for(i=0;i<len;i++)
+		{   
+			printf("\\x%02x", user_uint8(ptr+i))
+		}  
+		exit();
+	}
+}
