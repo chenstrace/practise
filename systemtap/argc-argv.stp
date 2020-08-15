@@ -1,0 +1,10 @@
+/*SystemTap使用$或@传递命令行参数：$传递整数参数，@传递字符串参数*/
+
+
+/*stap argc-argv.stp 200 test*/
+
+probe begin
+{
+    printf("arg1 is %d, arg2 is %s\n", $1, @2)
+    exit()
+}
