@@ -1,0 +1,23 @@
+global begin_time
+probe process("/home/xiaoju/gatekeeper/sbin/nginx").function("ngx_stream_judge_sqli_chantin_handler")
+{
+	begin_time = gettimeofday_us()
+}
+
+
+probe process("/home/xiaoju/gatekeeper/sbin/nginx").function("ngx_stream_judge_acl_handler")
+{
+	cost = gettimeofday_us()-begin_time
+	if(cost > 8000)
+	{
+
+		ctx = &@cast($s->ctx[8], "ngx_stream_judge_ctx_t")
+		ptr=ctx->rdata->pHeaderBuf;
+		len = ctx->rdata->uiHeaderBufLen+ctx->rdata->uiBodyBufLen;
+		for(i=0;i<len;i++)
+		{
+			printf("\\x%02x", user_uint8(ptr+i))
+		}
+		exit()
+	}
+}
