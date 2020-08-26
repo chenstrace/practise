@@ -5,6 +5,8 @@ project (files_in_different_dir)
 
 #当执行make时，输出编译过程中执行的命令
 set(CMAKE_VERBOSE_MAKEFILE ON)
+#生成compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_BUILD_TYPE "Debug")
 
