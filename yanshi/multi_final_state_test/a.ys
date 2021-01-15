@@ -1,0 +1,7 @@
+range = [A-Z]
+
+range4 = range{4}
+
+res = range | range4
+
+export main = res 
