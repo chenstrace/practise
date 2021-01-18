@@ -26,6 +26,9 @@ make clean
 --without-http_referer_module
 
 line_number=`sed -n '/CFLAGS/=' objs/Makefile |head -n1`
+echo $line_number
+t=`awk NR==${line_number} objs/Makefile | awk -F 'CFLAGS =  -pipe  -O -W -Wall' '{print $2}'`
+newline="CFLAGS =  -pipe  -W -Wall -g -ggdb3 $t"
 sed -i "${line_number}d" objs/Makefile
-sed -i "${line_number} aCFLAGS = -pipe -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -ggdb3" objs/Makefile
+sed -i "${line_number} a$newline" objs/Makefile
 make -j8
