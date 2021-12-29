@@ -1,0 +1,19 @@
+probe process("/root/gatekeeper/waf_judge/nginx-1.9.14/objs/nginx").function("ngx_stream_judge_acl_handler")
+{
+    ctx = &@cast($s->ctx[8], "ngx_stream_judge_ctx_t")
+
+
+        uri = text_str(user_string_n(ctx->uri->data, ctx->uri->len))
+        ret = strpos(uri,"/passport/login/v5/codeMT")
+        if(ret == 0)
+        {
+            ptr=ctx->rdata->pHeaderBuf;
+            len = ctx->rdata->uiHeaderBufLen+ctx->rdata->uiBodyBufLen;
+            for(i=0;i<len;i++)
+            {
+                printf("\\x%02x", user_uint8(ptr+i))
+            }
+            exit()
+
+        }
+}
