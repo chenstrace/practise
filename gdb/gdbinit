@@ -9,3 +9,17 @@ set print repeats 0
 define hook-quit
     set confirm off
 end
+
+
+define pb32
+    set $v = (unsigned int) $arg0
+    set $times = 0
+    while $times < 32
+        if $times % 8 == 0 && $times !=0
+            printf " "
+        end
+        printf "%d", ($v >> (31 - $times)) & 1
+        set $times = $times + 1
+    end
+    printf "\n"
+end
