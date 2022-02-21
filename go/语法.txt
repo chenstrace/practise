@@ -1,0 +1,7 @@
+interface与其它类型转换
+https://studygolang.com/articles/7323
+https://www.jianshu.com/p/c87c6a0c4acb
+
+类型选择（type switch）
+https://blog.csdn.net/denglitong/article/details/110678853
+
