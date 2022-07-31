@@ -1,13 +1,14 @@
 import os
+from typing import Tuple
 
 
-def file_put_contents(filename, data):
+def file_put_contents(filename: str, data: bytes) -> bool:
     success = True
     try:
         f = open(filename, "wb")
         try:
             f.write(data)
-        except:
+        except Exception as e:
             success = False
         finally:
             f.close()
@@ -16,7 +17,7 @@ def file_put_contents(filename, data):
     return success
 
 
-def file_get_contents(filename):
+def file_get_contents(filename: str) -> Tuple[bool, bytes]:
     exists = os.path.exists(filename)
     if not exists:
         return False, ""
@@ -35,5 +36,8 @@ def file_get_contents(filename):
     return success, data
 
 
-success, data = file_get_contents("foo")
-file_put_contents("another-foo", data)
+if __name__ == '__main__':
+    success = file_put_contents("test.bin", b"\x01\x02\x03")
+    print("write file:", success)
+    success, b = file_get_contents("test.bin")
+    print("read file:", success, b)
