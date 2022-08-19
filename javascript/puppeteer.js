@@ -16,9 +16,9 @@ const PuppeteerHar = require('puppeteer-har');
     response = await client.send('DOMDebugger.getEventListeners', { objectId: response.result.objectId });
     console.log(response);
 
-    //下面3行不能正常工作，https://github.com/puppeteer/puppeteer/issues/8798
-    const elementHandle = await page.$('#hotsearch-refresh-btn');
-    response = await client.send('DOMDebugger.getEventListeners', { objectId: elementHandle.remoteObject().objectId });
+    //https://github.com/puppeteer/puppeteer/issues/8798
+    element = await page.$('#hotsearch-refresh-btn');
+    response = await element._client.send('DOMDebugger.getEventListeners', { objectId: element.remoteObject().objectId });
     console.log(response);
 
     await har.stop();
