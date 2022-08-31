@@ -1,0 +1,1 @@
+内容 sfind "zzz" || 内容 sfind "yy" || 内容 smatch "xyz";

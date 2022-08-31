@@ -1,0 +1,1 @@
+return 内容 sfind "a" && 内容 sfind "bcd";
