@@ -1,9 +1,6 @@
-times = 1
-if times == 1:
-    #在C语言中，url是一个局部变量
-    url = "baidu.com"
-    times = times + 1
+if True:
+    url = "abc"
 
 
-#这里url是可以访问到的
+#在C语言中，url是一个局部变量 python不太一样,这里url是可以访问到的
 print(url)

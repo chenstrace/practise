@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y apt-utils
@@ -17,25 +17,30 @@ RUN apt-get install -y build-essential man manpages-posix ragel flex bison \
     php php-fpm php-bcmath php-mysql php-pgsql php-sqlite3 php-xml php-bz2 php-curl \
     php-zip php-memcached php-memcache php-redis php-mbstring php-apcu php-bcmath php-bz2 \
     php-calendar php-ctype php-curl php-date php-dba php-dom php-enchant php-exif \
-    php-fileinfo php-ftp php-gd php-geoip php-gettext php-gmp php-iconv php-igbinary php-imap \
+    php-fileinfo php-ftp php-gd php-gmp php-iconv php-igbinary php-imap \
     php-interbase php-intl php-json php-ldap php-mbstring php-memcached php-mongodb php-mysqli \
-    php-odbc php-pgsql  php-posix php-pspell php-readline php-recode php-redis  php-shmop  \
+    php-odbc php-pgsql  php-posix php-pspell php-readline  php-redis  php-shmop  \
     php-snmp php-soap php-sockets php-sqlite3  php-sysvmsg php-sysvsem php-sysvshm php-tidy \
-    php-tokenizer php-wddx php-xml php-xmlreader php-xmlrpc php-xmlwriter php-xsl php-zip \
-    ipython software-properties-common \
+    php-tokenizer  php-xml php-xmlreader php-xmlrpc php-xmlwriter php-xsl php-zip \
+    software-properties-common \
     mysql-server default-jdk golang-go \
-    python3-pip python-pip \
     nginx lua5.1 dnsutils libtinfo-dev libicu-dev libreadline-dev ascii \
     uuid-dev net-tools libssh-dev libssh2-1-dev libbrotli-dev libkrb5-dev libldap2-dev libidn2-dev libnghttp2-dev \
-    libc-ares-dev libmariadbclient-dev libmariadbclient-dev-compat librdkafka-dev libzookeeper-st-dev libssl-dev libhiredis-dev
+    libc-ares-dev librdkafka-dev libzookeeper-st-dev libssl-dev libhiredis-dev
 RUN add-apt-repository ppa:jonathonf/vim && apt-get install -y vim-gtk
+RUN apt-get install -y python3-pip
 RUN pip3 install compiledb
 
 
 
 RUN wget https://psysh.org/psysh && chmod +x psysh && mv psysh /usr/bin
 
-#RUN apt-get install -y curl
+RUN apt-get install -y curl python-is-python3
+RUN pip3 install ipython
+
+RUN apt-get clean autoclean
+RUN apt-get autoremove --yes
+RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #/usr/bin/redis-server --daemonize yes --protected-mode no
 #service mysql start
