@@ -32,3 +32,6 @@ Thumbs.db
 #others
 .ccls-cache
 cmake-build-debug
+*.dSYM/
+*.out
+*.class
