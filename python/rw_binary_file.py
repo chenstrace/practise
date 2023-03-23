@@ -18,11 +18,10 @@ def file_put_contents(filename: str, data: bytes) -> bool:
 
 
 def file_get_contents(filename: str) -> Tuple[bool, bytes]:
-    exists = os.path.exists(filename)
-    if not exists:
-        return False, ""
+    if not os.path.isfile(filename):
+        return False, b""
     success = True
-    data = ""
+    data = b""
     try:
         f = open(filename, "rb")
         try:
@@ -36,8 +35,15 @@ def file_get_contents(filename: str) -> Tuple[bool, bytes]:
     return success, data
 
 
-if __name__ == '__main__':
-    success = file_put_contents("test.bin", b"\x01\x02\x03")
-    print("write file:", success)
-    success, b = file_get_contents("test.bin")
-    print("read file:", success, b)
+def delete_file(path):
+    try:
+        if os.path.isfile(path):
+            os.remove(path)
+    except:
+        pass
+
+# if __name__ == '__main__':
+#     success = file_put_contents("test.bin", b"\x01\x02\x03")
+#     print("write file:", success)
+#     success, b = file_get_contents("test.bin")
+#     print("read file:", success, b)
