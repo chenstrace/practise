@@ -29,6 +29,9 @@ with sync_playwright() as p:
     assert local_storage_1 == local_storage_2
     assert local_storage_1 == local_storage_3
 
+    page.evaluate("y=>window.scrollTo(0,y);", 3500)
+
+
     context.close()
     browser.close()
     print("program end", flush=True)
