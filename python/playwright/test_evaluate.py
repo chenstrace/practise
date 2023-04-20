@@ -32,13 +32,21 @@ with sync_playwright() as p:
 
     page.evaluate("y=>window.scrollTo(0,y);", 3500)
 
-    # 自定义函数的调用，方法1，从python传参到JS
     s = """const myadd=(x,y)=>{return x+y;};"""
     s += "([xx,yy]) => myadd(xx,yy)"
     result = page.evaluate(s, [12, 13])
     print(result)
 
-    # 自定义函数的调用，方法2，JS代码拼接
+    s = """const mul2=(x)=>{return x*2;};"""
+    s += "([xx]) => mul2(xx)"
+    result = page.evaluate(s, [12])
+    print(result)
+
+    s = """const mul3=(x)=>{return x*3;};"""
+    s += "(xx) => mul3(xx)"
+    result = page.evaluate(s, 13)
+    print(result)
+
     s = """const mysub=(x,y)=>{return x-y;};"""
     s += "mysub(100,1)"
     result = page.evaluate(s)
