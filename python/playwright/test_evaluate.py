@@ -24,13 +24,25 @@ with sync_playwright() as p:
     storage_state = page.context.storage_state()
     local_storage_1 = page.evaluate('() => window.localStorage')  # 没有参数的写法
     local_storage_2 = page.evaluate('window.localStorage')
-    local_storage_3 = {item['name']: item['value'] for item in storage_state['origins'][0]['localStorage']}
+    local_storage_3 = {item['name']: item['value']
+                       for item in storage_state['origins'][0]['localStorage']}
 
     assert local_storage_1 == local_storage_2
     assert local_storage_1 == local_storage_3
 
     page.evaluate("y=>window.scrollTo(0,y);", 3500)
 
+    # 自定义函数的调用，方法1，从python传参到JS
+    s = """const myadd=(x,y)=>{return x+y;};"""
+    s += "([xx,yy]) => myadd(xx,yy)"
+    result = page.evaluate(s, [12, 13])
+    print(result)
+
+    # 自定义函数的调用，方法2，JS代码拼接
+    s = """const mysub=(x,y)=>{return x-y;};"""
+    s += "mysub(100,1)"
+    result = page.evaluate(s)
+    print(result)
 
     context.close()
     browser.close()
