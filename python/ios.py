@@ -1,14 +1,12 @@
 import json
-import sys
 import time
 from typing import Dict, List, Optional
 
 import wda
+from loguru import logger
 from pydantic import BaseModel
 from tidevice import Usbmux
 from tqdm import tqdm
-
-from loguru import logger
 
 
 class Element(BaseModel):
@@ -63,19 +61,20 @@ def get_json_source(session, out_file='out.json'):
     return sorted_source
 
 
-def process_source(elements, source, element_type_set, min_element_height=18):
+def process_source(elements, source, element_type_set, added_elements_set, min_element_height=18):
     access_count = 0
     name_count = 0
     isEnabled = source.get("isEnabled")
-    isVisible = source.get("isVisible")
     isAccessible = source.get("isAccessible")
-    if isEnabled == "1":
-        access_count += 1
+    # if isEnabled == "1":
+    #     access_count += 1
+
+    # if isAccessible == "1":
+    #     access_count += 0
+    isVisible = source.get("isVisible")
+
     if isVisible == "1":
         access_count += 1
-    if isAccessible == "1":
-        access_count += 1
-
     name = source.get("name")
     label = source.get("label")
     value = source.get("value")
@@ -90,28 +89,31 @@ def process_source(elements, source, element_type_set, min_element_height=18):
     type = source.get("type")
     rect = source.get("rect")
     t = name or label or value
-
-    if access_count >= 2 \
+    element = Element(name=name, label=label, value=value, type=type, isEnabled=isEnabled, isVisible=isVisible,
+                      isAccessible=isAccessible, rect=rect)
+    element_summary = (element.name, element.label, element.type, element.rect["width"], rect["height"])
+    if access_count >= 1 \
             and name_count >= 1 \
             and type in element_type_set \
             and rect['height'] >= min_element_height \
-            and not has_back_word(t):
-        element = Element(name=name, label=label, value=value, type=type, isEnabled=isEnabled, isVisible=isVisible,
-                          isAccessible=isAccessible, rect=rect)
+            and not has_back_word(t) \
+            and "#" not in t \
+            and not is_element_added(element_summary, added_elements_set):
         elements.append(element)
+        added_elements_set.add(element_summary)
 
     children = source.get("children")
     if children:
         for child in children:
-            process_source(elements, child, element_type_set)
+            process_source(elements, child, element_type_set, added_elements_set)
 
 
-def find_elements(source, element_type_set=None):
+def find_elements(source, added_elements_set, element_type_set=None):
     if element_type_set is None:
         element_type_set = {"Button", "StaticText", "TextField", "SecureTextField"}
 
     elements = []
-    process_source(elements, source, element_type_set)
+    process_source(elements, source, element_type_set, added_elements_set)
     return elements
 
 
@@ -122,6 +124,10 @@ def are_elements_equal(e1, e2):
             e1.value == e2.value and
             e1.type == e2.type
     )
+
+
+def is_element_added(element_summary, s):
+    return element_summary in s
 
 
 def is_page_changed(list_a: List[Element], list_b: List[Element]) -> bool:
@@ -152,8 +158,10 @@ def fix_array_and_ptr(td_array, ptr):
     return td_array, ptr
 
 
-def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_row, already_click, max_depth=3):
+def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_row, already_click, added_elements_set,
+          max_depth=3):
     while True:
+        logger.info(f"current_row={cur_row},ptr={ptr},len(td_array)={len(td_array)},td_array={td_array}")
         click_internal_dialog_if_needed(session, elements)
         if len(td_array) == 0:
             logger.info("end1")
@@ -189,7 +197,7 @@ def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_
             with tqdm(total=1, desc="Getting JSON Source after re-launch", unit="call", miniters=1) as pbar:
                 source = get_json_source(session)
                 pbar.update(1)
-            elements = find_elements(source)
+            elements = find_elements(source, added_elements_set)
         else:
             col = ptr[cur_row]
 
@@ -200,30 +208,26 @@ def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_
                 cur_row = 0
                 fix_array_and_ptr(td_array, ptr)
             else:
-                element_click = td_array[cur_row][col]
-                element_click_short = (
-                    element_click.name, element_click.value, element_click.label, element_click.type)
-                text_click = element_click.name or element_click.value or element_click.label
+                e_to_click = td_array[cur_row][col]
+                element_click_short = (e_to_click.name, e_to_click.value, e_to_click.label, e_to_click.type)
+                text_click = e_to_click.name or e_to_click.value or e_to_click.label
 
-                with tqdm(total=1, desc=f"click {text_click}, td_array[{cur_row}][{col}]",
-                          unit="call") as pbar:
-                    session(className=element_click.type, name=element_click.name,
-                            label=element_click.label).click_exists()
+                with tqdm(total=1, desc=f"Click {text_click}, td_array[{cur_row}][{col}]", unit="call") as pbar:
+                    session(className=e_to_click.type, name=e_to_click.name, label=e_to_click.label).click_exists()
                     pbar.update(1)
 
-                for _ in tqdm(range(5), desc="Waiting after click"):
+                for _ in tqdm(range(3), desc=f"Waiting after click {text_click}"):
                     time.sleep(1)
 
-                with tqdm(total=1, desc="Getting JSON source afer click", unit="call", miniters=1) as pbar:
+                with tqdm(total=1, desc=f"Getting JSON source after click {text_click}", unit="call") as pbar:
                     source_after_click = get_json_source(session)
                     pbar.update(1)
 
-                elements_after_click = find_elements(source_after_click)
-
+                elements_after_click = find_elements(source_after_click, added_elements_set)
                 page_changed = is_page_changed(elements, elements_after_click)
-                with tqdm(total=1, desc=f"page_changed:{page_changed} after click {text_click}",
-                          unit="call") as pbar:
-                    pbar.update(1)
+
+                logger.info("After click {},page_change={}, elems_len={}, elements={}", text_click, page_changed,
+                            len(elements_after_click), elements_after_click)
 
                 elements = elements_after_click
                 if page_changed:
@@ -246,6 +250,7 @@ def click_internal_dialog_if_needed(session, elements: List[Element]):
             session(className=element.type, name=element.name,
                     label=element.label, value=element.value).click_exists()
             time.sleep(2)
+            break
 
 
 def has_back_word(input_str):
@@ -255,9 +260,13 @@ def has_back_word(input_str):
 
     if len(words) <= 5:
         for word in words:
-            if word.lower() in ["后退", "返回", "back"]:
+            if word.lower() in ["back", "cancel", "search"]:
                 return True
 
+    cws = ["后退", "返回", "取消", "搜索"]
+    for cw in cws:
+        if cw in input_str:
+            return True
     return False
 
 
@@ -291,14 +300,14 @@ def main(bundle_id):
     ptr = []
     cur_row = 0
     already_click = set()
+    added_elements_set = set()
 
-    elements = find_elements(source)
-    logger.info("after click info: len={}, elements={}", len(elements), elements)
-    sys.exit()
+    elements = find_elements(source, added_elements_set)
+    logger.info("After click info: len={}, elements={}", len(elements), elements)
     td_array.append(elements)
     ptr.append(0)
     click(bundle_id, session=session, elements=elements, td_array=td_array, ptr=ptr, cur_row=cur_row,
-          already_click=already_click)
+          already_click=already_click, added_elements_set=added_elements_set)
 
     # send keys works
     # session.send_keys("aaaa")
@@ -334,4 +343,5 @@ if __name__ == '__main__':
     # "com.anker.AnkerMake"
     # "com.netease.news"
     # "com.dhgate.DHgateBuyer"
-    main("com.anker.AnkerMake")
+    # main("com.anker.AnkerMake")
+    main("com.netease.news")
