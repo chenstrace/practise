@@ -61,7 +61,7 @@ def get_json_source(session, out_file='out.json'):
     return sorted_source
 
 
-def process_source(elements, source, element_type_set, added_elements_set, min_element_height=18):
+def process_source(elements, source, element_type_set, min_element_height=18):
     access_count = 0
     name_count = 0
     isEnabled = source.get("isEnabled")
@@ -88,32 +88,27 @@ def process_source(elements, source, element_type_set, added_elements_set, min_e
 
     type = source.get("type")
     rect = source.get("rect")
-    t = name or label or value
     element = Element(name=name, label=label, value=value, type=type, isEnabled=isEnabled, isVisible=isVisible,
                       isAccessible=isAccessible, rect=rect)
-    element_summary = (element.name, element.label, element.type, element.rect["width"], rect["height"])
     if access_count >= 1 \
             and name_count >= 1 \
             and type in element_type_set \
-            and rect['height'] >= min_element_height \
-            and not has_back_word(t) \
-            and "#" not in t \
-            and not is_element_added(element_summary, added_elements_set):
+            and rect['height'] >= min_element_height:
         elements.append(element)
-        added_elements_set.add(element_summary)
 
     children = source.get("children")
     if children:
         for child in children:
-            process_source(elements, child, element_type_set, added_elements_set)
+            process_source(elements, child, element_type_set)
 
 
-def find_elements(source, added_elements_set, element_type_set=None):
+def find_elements(source, element_type_set=None):
     if element_type_set is None:
-        element_type_set = {"Button", "StaticText", "TextField", "SecureTextField"}
+        # element_type_set = {"Button", "StaticText", "TextField", "SecureTextField"}
+        element_type_set = {"Button", "StaticText"}
 
     elements = []
-    process_source(elements, source, element_type_set, added_elements_set)
+    process_source(elements, source, element_type_set)
     return elements
 
 
@@ -126,8 +121,15 @@ def are_elements_equal(e1, e2):
     )
 
 
-def is_element_added(element_summary, s):
-    return element_summary in s
+def is_element_added(td_array, input_element):
+    input_summary = (input_element.name, input_element.label, input_element.type, input_element.rect["width"],
+                     input_element.rect["height"])
+    for row in td_array:
+        for element in row:
+            element_summary = (element.name, element.label, element.type, element.rect["width"], element.rect["height"])
+            if input_summary == element_summary:
+                return True
+    return False
 
 
 def is_page_changed(list_a: List[Element], list_b: List[Element]) -> bool:
@@ -158,8 +160,44 @@ def fix_array_and_ptr(td_array, ptr):
     return td_array, ptr
 
 
-def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_row, already_click, added_elements_set,
-          max_depth=3):
+def filter_elements(td_array, elements):
+    if not elements:
+        return []
+
+    res = []
+    added_text = set()
+    for element in elements:
+        text = element.name or element.label or element.value
+        if text in added_text:
+            continue
+        if has_back_word(text):
+            logger.info(f"{text} is skipped, due to back keywords")
+            continue
+        if is_element_added(td_array, element):
+            logger.info(f"{text} is skipped, due to td_array")
+            continue
+        # if "#" in text:  # wda bug
+        #     continue
+        res.append(element)
+        added_text.add(text)
+    return res
+
+
+def filter_back_words(elements):
+    if not elements:
+        return []
+
+    res = []
+    for element in elements:
+        text = element.name or element.label or element.value
+        if has_back_word(text):
+            logger.info(f"{text} is skipped, due to back keywords")
+            continue
+        res.append(element)
+    return res
+
+
+def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_row, max_depth=3):
     while True:
         logger.info(f"current_row={cur_row},ptr={ptr},len(td_array)={len(td_array)},td_array={td_array}")
         click_internal_dialog_if_needed(session, elements)
@@ -197,7 +235,7 @@ def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_
             with tqdm(total=1, desc="Getting JSON Source after re-launch", unit="call", miniters=1) as pbar:
                 source = get_json_source(session)
                 pbar.update(1)
-            elements = find_elements(source, added_elements_set)
+            elements = find_elements(source)
         else:
             col = ptr[cur_row]
 
@@ -223,20 +261,20 @@ def click(bundle_id, session, elements, td_array: List[List[Element]], ptr, cur_
                     source_after_click = get_json_source(session)
                     pbar.update(1)
 
-                elements_after_click = find_elements(source_after_click, added_elements_set)
+                elements_after_click = find_elements(source_after_click)
                 page_changed = is_page_changed(elements, elements_after_click)
 
-                logger.info("After click {},page_change={}, elems_len={}, elements={}", text_click, page_changed,
+                logger.info("After click {}, Page_Change={}, elems_len={}, elements={}", text_click, page_changed,
                             len(elements_after_click), elements_after_click)
+                filtered_elements_after_click = filter_elements(td_array, elements_after_click)
 
-                elements = elements_after_click
                 if page_changed:
                     cur_row += 1
-
-                    if element_click_short not in already_click:
-                        already_click.add(element_click_short)
-                        td_array.append(elements_after_click)
+                    if len(td_array) < max_depth and filtered_elements_after_click:
+                        td_array.append(filtered_elements_after_click)
                         ptr.append(0)
+
+                    elements = elements_after_click
                 else:
                     ptr[cur_row] += 1
 
@@ -299,44 +337,15 @@ def main(bundle_id):
     td_array = []
     ptr = []
     cur_row = 0
-    already_click = set()
-    added_elements_set = set()
 
-    elements = find_elements(source, added_elements_set)
-    logger.info("After click info: len={}, elements={}", len(elements), elements)
-    td_array.append(elements)
+    elements = find_elements(source)
+    logger.info("First page info: len={}, elements={}", len(elements), elements)
+    elements_after_filter = filter_back_words(elements)
+    td_array.append(elements_after_filter)
     ptr.append(0)
-    click(bundle_id, session=session, elements=elements, td_array=td_array, ptr=ptr, cur_row=cur_row,
-          already_click=already_click, added_elements_set=added_elements_set)
-
-    # send keys works
-    # session.send_keys("aaaa")
-
-    # swipe works
-    # session.swipe_up()
-
-    # rect = session.window_size()
-    # print(rect, flush=True)
-    # click works
-    # session.tap(20 + 335 / 2, 163 + 26 / 2)
-    # t1 = time.time()
-    # login_btn = session(className='Button', name='登入')
-
-    # login_btn = session(predicate='name="URL" OR name="登入"')
-
-    # t2 = time.time()
-    # elapsed_time = t2 - t1
-    # print(f"find button cost {elapsed_time:.6f} seconds")
-
-    # login_btn.click()
-    # 判断页面发生的了变化
-    # 1. 基于UI hierarchy （大部分应该是准的，有例外）
-    # 2. 基于元素的内容。 （text非空的集合）
-
-    # 元素level
-
-    # 找不到，重新进app
-    # 每次循环开始时，判断app是否在前台，是否有弹窗
+    # elements是没过滤的
+    # td_array是过滤后的，认为需要点击的
+    click(bundle_id, session=session, elements=elements, td_array=td_array, ptr=ptr, cur_row=cur_row)
 
 
 if __name__ == '__main__':
