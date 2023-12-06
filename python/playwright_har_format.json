@@ -1,0 +1,255 @@
+{
+    "log":
+    {
+        "version": "1.2",
+        "creator":
+        {
+            "name": "Playwright",
+            "version": "1.31.1"
+        },
+        "browser":
+        {
+            "name": "chromium",
+            "version": "103.0.5060.134"
+        },
+        "pages":
+        [
+            {
+                "startedDateTime": "2023-10-08T08:27:13.607Z",
+                "id": "page@8df17e039c1615d6d07ac381463a5d1b",
+                "title": "",
+                "pageTimings":
+                {
+                    "onContentLoad": -1,
+                    "onLoad": -1
+                }
+            }
+        ],
+        "entries":
+        [
+            {
+                "startedDateTime": "2023-11-20T04:03:14.719Z",
+                "time": 419.90000000000003,
+                "request":
+                {
+                    "method": "POST",
+                    "url": "https://www.lingobus.com/portal/api/user/saveUserAccess",
+                    "httpVersion": "HTTP/1.1",
+                    "cookies":
+                    [
+                        {
+                            "name": "_gid",
+                            "value": "GA1.2.385830444.1700452994"
+                        },
+                        {
+                            "name": "_ga_WM0CR0XET7",
+                            "value": "GS1.1.1700452993.1.0.1700452993.60.0.0"
+                        },
+                        {
+                            "name": "_ga",
+                            "value": "GA1.1.464827165.1700452994"
+                        }
+                    ],
+                    "headers":
+                    [
+                        {
+                            "name": "Accept",
+                            "value": "application/json, text/plain, */*"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json;charset=UTF-8"
+                        },
+                        {
+                            "name": "Cookie",
+                            "value": "_gid=GA1.2.385830444.1700452994; _ga_WM0CR0XET7=GS1.1.1700452993.1.0.1700452993.60.0.0; _ga=GA1.1.464827165.1700452994; _dc_gtm_UA-98599328-1=1; mp_092452cfd6f257572dd01912186f2922_mixpanel=%7B%22distinct_id%22%3A%20%22%24device%3A18beae58c0f56e-04b61dda9196bf-1b535634-e1000-18beae58c1056e%22%2C%22%24device_id%22%3A%20%2218beae58c0f56e-04b61dda9196bf-1b535634-e1000-18beae58c1056e%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%7D; _clck=11kgza7%7C2%7Cfgv%7C0%7C1419; locale=en-US; _fbp=fb.1.1700452994495.619478202; _gcl_au=1.1.940729967.1700452995"
+                        }
+                    ],
+                    "queryString":
+                    [],
+                    "headersSize": 1217,
+                    "bodySize": 106,
+                    "postData":
+                    {
+                        "mimeType": "application/json;charset=UTF-8",
+                        "text": "{\"accessUrl\":\"https://www.lingobus.com/\",\"refererUrl\":\"\",\"traceId\":\"3C97AE76-8ED1-E336-1E7A-1F4C4E149E35\"}",
+                        "params":
+                        []
+                    }
+                },
+                "response":
+                {
+                    "status": 200,
+                    "statusText": "",
+                    "httpVersion": "HTTP/1.1",
+                    "cookies":
+                    [],
+                    "headers":
+                    [
+                        {
+                            "name": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "name": "Content-Length",
+                            "value": "48"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json;charset=UTF-8"
+                        }
+                    ],
+                    "content":
+                    {
+                        "size": 48,
+                        "mimeType": "application/json;charset=UTF-8",
+                        "compression": 0,
+                        "text": "{\"code\":200,\"data\":\"\",\"msg\":\"OK\",\"success\":true}"
+                    },
+                    "headersSize": 469,
+                    "bodySize": 49,
+                    "redirectURL": "",
+                    "_transferSize": 518
+                },
+                "cache":
+                {},
+                "timings":
+                {
+                    "dns": -1,
+                    "connect": -1,
+                    "ssl": -1,
+                    "send": 0,
+                    "wait": 418.341,
+                    "receive": 1.559
+                },
+                "pageref": "page@fa817b27d84365c4ee4ae3bd0ca8b862",
+                "serverIPAddress": "47.246.48.224",
+                "_serverPort": 443,
+                "_securityDetails":
+                {
+                    "protocol": "TLS 1.2",
+                    "subjectName": "*.vipkidteachers.com",
+                    "issuer": "DigiCert Basic RSA CN CA G2",
+                    "validFrom": 1673568000,
+                    "validTo": 1707782399
+                }
+            },
+            {
+                "startedDateTime": "2023-10-08T08:27:13.611Z",
+                "time": 228.24699999999999,
+                "request":
+                {
+                    "method": "GET",
+                    "url": "https://www.amazon.de/dp/B0983SVDLZ?ref=myi_title_dp",
+                    "httpVersion": "HTTP/2.0",
+                    "cookies":
+                    [
+                        {
+                            "name": "session-id",
+                            "value": "259-0182041-4469936"
+                        },
+                        {
+                            "name": "session-id-time",
+                            "value": "2082787201l"
+                        }
+                    ],
+                    "headers":
+                    [
+                        {
+                            "name": ":authority",
+                            "value": "www.amazon.de"
+                        },
+                        {
+                            "name": ":method",
+                            "value": "GET"
+                        },
+                        {
+                            "name": ":path",
+                            "value": "/dp/B0983SVDLZ?ref=myi_title_dp"
+                        },
+                        {
+                            "name": ":scheme",
+                            "value": "https"
+                        },
+                        {
+                            "name": "accept",
+                            "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+                        },
+                        {
+                            "name": "cookie",
+                            "value": "session-id=259-0182041-4469936; session-id-time=2082787201l; i18n-prefs=EUR; sp-cdn=\"L5Z9:SG\"; ubid-acbde=259-1670061-2829703; session-token=n2BFvXMa6gwSXUHtKWEfWv832+aCZ+vHRp/5U9c5AEg6Ea47xSe6krFm/0FrJ6oneDhGZqCwzLQsqdiQxyeV4/iwdRKOawM2eQmT6Zpg2y9FCtXAZzGMFvql6mwjm3EvZlXMDobm/1saXX7C1TjHLxlmpngp8QzpM20PMWsA+GuBH0TWjPEnsOMEqr6Fyk1SxeS8e8juc69aRaSCSm5fSXww5dj1fQI8nvTrrg7YSyDwY18ZzXBXT6pfGLFJBsCxYRWHWi9mqujt40fgabYcXk9t2WRRQglzkxPEBnEkIPqtPlgI/KhkOjImOH9VD3+LYp480SwSgWeyFSvFEsQkOJ93YOFqjBsQ; csm-hit=tb:s-J100XK1FB0ZYY8PFFTXW|1696753507909&t:1696753509478&adb:adblk_no"
+                        }
+                    ],
+                    "queryString":
+                    [
+                        {
+                            "name": "ref",
+                            "value": "myi_title_dp"
+                        }
+                    ],
+                    "headersSize": 1125,
+                    "bodySize": 0
+                },
+                "response":
+                {
+                    "status": 404,
+                    "statusText": "",
+                    "httpVersion": "HTTP/2.0",
+                    "cookies":
+                    [],
+                    "headers":
+                    [
+                        {
+                            "name": "accept-ch",
+                            "value": "ect,rtt,downlink,device-memory,sec-ch-device-memory,viewport-width,sec-ch-viewport-width,dpr,sec-ch-dpr,sec-ch-ua-platform,sec-ch-ua-platform-version"
+                        },
+                        {
+                            "name": "accept-ch-lifetime",
+                            "value": "86400"
+                        },
+                        {
+                            "name": "alt-svc",
+                            "value": "h3=\":443\"; ma=86400"
+                        },
+                        {
+                            "name": "content-encoding",
+                            "value": "gzip"
+                        }
+                    ],
+                    "content":
+                    {
+                        "size": -1,
+                        "mimeType": "text/html;charset=UTF-8",
+                        "compression": 0
+                    },
+                    "headersSize": 0,
+                    "bodySize": 1757,
+                    "redirectURL": "",
+                    "_transferSize": 1757
+                },
+                "cache":
+                {},
+                "timings":
+                {
+                    "dns": 9.247,
+                    "connect": 6.528,
+                    "ssl": 5.308,
+                    "send": 0,
+                    "wait": 203.07,
+                    "receive": 4.094
+                },
+                "pageref": "page@8df17e039c1615d6d07ac381463a5d1b",
+                "serverIPAddress": "13.227.231.99",
+                "_serverPort": 443,
+                "_securityDetails":
+                {
+                    "protocol": "TLS 1.3",
+                    "subjectName": "www.amazon.de",
+                    "issuer": "DigiCert Global CA G2",
+                    "validFrom": 1691366400,
+                    "validTo": 1716595199
+                }
+            }
+        ]
+    }
+}
