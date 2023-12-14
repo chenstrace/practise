@@ -1,0 +1,75 @@
+ChatCompletion(
+    id='chatcmpl-8VKxDgJYU9CML19DTo23cBsOyvc4m',
+    choices=[
+        Choice(
+            finish_reason='stop',
+            index=0,
+            message=ChatCompletionMessage(
+                content='2020年的世界大赛在德克萨斯州阿灵顿的环球生命球场举行。',
+                role='assistant',
+                function_call=None,
+                tool_calls=None
+            )
+        )
+    ],
+    created=1702479407,
+    model='gpt-3.5-turbo-0613',
+    object='chat.completion',
+    system_fingerprint=None,
+    usage=CompletionUsage(
+        completion_tokens=19,
+        prompt_tokens=53,
+        total_tokens=72
+    )
+)
+
+
+ChatCompletion(
+    id='chatcmpl-8VbNaheeYZgr14KjGAxPSmlOPVbsU',
+    choices=[
+        Choice(
+            finish_reason='tool_calls',
+            index=0,
+            message=ChatCompletionMessage(
+                content=None,
+                role='assistant',
+                function_call=None,
+                tool_calls=[
+                    ChatCompletionMessageToolCall(
+                        id='call_OrpHiXJv5obLAaljMkV0UkFe',
+                        function=Function(
+                            arguments='{"location": "San Francisco", "unit": "celsius"}',
+                            name='get_current_weather'
+                        ),
+                        type='function'
+                    ),
+                    ChatCompletionMessageToolCall(
+                        id='call_B6fnImxHxB2rZzwbZeq3eiVW',
+                        function=Function(
+                            arguments='{"location": "Tokyo", "unit": "celsius"}',
+                            name='get_current_weather'
+                        ),
+                        type='function'
+                    ),
+                    ChatCompletionMessageToolCall(
+                        id='call_kEgkfCpu6SwuobWJ1Lk39NcX',
+                        function=Function(
+                            arguments='{"location": "Paris", "unit": "celsius"}',
+                            name='get_current_weather'
+                        ),
+                        type='function'
+                    )
+                ]
+            )
+        )
+    ],
+    created=1702542546,
+    model='gpt-3.5-turbo-1106',
+    object='chat.completion',
+    system_fingerprint='fp_f3efa6edfc',
+    usage=CompletionUsage(
+        completion_tokens=77,
+        prompt_tokens=88,
+        total_tokens=165
+    )
+)
