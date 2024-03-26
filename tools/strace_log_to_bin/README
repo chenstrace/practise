@@ -1,9 +1,0 @@
-使用方法：
-1. 使用strace -xx -s 1024000 -f -p pid 2> output.log , 获取strace的日志
-2. 编辑output.log, 只保留需要dump的一行，目前只能支持一行
-3. ./strace-output-to-bin.sh output.log, 产生output.bin
-4. 查看output.bin
-
-
-原理：
-使用strace的-xx参数可以输出\xHH的格式，而printf命令刚好支持这种格式
