@@ -56,7 +56,6 @@ def main():
 
             # Select content from the 100th line onwards
             file_contents = ''.join(lines[99:])  # Read from the 100th line
-
             filename_with_extension = os.path.basename(filepath)
             filename = os.path.splitext(filename_with_extension)[0]
             if file_contents != "paste":

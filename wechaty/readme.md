@@ -8,12 +8,8 @@
 - 快捷键: command + ctrl + z 弹出聊天记录文件，弹出后未读数清零
 
 
-##  clean.py
+##  push_to_redis.py
 - 读取指定文件100行及以后的内容，写入本机redis，即所谓的"发送"
 - 支持读取剪切板上的图片
 - 被clean.sh调用
 
-
-##  clean.sh
-- 调用clean.py
-- 可配合IDE调用，用快捷键执行，参考clean工具使用.jpeg
