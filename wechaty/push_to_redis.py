@@ -8,7 +8,7 @@ from PIL import Image, ImageGrab
 import os
 
 
-def create_clipboard_image_msg():
+def create_image_file_from_clipboard():
     im = ImageGrab.grabclipboard()
     if not im:
         return ""
@@ -23,8 +23,7 @@ def create_clipboard_image_msg():
     os.makedirs(screenshot_dir, exist_ok=True)
     screenshot_file_path = os.path.join(screenshot_dir, uid + ".png")
     im.save(screenshot_file_path, 'PNG')
-
-    return "paste " + screenshot_file_path
+    return screenshot_file_path
 
 
 def push_to_redis(r, key, value):
@@ -58,15 +57,16 @@ def main():
             file_contents = ''.join(lines[99:])  # Read from the 100th line
             filename_with_extension = os.path.basename(filepath)
             filename = os.path.splitext(filename_with_extension)[0]
-            if file_contents != "paste":
+            if not file_contents.endswith("paste"):
                 msg_ok = len(file_contents) > 0
             else:
-                img_msg = create_clipboard_image_msg()
-                msg_ok = len(img_msg) > 0
-                file_contents = img_msg
+                img_path = create_image_file_from_clipboard()
+                msg_ok = len(img_path) > 0 and os.path.isfile(img_path)
+                file_contents += " " + img_path
             if msg_ok:
                 push_to_redis(r, filename, file_contents)
 
+                # restore file, so we can send another message
                 with open(filepath, 'w') as file:
                     file.writelines(lines[:99])
                     file.flush()  # Flush the internal buffer to the OS buffer
