@@ -31,7 +31,6 @@ def get_icon_by_state(state):
 class CounterApp(rumps.App):
     def __init__(self):
         super(CounterApp, self).__init__("0")
-        self.r = redis.Redis(host='127.0.0.1', port=6379, db=0)
         self.menu = ["Reset Counter"]
         self.timer = rumps.Timer(self.tick, 1)
         self.timer.start()
@@ -55,14 +54,14 @@ class CounterApp(rumps.App):
         return state
 
     def tick(self, _):
-        count = int(self.r.get("msg_count") or 0)
+        count = int(self.redis.get("msg_count") or 0)
         state = self.get_sate()
         icon = get_icon_by_state(state)
         self.title = icon + str(count)
 
     @rumps.clicked("Reset Counter")
     def reset(self, _=None):
-        self.r.set("msg_count", 0)
+        self.redis.set("msg_count", 0)
 
         self.title = self.title[:1] + "0"
         file_path = os.path.expanduser('~/all.txt')
