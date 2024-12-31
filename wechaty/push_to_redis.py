@@ -45,7 +45,7 @@ def main():
         filepath = sys.argv[1]
 
         if os.path.exists(filepath):
-            with open(filepath, 'r') as file:
+            with open(filepath, 'r',encoding="utf-8") as file:
                 lines = file.readlines()
 
             # Check if there are fewer than 100 lines

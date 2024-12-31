@@ -6,11 +6,9 @@ def connect_redis():
 
 def add_to_redis_set(redis_client, value):
     redis_client.sadd('remark_list', value)
-    print(f"Added '{value}' to remark_list set in Redis")
 
 def remove_from_redis_set(redis_client, value):
     redis_client.srem('remark_list', value)
-    print(f"Removed '{value}' from remark_list set in Redis")
 
 def list_redis_set(redis_client):
     elements = redis_client.smembers('remark_list')

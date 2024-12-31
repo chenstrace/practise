@@ -14,7 +14,7 @@ remark_dir=".\\remark"
 filename_without_extension="${filename%.*}"
 
 # Execute python3 remark.py -d filename_without_extension
-python3 remark.py -d "$filename_without_extension" || { echo "Unable to execute remark.py -d"; exit 1; }
+python remark.py -d "$filename_without_extension" || { echo "Unable to execute remark.py -d"; exit 2; }
 
 # Delete the file
 rm "$remark_dir/$filename"
