@@ -18,4 +18,3 @@ python remark.py -d "$filename_without_extension" || { echo "Unable to execute r
 
 # Delete the file
 rm "$remark_dir/$filename"
-echo "Deleted file: $remark_dir\\$filename"
