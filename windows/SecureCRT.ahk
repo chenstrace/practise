@@ -1,7 +1,12 @@
 #IfWinActive ahk_class VanDyke Software - SecureCRT
     ; Alt + T sends Alt + N
     !t::Send !n
+#IfWinActive
 
-    ; F15 sends Esc
+
+#IfWinActive
     F15::Send {Esc}
 #IfWinActive
+
+
+!+p::Send KevinCJL15
