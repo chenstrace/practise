@@ -7,7 +7,7 @@ import os
 import redis
 import time
 # 注意使用Script Editor创建App
-# do shell script "python3 $HOME/wechaty/tool/msg_count.py"
+# do shell script "python3 $HOME/wechaty/tool/msg_count_osx.py"
 # 注意在Mac的安全与隐私设置中，把Accessibility和Input Monitoring都加入App
 
 
