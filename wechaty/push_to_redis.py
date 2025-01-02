@@ -1,11 +1,11 @@
+import os
 import sys
+import time
 import uuid
 
 import redis
-import os
-
 from PIL import Image, ImageGrab
-import os
+from datetime import datetime
 
 
 def create_image_file_from_clipboard():
@@ -18,11 +18,10 @@ def create_image_file_from_clipboard():
     width = im.width
     if width <= 0 or height <= 0:
         return ""
-    uid = uuid.uuid4().hex
-    if os.name == 'nt':
-        screenshot_dir = os.path.expanduser('~\\screenshot')
-    else:
-        screenshot_dir = os.path.expanduser('~/screenshot')
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    uid = f"{timestamp}-{uuid.uuid4().hex}"
+    screenshot_dir = os.path.join(os.path.expanduser('~'), 'wechaty', 'screenshot')
+
     os.makedirs(screenshot_dir, exist_ok=True)
     screenshot_file_path = os.path.join(screenshot_dir, uid + ".png")
     im.save(screenshot_file_path, 'PNG')
@@ -35,10 +34,13 @@ def push_to_redis(r, key, value):
         print("Success")
     except Exception as e:
         print(f"Error pushing to Redis: {e}")
+
+
 def convert_to_cygwin_path(win_path):
     drive, tail = os.path.splitdrive(win_path)
     cygwin_path = "/mnt/" + drive[0].lower() + tail.replace('\\', '/')
     return cygwin_path
+
 
 def main():
     if len(sys.argv) < 2:
@@ -51,7 +53,7 @@ def main():
         filepath = sys.argv[1]
 
         if os.path.exists(filepath):
-            with open(filepath, 'r',encoding="utf-8") as file:
+            with open(filepath, 'r', encoding="utf-8") as file:
                 lines = file.readlines()
 
             # Check if there are fewer than 100 lines
@@ -68,8 +70,7 @@ def main():
             else:
                 img_path = create_image_file_from_clipboard()
                 msg_ok = len(img_path) > 0 and os.path.isfile(img_path)
-                if os.name == 'nt':
-                    img_path = convert_to_cygwin_path(img_path)
+
                 file_contents += " " + img_path
             if msg_ok:
                 push_to_redis(r, filename, file_contents)

@@ -62,9 +62,8 @@ class CounterApp(rumps.App):
     @rumps.clicked("Reset Counter")
     def reset(self, _=None):
         self.redis.set("msg_count", 0)
-
         self.title = self.title[:1] + "0"
-        file_path = os.path.expanduser('~/all.txt')
+        file_path = os.path.join(os.path.expanduser('~'), 'wechaty', 'record.txt')
         subprocess.run(["open", file_path])
         logging.debug('Counter reset')
 

@@ -12,10 +12,7 @@ import os
 
 
 def open_record_file():
-    if sys.platform == "win32":
-        file_path = os.path.expanduser('~\\all.txt')
-    else:
-        file_path = os.path.expanduser('~/all.txt')
+    file_path = os.path.join(os.path.expanduser('~'), 'wechaty', 'record.txt')
 
     if sys.platform == "win32":
         subprocess.run(["explorer", file_path])
