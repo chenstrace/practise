@@ -13,13 +13,7 @@ import os
 
 def open_record_file():
     file_path = os.path.join(os.path.expanduser('~'), 'wechaty', 'record.txt')
-
-    if sys.platform == "win32":
-        subprocess.run(["explorer", file_path])
-    elif sys.platform == "darwin":
-        subprocess.run(["open", file_path])
-    else:
-        subprocess.run(["xdg-open", file_path])
+    subprocess.run(["explorer", file_path])
 
 
 class TaskbarCounterApp:
