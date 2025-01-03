@@ -62,6 +62,7 @@ class TaskbarCounterApp:
         # Set up global hotkeys (optional)
         self.listener = keyboard.GlobalHotKeys({
             '<ctrl>+<alt>+z': self.on_hotkey,
+            '<alt>+l': self.on_hotkey,
         })
         self.listener.start()
 
