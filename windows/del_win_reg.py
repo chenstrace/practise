@@ -8,8 +8,8 @@ import winreg
 REG_PATHS = [
     r"*\shellex\ContextMenuHandlers\FortiClient",
     r"Folder\ShellEx\ContextMenuHandlers\FortiClient",
-    r"*\shellex\ContextMenuHandlers\EPP",
-    r"Directory\shellex\ContextMenuHandlers\EPP",
+    #r"*\shellex\ContextMenuHandlers\EPP",
+    # r"Directory\shellex\ContextMenuHandlers\EPP",
 ]
 
 # Maximum retry attempts for each registry key
