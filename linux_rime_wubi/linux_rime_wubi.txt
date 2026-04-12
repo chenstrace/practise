@@ -1,0 +1,155 @@
+================================================================================
+Linux 下 IBus + Rime「五笔·拼音」(wubi_pinyin) 配置说明
+================================================================================
+适用环境：Ubuntu / Debian 系发行版，桌面为 GNOME（或其它使用 IBus 的会话）。
+本文档与同一目录下的示例配置文件配套使用，便于备份与迁移。
+
+--------------------------------------------------------------------------------
+1. 需要安装的软件（使用 apt install）
+--------------------------------------------------------------------------------
+
+在终端执行（需 sudo，一行即可装齐常用组合）：
+
+  sudo apt update
+  sudo apt install -y ibus ibus-rime librime-bin \
+    rime-data-wubi rime-data-pinyin-simp \
+    rime-data-luna-pinyin rime-prelude rime-essay
+
+说明（按需理解即可）：
+
+  ibus
+    输入法框架与守护进程，GNOME 下常用。
+
+  ibus-rime
+    在 IBus 中加载 Rime 引擎的前端。
+
+  librime-bin（可选）
+    提供 rime_deployer 等命令行工具，排查问题时有用。
+
+  rime-data-wubi
+    五笔相关方案数据（含 wubi86、wubi_pinyin、wubi_trad 等）。
+
+  rime-data-pinyin-simp
+    「五笔·拼音」方案依赖的简体拼音反查码表（勿省略）。
+
+  rime-data-luna-pinyin、rime-prelude、rime-essay
+    常见基础词库与预设，多数 Rime 发行包会依赖或推荐；装上可减少缺文件问题。
+
+输入法框架选择（若从未配置过）：
+
+  im-config -n ibus
+
+然后注销并重新登录一次，或重启，使会话环境变量与 im-launch 生效。
+
+安装完成后，在「设置 → 键盘 → 输入源」中添加「中文 (Rime)」或相应 Rime 条目，
+并用「设置 → 键盘」中的快捷键切换输入法。
+
+--------------------------------------------------------------------------------
+2. 配置文件位置
+--------------------------------------------------------------------------------
+
+（1）用户级 Rime 配置（主要改这里）
+
+  目录：  ~/.config/ibus/rime/
+
+  常见文件：
+    installation.yaml       安装信息（一般不必手改）
+    user.yaml               用户开关等
+    default.custom.yaml     自定义「默认」配置；常用：限定 schema_list 只用某方案
+    wubi_pinyin.custom.yaml 仅补丁「五笔·拼音」方案（推荐用「键/子键」写法，见下文）
+    build/                  引擎根据上述配置合并、编译生成的结果
+                              （*.yaml、*.bin 等；若行为异常可整目录删除后让引擎重建）
+
+（2）系统级 Rime 方案与码表（一般不要直接改）
+
+  目录：  /usr/share/rime-data/
+
+  内容：  官方 schema、dict 等。升级软件包时可能被覆盖。
+          个人修改应放在 ~/.config/ibus/rime/ 下的 *.custom.yaml。
+
+（3）IBus / 会话与 GNOME（与「能否调出 Rime」相关）
+
+  ~/.xinputrc
+    由 im-config 生成，指明 run_im ibus 或 fcitx5 等。
+
+  ~/.config/environment.d/*.conf（若你曾配置过）
+    systemd 用户会话环境变量；仅在使用 fcitx5 等时需要，纯 IBus+Rime 可不使用。
+
+  GNOME 输入源（图形界面：设置 → 键盘 → 输入源）
+    底层存储在 dconf：org.gnome.desktop.input-sources 等。
+
+--------------------------------------------------------------------------------
+3. 本目录包含哪些文件、如何使用
+--------------------------------------------------------------------------------
+
+本目录「linux_rime_wubi/」中放置了与当前成功方案一致的文件，便于集中备份与拷贝。
+
+本仓库副本路径示例（请按你机器实际路径替换）：
+
+  /home/cjili/project/practise/linux_rime_wubi/
+
+目录内文件：
+
+  linux_rime_wubi.txt       本说明（即当前文件）
+  default.custom.yaml       示例：仅启用 wubi_pinyin 方案
+  wubi_pinyin.custom.yaml   示例：四码顶字（auto_select + max_code_length）且关闭语句流
+
+部署到新用户或新机器时：
+
+  mkdir -p ~/.config/ibus/rime
+  cp /home/cjili/project/practise/linux_rime_wubi/default.custom.yaml ~/.config/ibus/rime/
+  cp /home/cjili/project/practise/linux_rime_wubi/wubi_pinyin.custom.yaml ~/.config/ibus/rime/
+
+然后删除旧的合并结果以强制重建（可选但推荐在首次部署或修改后执行）：
+
+  rm -f ~/.config/ibus/rime/build/default.yaml
+  rm -f ~/.config/ibus/rime/build/wubi_pinyin.schema.yaml
+
+重新加载 IBus：
+
+  ibus restart
+
+若提示无法连接 IBus，可先执行：
+
+  ibus-daemon -drx
+
+再执行 ibus restart。
+
+--------------------------------------------------------------------------------
+4. 重要注意（避免再次「改坏」方案）
+--------------------------------------------------------------------------------
+
+在 wubi_pinyin.custom.yaml 中，对 Rime 的补丁请使用「键路径」逐项书写，例如：
+
+  patch:
+    speller/max_code_length: 4
+    speller/auto_select: true
+    translator/enable_sentence: false
+
+切勿使用下列错误写法（会把整个 translator 或 speller 块替换掉，导致 dictionary、
+delimiter、prism 等字段丢失，输入法异常）：
+
+  patch:
+    translator:
+      enable_sentence: false
+    speller:
+      max_code_length: 4
+
+--------------------------------------------------------------------------------
+5. 行为简述（五笔·拼音 + 当前示例补丁）
+--------------------------------------------------------------------------------
+
+  schema_list 仅含 wubi_pinyin：方案选单里只保留「五笔·拼音」。
+
+  speller/max_code_length: 4 与 speller/auto_select: true：
+    形码常见习惯：四码顶字；四码唯一时多可直接上屏；四码有重码时需选字或继续输入。
+
+  translator/enable_sentence: false：
+    关闭语句流，避免与「按固定码长顶屏」逻辑冲突。
+
+若在某些应用（如个别 Electron 编辑器）中仍出现「已选字却晚一拍上屏」，
+多为应用自身对 Linux IME 的兼容性，可在 gedit、终端中对比验证。
+
+================================================================================
+文档结束
+================================================================================

@@ -1,0 +1,7 @@
+# encoding: utf-8
+# 僅使用「五笔·拼音」（wubi_pinyin）
+# 复制到：~/.config/ibus/rime/default.custom.yaml
+
+patch:
+  schema_list:
+    - schema: wubi_pinyin
