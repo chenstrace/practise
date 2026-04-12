@@ -1,0 +1,145 @@
+# Git
+.git/
+.gitlab/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+cscope*
+tags
+
+# Python: virtual environments and caches
+.venv/
+venv/
+env/
+.env/
+.env.*/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Project prebuilt runtime / packages under cooked
+cooked/bin/**
+cooked/daemon_etc/**
+cooked/fonts/**
+cooked/include/**
+cooked/lib/**
+cooked/openssl/**
+cooked/packages/**
+cooked/postgresql/**
+cooked/python3/**
+cooked/ramdisk/**
+cooked/redis/**
+cooked/tool/**
+cooked/udhcpc/**
+cooked/vmtools/**
+
+# Build / binary trees
+bin/
+build/
+buildenv/
+buildworkspace/
+daemon/
+docker-deps/
+kernel/
+migbase/
+busybox/**
+
+**/bin/**
+**/build/**
+**/busybox/**
+**/.cache/**
+**/dist/**
+**/include/**
+**/kernel
+**/kernel/**
+**/migbase/**
+**/node_modules/**
+**/out/**
+**/target/**
+
+# Node / frontend: dependencies and build outputs
+node_modules/
+dist/
+build/
+coverage/
+*.map
+
+# Logs and temporary files
+log/
+*.log
+*.tmp
+*.temp
+*.lock
+.config
+
+# Archives, images and disk images
+images/**
+image*.zip
+image.out
+
+*.zip
+*.tar
+*.gz
+*.tgz
+*.bz2
+*.7z
+*.rar
+*.tar.gz
+*.iso
+*.img
+
+# Databases and large data dumps
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+*.pdb
+*.mdb
+*.bak
+*.sql
+
+# Binary executables and libraries
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.elf
+*.lib
+*.o
+*.obj
+*.bin
+
+# Go binaries listed in .gitignore (no extension)
+go/http2-server
+go/log-daemon
+go/syslog-server
+
+# Images and design assets (usually not needed for AI)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+*.psd
+*.ai
+*.sketch
+*.webp
+
+# Media files
+*.mp3
+*.wav
+*.flac
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Cursor metadata
+.cursor/
